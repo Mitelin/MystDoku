@@ -4,6 +4,7 @@ from .utils import create_game_for_player
 from .models import Game, Grid, Cell, Item
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 @login_required
 def start_new_game(request):
@@ -40,23 +41,51 @@ def game_view(request, game_id):
 
 @csrf_exempt
 @login_required
-def place_item(request, cell_id, item_id):
+def place_item(request, cell_id):
     """
-    Save item, place it in the grid and checks if the game is completed.
+    DEBUG DIDNT WANT TO WORK....
+    Save selected item to the cell or remove him if clicked
     """
+
+    print(f"DEBUG: Received request - cell_id: {cell_id}")
+
     if request.method == "POST":
-        cell = get_object_or_404(Cell, id=cell_id, grid__game__player=request.user)
-        item = get_object_or_404(Item, id=item_id)
+        try:
+            cell_id = int(cell_id)
+            cell = get_object_or_404(Cell, id=cell_id, grid__game__player=request.user)
+            print(f"DEBUG: Loaded Cell - {cell}")
 
-        cell.selected_item = item
-        cell.save()
+            data = json.loads(request.body)  # Load JSON dat
+            item_id = data.get("item_id", -1)  # Default value is -1 (deletion)
 
-        # Check if the game is finished
-        game = cell.grid.game
-        if game.is_completed():
-            game.completed = True
-            game.save()
-            return JsonResponse({"status": "completed"})
+            if item_id == -1:
+                print("DEBUG: Removing object from cell")
+                cell.selected_item = None
+            else:
+                item = get_object_or_404(Item, id=item_id)
+                print(f"DEBUG: Loaded item - {item}")
+                cell.selected_item = item if cell.selected_item != item else None
 
-        return JsonResponse({"status": "success"})
+            cell.save()
+
+            game = cell.grid.game
+            if game.is_completed():
+                print("DEBUG: Game is finished")
+                game.completed = True
+                game.save()
+                return JsonResponse({"status": "completed"})
+
+            return JsonResponse({"status": "success"})
+        except Exception as e:
+            print(f"DEBUG: Error {str(e)}")
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+
+    print("DEBUG: Invalid request method")
     return JsonResponse({"status": "error"}, status=400)
+
+@login_required
+def win_view(request):
+    """
+    Will render the win page
+    """
+    return render(request, 'gameplay/win.html')
