@@ -1,0 +1,11 @@
+[
+    {"model": "gameplay.item", "pk": 1, "fields": {"name": "Vidlička", "number": 1}},
+    {"model": "gameplay.item", "pk": 2, "fields": {"name": "Nůž", "number": 2}},
+    {"model": "gameplay.item", "pk": 3, "fields": {"name": "Talíř", "number": 3}},
+    {"model": "gameplay.item", "pk": 4, "fields": {"name": "Hrnek", "number": 4}},
+    {"model": "gameplay.item", "pk": 5, "fields": {"name": "Lžíce", "number": 5}},
+    {"model": "gameplay.item", "pk": 6, "fields": {"name": "Toustovač", "number": 6}},
+    {"model": "gameplay.item", "pk": 7, "fields": {"name": "Mikrovlnka", "number": 7}},
+    {"model": "gameplay.item", "pk": 8, "fields": {"name": "Kuchyňský robot", "number": 8}},
+    {"model": "gameplay.item", "pk": 9, "fields": {"name": "Pánev", "number": 9}}
+]

@@ -5,15 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15b59c92-32a3-4c99-ad9e-c0322fa3f995" name="Changes" comment="Registered settings.py">
+      <change afterPath="$PROJECT_DIR$/gameplay/fixtures/items.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gameplay/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pytest.ini.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameplay/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/gameplay/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameplay/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/gameplay/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gameplay/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/gameplay/tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -49,6 +59,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -68,7 +79,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1742045364877</updated>
-      <workItem from="1742045365947" duration="5909000" />
+      <workItem from="1742045365947" duration="13416000" />
     </task>
     <task id="LOCAL-00001" summary="Registered settings.py">
       <option name="closed" value="true" />
