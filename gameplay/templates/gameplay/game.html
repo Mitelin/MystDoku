@@ -73,13 +73,21 @@
                 </button>
             {% endfor %}
         </div>
-
+<style>
+    .correct {
+        background-color: lightgreen;
+    }
+    .incorrect {
+        background-color: lightcoral;
+    }
+</style>
     <h2>Herní mřížka</h2>
         <div class="sudoku-grid">
             {% for cell in cells %}
                 <div class="cell
                     {% if cell.column in grid_borders %} grid-border{% endif %}
-                    {% if cell.row in grid_borders %} grid-border{% endif %}"
+                    {% if cell.row in grid_borders %} grid-border{% endif %}
+                    {{ cell.status }}"
                     onclick="placeItem({{ cell.id }})">
                     {% if cell.selected_item %}
                         {{ cell.selected_item.number }} - {{ cell.selected_item.name }}

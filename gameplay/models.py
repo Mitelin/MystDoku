@@ -31,6 +31,12 @@ class Game(models.Model):
     def __str__(self):
         return f"Game {self.id} - User: {self.player.username} - {'Completed' if self.completed else 'In progress'}"
 
+    def is_completed(self):
+        """
+        Return True if the game is successfully completed.
+        """
+        return not Cell.objects.filter(grid__game=self, selected_item__isnull=True).exists() and \
+               not Cell.objects.filter(grid__game=self).exclude(correct_item=models.F("selected_item")).exists()
 
 
 class Grid(models.Model):
@@ -64,3 +70,9 @@ class Cell(models.Model):
 
     def __str__(self):
         return f"Cell ({self.row}, {self.column}) in Grid {self.grid.index}"
+
+    def is_correct(self):
+        """
+        Will return true if the user selected the correct cell
+        """
+        return self.selected_item == self.correct_item

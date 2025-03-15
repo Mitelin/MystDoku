@@ -23,6 +23,11 @@ def game_view(request, game_id):
     cells = Cell.objects.filter(grid__game=game).order_by('grid__index', 'row', 'column')
     items = Item.objects.all()  # List of all available items
 
+    # Adding the boolean for the cells (right/wrong answers) empty string if empty
+    for cell in cells:
+        cell.status = "correct" if cell.selected_item and cell.is_correct() \
+            else "incorrect" if cell.selected_item else ""
+
     grid_borders = [2, 5]
 
     return render(request, 'gameplay/game.html', {
@@ -36,11 +41,22 @@ def game_view(request, game_id):
 @csrf_exempt
 @login_required
 def place_item(request, cell_id, item_id):
-    """Save item and place it in the grid"""
+    """
+    Save item, place it in the grid and checks if the game is completed.
+    """
     if request.method == "POST":
         cell = get_object_or_404(Cell, id=cell_id, grid__game__player=request.user)
         item = get_object_or_404(Item, id=item_id)
+
         cell.selected_item = item
         cell.save()
+
+        # Check if the game is finished
+        game = cell.grid.game
+        if game.is_completed():
+            game.completed = True
+            game.save()
+            return JsonResponse({"status": "completed"})
+
         return JsonResponse({"status": "success"})
     return JsonResponse({"status": "error"}, status=400)
