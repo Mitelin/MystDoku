@@ -1,6 +1,7 @@
 import random
 from .models import Game, Grid, Cell, Item
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+
 
 
 def generate_sudoku():
@@ -68,21 +69,23 @@ def create_game_for_player(player):
 
     game = Game.objects.create(player=player)
 
-    board = generate_sudoku()  # Create valid Sudoku matrix
-    item_board = assign_items_to_board(board)  # Add items
+    board = generate_sudoku()  # Creation of valid sudoku grid
+    item_board = assign_items_to_board(board)  # Adding items
 
-    # Creation of 9 rooms (Grid)
     grids = [Grid.objects.create(game=game, index=i) for i in range(9)]
 
-    # Save the Cells
+    # Selecting of random cells that will remain empty
+    hidden_cells = set(random.sample(range(81), 30))  # 30 Random cells setting (here we can export to difficulty settings)
+
     for r in range(9):
         for c in range(9):
-            grid_index = (r // 3) * 3 + (c // 3)  # Calculate rooms
+            grid_index = (r // 3) * 3 + (c // 3)
             Cell.objects.create(
                 grid=grids[grid_index],
                 row=r,
                 column=c,
-                correct_item=item_board[r][c]
+                correct_item=item_board[r][c],
+                selected_item=None if (r * 9 + c) in hidden_cells else item_board[r][c]
             )
 
     return game
