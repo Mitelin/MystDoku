@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>MystDoku – Hlavní herní stránka</title>
+</head>
+<body>
+    <h1>Vítej v MystDoku!</h1>
+
+    {% if existing_game %}
+        <p>🎮 Máš rozehranou hru:</p>
+        <a href="{% url 'game_view' game_id=existing_game.id %}">Pokračovat v hře</a>
+    {% else %}
+        <p>🆕 Nemáš žádnou rozehranou hru.</p>
+        <a href="{% url 'start_new_game' %}">Začít novou hru</a>
+    {% endif %}
+</body>
+</html>
