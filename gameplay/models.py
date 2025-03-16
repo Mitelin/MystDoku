@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import uuid
 
 class Item(models.Model):
     """
@@ -23,7 +23,9 @@ class Game(models.Model):
     This model links user (Player) id and game user creating.
     We are using id of user and game time of creation as additional identifier for future scoreboard
     We are setting up the user in a way that if he deletes his account his complete history will be removed.
+    We are using UUID instead of int ID it simply looks better
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # ⚠️ Unique UUID instead of simple ID
     player = models.ForeignKey(User, on_delete=models.CASCADE)  # id of User
     created_at = models.DateTimeField(auto_now_add=True)  # Game time creation for future score tracking
     completed = models.BooleanField(default=False)  # Game status

@@ -9,10 +9,19 @@ import json
 @login_required
 def start_new_game(request):
     """
-    Create new game for logged user and redirect to its page
+    Will remove all existing games and create new one whit unique UUID
+    Added debug messages for further changes current
+    REMOVE # For DEBUG
     """
+    existing_games = Game.objects.filter(player=request.user, completed=False)
+
+    if existing_games.exists():
+        # print(f"DEBUG: Deleting: {existing_games.count()} unfinished games of player: {request.user}")
+        existing_games.delete()
+
+    # print(f"DEBUG: Creating new game for player: {request.user}")
     game = create_game_for_player(request.user)
-    return redirect(f'/gameplay/{game.id}/')
+    return redirect('game_view', game_id=game.id)  # ✅ UUID instead of simple number ID
 
 
 
@@ -23,6 +32,11 @@ def game_view(request, game_id, block_index=0):
     Render page for the game – display full sudoku + selected 3×3 blocks.
     """
     game = get_object_or_404(Game, id=game_id, player=request.user)
+
+    if not game:
+        # print(f"DEBUG: Player {request.user} have no active game found creating new")
+        game = create_game_for_player(request.user)
+
     cells = list(Cell.objects.filter(grid__game=game).order_by('row', 'column'))
     items = Item.objects.all()
 
