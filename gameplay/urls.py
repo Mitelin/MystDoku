@@ -6,4 +6,5 @@ urlpatterns = [
     path('<int:game_id>/', game_view, name='game_view'),
     path('place/<int:cell_id>/', place_item, name='place_item'),
     path('win/', win_view, name='win_page'),
+    path('game/<int:game_id>/block/<int:block_index>/', game_view, name='game_block'),  # URL pro block ID
 ]

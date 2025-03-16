@@ -1,24 +1,66 @@
 <!DOCTYPE html>
 <html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hra {{ game.id }}</title>
-    <style>
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Hra {{ game.id }}</title>
+
+			<style>
         body {
-    display: grid;
-    place-items: center;  /* Centering to middle */
-    height: 100vh;  /* Will take entire screen from bottom */
-    margin: 0;  /* remove spaces */
-}
+            display: grid;
+            place-items: center;  /* Centering to middle */
+            height: 100vh;  /* Will take entire screen from bottom */
+            margin: 0;  /* remove spaces */
+        }
+
         .sudoku-grid {
             display: grid;
-            place-items: center;
-            grid-template-columns: repeat(9, 80px);
-            grid-template-rows: repeat(9, 80px);
-            gap: 2px;
+            grid-template-columns: repeat(9, 20px);  /* 9 columns */
+            grid-template-rows: repeat(9, 20px);  /* 9 rows */
+            gap: 0;  /* Spaces between cells */
+            border: 3px solid black;  /* border around entire grid */
+            box-sizing: border-box;
+            box-shadow: none;
         }
+
         .cell {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 1px solid black;  /* All cells have 1px border */
+            box-sizing: border-box;  /* border is included in size */
+            box-shadow: none;
+        }
+
+        /* Collors for right and wrong answers */
+        .correct-number {
+            color: green;  /* Color for right answers */
+            font-weight: bold;  /* Bold for  */
+            font-size: 20px;  /* size of text */
+        }
+
+        .incorrect-number {
+            color: red;  /* Red color for wrong answers */
+            font-weight: bold;  /* Tučné písmo pro špatná čísla */
+            font-size: 20px;  /* size of text */
+        }
+
+        /* Style for 3x3 blocks */
+        .sudoku-block {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);  /* 3 columns  */
+            grid-template-rows: repeat(3, 80px);  /* 3 rows */
+            /* grid-auto-flow: row;    /* cells suppose to go by row but not functioning need more research  */
+            gap: 2px;
+            /* border: 3px solid red;  /* Border around 3x3 block if needed */
+            padding: 10px;
+        }
+
+        /* Style pro cells in 3x3 block */
+        .block-cell {
             width: 80px;
             height: 80px;
             display: flex;
@@ -26,17 +68,9 @@
             justify-content: center;
             border: 1px solid black;
             font-size: 18px;
-            cursor: pointer;
-        }
-        .grid-border {
-            border-right: 3px solid black;
-            border-bottom: 3px solid black;
-        }
-        .selected {
-            background-color: lightblue;
         }
     </style>
-<script>
+			<script>
     let selectedItem = null;
 
     function selectItem(itemId) {
@@ -46,7 +80,7 @@
     }
 
     function placeItem(cellId, currentItemId) {
-        let itemToSend = selectedItem !== null ? selectedItem : -1;  // Nikdy neposílat null
+        let itemToSend = selectedItem !== null ? selectedItem : -1;  // ⚠ Do not send null at any circumstances ⚠!!
 
         if (currentItemId === selectedItem) {
             itemToSend = -1;
@@ -60,7 +94,7 @@
                 "X-CSRFToken": "{{ csrf_token }}",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ item_id: itemToSend })  // Sending item_id jako JSON
+            body: JSON.stringify({ item_id: itemToSend })  // Sending item_id as JSON
         })
         .then(response => response.json())
         .then(data => {
@@ -74,20 +108,20 @@
         .catch(error => console.error("Error communicating whit server:", error));
     }
 </script>
-</head>
-<body>
-    <h1>Hra č. {{ game.id }}</h1>
-    <p>Hráč: {{ game.player.username }}</p>
-
-    <h2>Vyber předmět</h2>
-        <div>
+			<body>
+				<h1>Hra č. {{ game.id }}</h1>
+				<p>Hráč: {{ game.player.username }}</p>
+				<h2>Vyber předmět</h2>
+				<div>
             {% for item in items %}
-                <button id="item-{{ item.id }}" class="item-btn" onclick="selectItem({{ item.id }})">
+
+					<button id="item-{{ item.id }}" class="item-btn" onclick="selectItem({{ item.id }})">
                     {{ item.number }} - {{ item.name }}
                 </button>
             {% endfor %}
-        </div>
-<style>
+
+				</div>
+				<style>
     .correct {
         background-color: lightgreen;
     }
@@ -95,22 +129,47 @@
         background-color: lightcoral;
     }
 </style>
-    <h2>Herní mřížka</h2>
-       <div class="sudoku-grid">
+				<h2>Herní mřížka</h2>
+				<div class="sudoku-grid">
     {% for cell in cells %}
-        <div class="cell
+
+					<div class="cell
             {% if cell.column in grid_borders %} grid-border{% endif %}
-            {% if cell.row in grid_borders %} grid-border{% endif %}
+            {% if cell.row in grid_borders %} grid-border{% endif %}">
+            {% if cell.selected_item %}
+
+						<span class="{% if cell.selected_item and cell.is_correct %} correct-number{% elif cell.selected_item and not cell.is_correct %} incorrect-number{% endif %}">
+                    {{ cell.selected_item.number }}
+                </span>
+            {% endif %}
+
+					</div>
+    {% endfor %}
+
+				</div>
+				<h2>Vybraný blok</h2>
+				<div class="sudoku-block">
+    {% for cell in selected_block %}
+
+					<div class="block-cell
             {% if cell.selected_item and cell.is_correct %} correct{% endif %}
             {% if cell.selected_item and not cell.is_correct %} incorrect{% endif %}"
             onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.id }}{% else %}-1{% endif %})">
-            {% if cell.selected_item %}
-                {{ cell.selected_item.number }} - {{ cell.selected_item.name }}
-            {% endif %}
+            {{ cell.selected_item.number|default:"" }} - {{ cell.selected_item.name|default:"" }}
         </div>
     {% endfor %}
-</div>
 
-    <a href="{% url 'start_new_game' %}">Spustit novou hru</a>
-</body>
-</html>
+				</div>
+				<div class="block-selector">
+					<p>Vyber blok:</p>
+    {% for i in block_range %}
+
+					<a href="{% url 'game_block' game.id i %}" class="{% if i == block_index %}active{% endif %}">
+            Blok {{ i }}
+        </a>
+    {% endfor %}
+
+				</div>
+				<a href="{% url 'start_new_game' %}">Spustit novou hru</a>
+			</body>
+		</html>

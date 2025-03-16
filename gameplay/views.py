@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .utils import create_game_for_player
-from .models import Game, Grid, Cell, Item
+from .models import Game, Cell, Item
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -14,29 +14,40 @@ def start_new_game(request):
     game = create_game_for_player(request.user)
     return redirect(f'/gameplay/{game.id}/')
 
+
+
+
 @login_required
-def game_view(request, game_id):
+def game_view(request, game_id, block_index=0):
     """
-    Render page for the game
+    Render page for the game – display full sudoku + selected 3×3 blocks.
     """
     game = get_object_or_404(Game, id=game_id, player=request.user)
-    grids = Grid.objects.filter(game=game).order_by('index')
-    cells = Cell.objects.filter(grid__game=game).order_by('grid__index', 'row', 'column')
-    items = Item.objects.all()  # List of all available items
+    cells = list(Cell.objects.filter(grid__game=game).order_by('row', 'column'))
+    items = Item.objects.all()
 
-    # Adding the boolean for the cells (right/wrong answers) empty string if empty
-    for cell in cells:
-        cell.status = "correct" if cell.selected_item and cell.is_correct() \
-            else "incorrect" if cell.selected_item else ""
+    # ⚠️ 3×3 blocks  (counting by indexes)⚠️
+    block_mapping = {
+        0: [0, 1, 2, 9, 10, 11, 18, 19, 20],
+        1: [3, 4, 5, 12, 13, 14, 21, 22, 23],
+        2: [6, 7, 8, 15, 16, 17, 24, 25, 26],
+        3: [27, 28, 29, 36, 37, 38, 45, 46, 47],
+        4: [30, 31, 32, 39, 40, 41, 48, 49, 50],
+        5: [33, 34, 35, 42, 43, 44, 51, 52, 53],
+        6: [54, 55, 56, 63, 64, 65, 72, 73, 74],
+        7: [57, 58, 59, 66, 67, 68, 75, 76, 77],
+        8: [60, 61, 62, 69, 70, 71, 78, 79, 80],
+    }
 
-    grid_borders = [2, 5]
+    selected_block = [cells[i] for i in block_mapping[block_index]]
 
     return render(request, 'gameplay/game.html', {
         'game': game,
-        'grids': grids,
-        'cells': cells,
-        'items': items,  # Sending available items
-        'grid_borders': grid_borders
+        'cells': cells,  # Full 9×9 grid
+        'items': items,
+        'selected_block': selected_block,  # 3×3 block
+        'block_index': block_index,
+        'block_range': range(9)
     })
 
 @csrf_exempt
