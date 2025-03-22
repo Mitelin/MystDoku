@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}MystDoku{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="logo">MystDoku</div>
+    <nav>
+        <ul>
+            <li><a href="/">Domů</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'game_selection' %}">Hra</a></li>
+                <li><a href="#">Score</a></li>
+                <li><a href="#">Story</a></li>
+                <li><a href="{% url 'logout' %}">Odhlásit</a></li>
+                <li class="user">👤 {{ user.username }}</li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Přihlášení</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+</body>
+</html>

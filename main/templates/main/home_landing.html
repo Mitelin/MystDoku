@@ -1,21 +1,10 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <title>Vítej v MystDoku</title>
-</head>
-<body>
-    <h1>MystDoku</h1>
-    <p>Logická hra inspirovaná Sudoku s tématickými prvky!</p>
+{% extends "base.html" %}
+{% block title %}MystDoku - Začátek tajemství{% endblock %}
 
-    <a href="{% url 'play_redirect' %}">🎮 HRAJ</a>
-
-    <p>
-        {% if user.is_authenticated %}
-            Přihlášen jako: {{ user.username }} | <a href="{% url 'logout' %}">Odhlásit se</a>
-        {% else %}
-            <a href="{% url 'login' %}">Přihlásit se</a> | <a href="{% url 'register' %}">Registrace</a>
-        {% endif %}
-    </p>
-</body>
-</html>
+{% block content %}
+<div class="home-landing">
+    <h1>Vítej v MystDoku</h1>
+    <p>V každé mřížce se skrývá příběh. Každá místnost je výzva. Odhal pravdu…</p>
+    <a href="{% url 'play_redirect' %}" class="play-button">HRAJ</a>
+</div>
+{% endblock %}

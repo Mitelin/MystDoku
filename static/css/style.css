@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: url('../images/dark_house.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #e0e0e0;
+}
+
+.topbar {
+    background-color: #111;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topbar .logo {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.topbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+.topbar a {
+    color: white;
+    text-decoration: none;
+}
+
+.topbar a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 30px;
+}
+.home-landing h1 {
+    font-size: 3em;
+    margin-bottom: 0.4em;
+}
+
+.home-landing p {
+    font-size: 1.2em;
+    margin-bottom: 2em;
+}
+
+.home-landing {
+    text-align: center;
+    padding-top: 120px;
+    background-color: rgba(0, 0, 0, 0.6); /* tmavý průhledný overlay */
+    max-width: 800px;
+    margin: auto;
+    padding: 60px;
+    border-radius: 12px;
+}
+
+.play-button {
+    display: inline-block;
+    background-color: #9e0000;
+    color: white;
+    font-size: 1.5em;
+    padding: 15px 40px;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.play-button:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
