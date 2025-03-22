@@ -228,10 +228,17 @@ main {
 }
 
 .auth-form a {
-    color: #66aaff;
+    color: #4dc3ff;
     text-decoration: none;
 }
 
 .auth-form a:hover {
     text-decoration: underline;
+}
+.auth-form-container a,
+.auth-form-container a:visited,
+.auth-form-container a:active,
+.auth-form-container a:focus {
+  color: #ffcc00 !important;
+  text-decoration: none;
 }
