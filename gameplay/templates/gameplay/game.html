@@ -6,9 +6,7 @@
 {% block content %}
 <div class="game-wrapper">
 
-    <h1>Hra id: {{ game.id }}</h1>
-    <p>Hráč: {{ game.player.username }}</p>
-
+    <h1>Hráč: {{ game.player.username }}</h1>
     <h2>Vyber předmět</h2>
     <div>
         {% for item in items %}
