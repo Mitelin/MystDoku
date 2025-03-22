@@ -13,8 +13,12 @@
     <nav>
         <ul>
             <li><a href="/">Domů</a></li>
+
             {% if user.is_authenticated %}
-                <li><a href="{% url 'game_selection' %}">Hra</a></li>
+                {% if user.is_authenticated and existing_game %}
+                    <a href="{% url 'game_view' game_id=existing_game.id %}">Pokračovat v hře</a>
+                {% endif %}
+                <li><a href="{% url 'game_selection' %}">Herní výběr</a></li>
                 <li><a href="#">Score</a></li>
                 <li><a href="#">Story</a></li>
                 <li><a href="{% url 'logout' %}">Odhlásit</a></li>

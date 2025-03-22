@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <title>MystDoku – Hlavní herní stránka</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}MystDoku – Hlavní herní stránka{% endblock %}
+
+{% block content %}
+<div class="game-selection">
     <h1>Vítej v MystDoku!</h1>
 
     {% if existing_game %}
         <p>🎮 Máš rozehranou hru:</p>
-        <a href="{% url 'game_view' game_id=existing_game.id %}">Pokračovat v hře</a>
+        <a href="{% url 'game_view' game_id=existing_game.id %}" class="play-button">Pokračovat v hře</a>
     {% else %}
         <p>🆕 Nemáš žádnou rozehranou hru.</p>
-        <a href="{% url 'start_new_game' %}">Začít novou hru</a>
+        <a href="{% url 'start_new_game' %}" class="play-button">Začít novou hru</a>
     {% endif %}
-</body>
-</html>
+</div>
+{% endblock %}
