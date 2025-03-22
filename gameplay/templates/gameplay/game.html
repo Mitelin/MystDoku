@@ -4,6 +4,33 @@
 {% block title %}Hra {{ game.id }}{% endblock %}
 
 {% block content %}
+<div id="quote-overlay" class="hidden">
+    <div class="quote-text">„Na počátku bylo Slovo…“ – Jan 1:1</div>
+</div>
+<script>
+function showQuote() {
+    const overlay = document.getElementById('quote-overlay');
+    const quote = overlay.querySelector('.quote-text');
+
+    // Zobrazíme černý overlay
+    overlay.classList.add('visible');
+
+    // Po 1.5s zobrazíme text
+    setTimeout(() => {
+        quote.style.opacity = 1;
+    }, 1500);
+
+    // Po 4.5s skryjeme text
+    setTimeout(() => {
+        quote.style.opacity = 0;
+    }, 4500);
+
+    // Po 6s schováme overlay
+    setTimeout(() => {
+        overlay.classList.remove('visible');
+    }, 6000);
+}
+</script>
 <div class="game-wrapper">
 
     <h1>Hráč: {{ game.player.username }}</h1>
@@ -97,4 +124,5 @@
         return confirm("⚠️ Opravdu chceš spustit novou hru? Tvoje aktuální hra bude smazána!");
     }
 </script>
+    <button onclick="showQuote()">Zobraz citaci</button>
 {% endblock %}
