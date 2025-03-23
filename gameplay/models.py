@@ -2,6 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 
+class Room(models.Model):
+    """
+    Model for Definition of thematic rooms for usage in different games.
+    """
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class Item(models.Model):
     """
     Model for Thematic items:
@@ -9,12 +18,17 @@ class Item(models.Model):
     (2, knifes)
     (3, coolers)
     ...
+    Belongs to unique rooms
     """
-    name = models.CharField(max_length=100)  # Name of the item
-    number = models.IntegerField(unique=True)  # Number representing item
+    name = models.CharField(max_length=100)
+    number = models.IntegerField()  # Number 1–9
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='items')
 
     def __str__(self):
-        return f"{self.number}: {self.name}"
+        return f"{self.name} ({self.number}) in {self.room.name}"
+
+    class Meta:
+        unique_together = ('name', 'number', 'room')
 
 
 class Game(models.Model):
@@ -54,10 +68,11 @@ class Cell(models.Model):
     selected_item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True, blank=True, related_name="selected_cells")  # Player selected item
 
     def __str__(self):
-        return f"Cell ({self.row}, {self.column}) in Grid {self.grid.index}"
+        return f"Cell ({self.row}, {self.column})"
 
     def is_correct(self):
         """
         Will return true if the user selected the correct cell
         """
         return self.selected_item == self.correct_item
+

@@ -6,14 +6,6 @@ from django.conf import settings
 from django.db import connection
 
 
-import json
-import os
-from django.apps import AppConfig
-from django.core.management import call_command
-from django.conf import settings
-from django.db import connection
-
-
 class GameplayConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'gameplay'
@@ -46,13 +38,20 @@ class GameplayConfig(AppConfig):
             print("❌ File items.json is not valid items.json require at least 9 items.")
             return
 
-        db_items = list(Item.objects.values('number', 'name'))
+        db_items = list(Item.objects.values('number', 'name', 'room'))
 
         fixture_sorted = sorted(
-            [{'number': i['fields']['number'], 'name': i['fields']['name']} for i in fixture_items],
-            key=lambda x: (x['number'], x['name'])
+            [
+                {
+                    'number': i['fields']['number'],
+                    'name': i['fields']['name'],
+                    'room': i['fields']['room']
+                }
+                for i in fixture_items if i['model'] == 'gameplay.item'
+            ],
+            key=lambda x: (x['room'], x['number'], x['name'])
         )
-        db_sorted = sorted(db_items, key=lambda x: (x['number'], x['name']))
+        db_sorted = sorted(db_items, key=lambda x: (x['room'], x['number'], x['name']))
 
         if fixture_sorted != db_sorted:
             print("🔁 Difference between fixture items and database items resetting database.")
