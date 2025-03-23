@@ -70,19 +70,20 @@ function showQuote() {
         {% endfor %}
     </div>
 
-    <div class="block-selector">
-        <p>Vyber blok:</p>
-        {% for i in block_range %}
-            <a href="{% url 'game_block' game.id i %}" class="{% if i == block_index %}active{% endif %}">
-                Blok {{ i }}
-            </a>
-        {% endfor %}
-    </div>
+<div class="block-selector">
+    <p>Vyber blok:</p>
+    {% for i in block_range %}
+<a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id i %}')" class="{% if i == block_index %}active{% endif %}">
+    Blok {{ i }}
+</a>
+    {% endfor %}
+</div>
 
     <a href="{% url 'start_new_game' %}" onclick="return confirmNewGame();">
         Spustit novou hru
     </a>
 
+<button onclick="transitionTo('/gameplay/{{ game.id }}/block/1/')">TEST FADE</button>
 </div>
 
 <script>
