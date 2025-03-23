@@ -40,23 +40,6 @@ class Game(models.Model):
         return not Cell.objects.filter(grid__game=self, selected_item__isnull=True).exists() and \
                not Cell.objects.filter(grid__game=self).exclude(correct_item=models.F("selected_item")).exists()
 
-
-class Grid(models.Model):
-    """
-    Model for definition of Sudoku game grid
-    Sudoku game grid is 9x9 made of cells
-    We are listing those cells by index
-    ⚠️ WARNING ️️️⚠️
-    ⚠️ Its required to remember that computer numbers are starting whit 0 so 9 cells is 0-8 not 1-9!!⚠️
-    """
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)  # Define what grid the game belong
-    index = models.IntegerField()  # Index 0-8 for each 9x9 section of Sudoku
-
-    def __str__(self):
-        return f"Grid {self.index} for game {self.game.id}"
-
-
-
 class Cell(models.Model):
     """
     Model for Definition of cells and where they belong.
@@ -64,7 +47,7 @@ class Cell(models.Model):
     And this also store the player current selection.
     Using the selected item and correct item will enable validation of sudoku Game state and current selection state.
     """
-    grid = models.ForeignKey(Grid, on_delete=models.CASCADE)  # What grid id are we using
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     row = models.IntegerField()  # Row (0-8) We are using 9 cells but computer naming start whit 0 so 0-8 but 9 total
     column = models.IntegerField()  # Column (0-8) We are using 9 cells but computer naming start whit 0 so 0-8 but 9 total
     correct_item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="correct_cells")  # Correct item belonging to right cell

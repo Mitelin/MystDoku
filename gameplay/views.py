@@ -37,7 +37,7 @@ def game_view(request, game_id, block_index=0):
         # print(f"DEBUG: Player {request.user} have no active game found creating new")
         game = create_game_for_player(request.user)
 
-    cells = list(Cell.objects.filter(grid__game=game).order_by('row', 'column'))
+    cells = list(Cell.objects.filter(game=game).order_by('row', 'column'))
     items = Item.objects.all()
 
     # ⚠️ 3×3 blocks  (counting by indexes)⚠️
