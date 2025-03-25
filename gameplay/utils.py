@@ -1,5 +1,5 @@
 import random
-from .models import Game, Cell, Item
+from .models import Game, Cell, Item, Room
 #from django.contrib.auth.models import User
 
 
@@ -69,22 +69,39 @@ def create_game_for_player(player):
 
     game = Game.objects.create(player=player)
 
-    board = generate_sudoku()  # Creation of valid sudoku grid
-    item_board = assign_items_to_board(board)  # Adding items
+    board = generate_sudoku()
 
+    all_rooms = list(Room.objects.all())
+    selected_rooms = random.sample(all_rooms, 9)
+    block_rooms = [room.id for room in selected_rooms]
+    block_items = {}
 
-    # Selecting of random cells that will remain empty
-    hidden_cells = set(random.sample(range(81), 30))  # 30 Random cells setting (here we can export to difficulty settings)
+    for block_index, room in enumerate(selected_rooms):
+        number_to_item = {}
+        for number in range(1, 10):
+            item = Item.objects.filter(room=room, number=number).order_by("?").first()
+            number_to_item[number] = item.id
+        block_items[block_index] = number_to_item
+
+    game.block_rooms = block_rooms
+    game.block_items = block_items
+    game.save()
+
+    hidden_cells = set(random.sample(range(81), 30))
 
     for r in range(9):
         for c in range(9):
-            grid_index = (r // 3) * 3 + (c // 3)
+            number = board[r][c]
+            block_index = (r // 3) * 3 + (c // 3)
+            item_id = block_items[block_index][number]
+            correct_item = Item.objects.get(id=item_id)
+
             Cell.objects.create(
                 game=game,
                 row=r,
                 column=c,
-                correct_item=item_board[r][c],
-                selected_item=None if (r * 9 + c) in hidden_cells else item_board[r][c]
+                correct_item=correct_item,
+                selected_item=None if (r * 9 + c) in hidden_cells else correct_item
             )
 
     return game

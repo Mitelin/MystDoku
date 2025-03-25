@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import JSONField
 import uuid
 
 class Room(models.Model):
@@ -34,7 +35,7 @@ class Item(models.Model):
 class Game(models.Model):
     """
     Model for Game instance
-    This model links user (Player) id and game user creating.
+    This model links user (Player) id and game that user creating.
     We are using id of user and game time of creation as additional identifier for future scoreboard
     We are setting up the user in a way that if he deletes his account his complete history will be removed.
     We are using UUID instead of int ID it simply looks better
@@ -43,6 +44,8 @@ class Game(models.Model):
     player = models.ForeignKey(User, on_delete=models.CASCADE)  # id of User
     created_at = models.DateTimeField(auto_now_add=True)  # Game time creation for future score tracking
     completed = models.BooleanField(default=False)  # Game status
+    block_rooms = JSONField(default=list)  # List of 9 Room IDs for current game
+    block_items = JSONField(default=dict)  # Dict: block -> number -> item ID
 
     def __str__(self):
         return f"Game {self.id} - User: {self.player.username} - {'Completed' if self.completed else 'In progress'}"
@@ -51,8 +54,14 @@ class Game(models.Model):
         """
         Return True if the game is successfully completed.
         """
-        return not Cell.objects.filter(grid__game=self, selected_item__isnull=True).exists() and \
-               not Cell.objects.filter(grid__game=self).exclude(correct_item=models.F("selected_item")).exists()
+        cells = Cell.objects.filter(game=self)
+
+        for cell in cells:
+            if not cell.selected_item or not cell.is_correct():
+                return False
+
+        return True
+
 
 class Cell(models.Model):
     """
@@ -74,5 +83,9 @@ class Cell(models.Model):
         """
         Will return true if the user selected the correct cell
         """
-        return self.selected_item == self.correct_item
+        return (
+                self.selected_item is not None and
+                self.correct_item is not None and
+                self.selected_item.number == self.correct_item.number
+        )
 

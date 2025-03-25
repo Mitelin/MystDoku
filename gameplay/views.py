@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .utils import create_game_for_player
-from .models import Game, Cell, Item
+from .models import Game, Cell, Item, Room
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -30,17 +30,15 @@ def start_new_game(request):
 def game_view(request, game_id, block_index=0):
     """
     Render page for the game – display full sudoku + selected 3×3 blocks.
+
     """
     game = get_object_or_404(Game, id=game_id, player=request.user)
 
     if not game:
-        # print(f"DEBUG: Player {request.user} have no active game found creating new")
         game = create_game_for_player(request.user)
 
     cells = list(Cell.objects.filter(game=game).order_by('row', 'column'))
-    items = Item.objects.all()
 
-    # ⚠️ 3×3 blocks  (counting by indexes)⚠️
     block_mapping = {
         0: [0, 1, 2, 9, 10, 11, 18, 19, 20],
         1: [3, 4, 5, 12, 13, 14, 21, 22, 23],
@@ -55,13 +53,35 @@ def game_view(request, game_id, block_index=0):
 
     selected_block = [cells[i] for i in block_mapping[block_index]]
 
+    # part for getting id of rooms and translating it to our blocks.
+    room_id = game.block_rooms[block_index]
+    room = Room.objects.get(id=room_id)
+
+    item_ids = list(game.block_items[str(block_index)].values())  # JSONField keys are strings
+    items = list(Item.objects.filter(id__in=item_ids).order_by("number"))
+    used_item_ids = Cell.objects.filter(game=game).values_list("correct_item", "selected_item")
+    used_item_ids = set(filter(None, [item_id for pair in used_item_ids for item_id in pair]))
+
+    item_names = {
+        item.id: item.name
+        for item in Item.objects.filter(id__in=used_item_ids)
+    }
+    block_item_names = {}
+    block_map = game.block_items[str(block_index)]
+    for number_str, item_id in block_map.items():
+        item = Item.objects.filter(id=item_id).first()
+        if item:
+            block_item_names[int(number_str)] = item.name
     return render(request, 'gameplay/game.html', {
         'game': game,
-        'cells': cells,  # Full 9×9 grid
+        'cells': cells,
+        'selected_block': selected_block,
         'items': items,
-        'selected_block': selected_block,  # 3×3 block
+        'room_name': room.name,
         'block_index': block_index,
-        'block_range': range(9)
+        'block_range': range(9),
+        'item_names': item_names,
+        'block_item_names': block_item_names,
     })
 
 @csrf_exempt
@@ -77,23 +97,29 @@ def place_item(request, cell_id):
     if request.method == "POST":
         try:
             cell_id = int(cell_id)
-            cell = get_object_or_404(Cell, id=cell_id, grid__game__player=request.user)
+            cell = get_object_or_404(Cell, id=cell_id, game__player=request.user)
             print(f"DEBUG: Loaded Cell - {cell}")
 
-            data = json.loads(request.body)  # Load JSON dat
-            item_id = data.get("item_id", -1)  # Default value is -1 (deletion)
+            data = json.loads(request.body)
+            number = data.get("number", -1)  # 1–9 ether or -1 = deletion
 
-            if item_id == -1:
-                print("DEBUG: Removing object from cell")
+            if number == -1:
+                print("DEBUG: Removing item from cell")
                 cell.selected_item = None
             else:
-                item = get_object_or_404(Item, id=item_id)
-                print(f"DEBUG: Loaded item - {item}")
-                cell.selected_item = item if cell.selected_item != item else None
+                # will find correct item by its room.
+                room = cell.correct_item.room
+                item = Item.objects.filter(room=room, number=number).first()
+
+                if item:
+                    print(f"DEBUG: Loaded item by number {number} from room {room}")
+                    cell.selected_item = item if cell.selected_item != item else None
+                else:
+                    print(f"DEBUG: Item with number {number} not found in room {room}")
 
             cell.save()
 
-            game = cell.grid.game
+            game = cell.game
             if game.is_completed():
                 print("DEBUG: Game is finished")
                 game.completed = True

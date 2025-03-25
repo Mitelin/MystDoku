@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_filters %}
 {% load static %}
 
 {% block title %}Hra {{ game.id }}{% endblock %}
@@ -7,41 +8,22 @@
 <div id="quote-overlay" class="hidden">
     <div class="quote-text">„Na počátku bylo Slovo…“ – Jan 1:1</div>
 </div>
+
 <script>
-function showQuote() {
-    const overlay = document.getElementById('quote-overlay');
-    const quote = overlay.querySelector('.quote-text');
+    function showQuote() {
+        const overlay = document.getElementById('quote-overlay');
+        const quote = overlay.querySelector('.quote-text');
 
-    // Zobrazíme černý overlay
-    overlay.classList.add('visible');
-
-    // Po 1.5s zobrazíme text
-    setTimeout(() => {
-        quote.style.opacity = 1;
-    }, 1500);
-
-    // Po 4.5s skryjeme text
-    setTimeout(() => {
-        quote.style.opacity = 0;
-    }, 4500);
-
-    // Po 6s schováme overlay
-    setTimeout(() => {
-        overlay.classList.remove('visible');
-    }, 6000);
-}
+        overlay.classList.add('visible');
+        setTimeout(() => quote.style.opacity = 1, 1500);
+        setTimeout(() => quote.style.opacity = 0, 4500);
+        setTimeout(() => overlay.classList.remove('visible'), 6000);
+    }
 </script>
+
 <div class="game-wrapper">
 
     <h1>Hráč: {{ game.player.username }}</h1>
-    <h2>Vyber předmět</h2>
-    <div>
-        {% for item in items %}
-            <button id="item-{{ item.id }}" class="item-btn" onclick="selectItem({{ item.id }})">
-                {{ item.number }} - {{ item.name }}
-            </button>
-        {% endfor %}
-    </div>
 
     <h2>Herní mřížka</h2>
     <div class="sudoku-grid">
@@ -50,7 +32,7 @@ function showQuote() {
                 {% if cell.column in grid_borders %} grid-border{% endif %}
                 {% if cell.row in grid_borders %} grid-border{% endif %}">
                 {% if cell.selected_item %}
-                    <span class="{% if cell.selected_item and cell.is_correct %} correct-number{% elif cell.selected_item and not cell.is_correct %} incorrect-number{% endif %}">
+                    <span class="{% if cell.is_correct %}correct-number{% else %}incorrect-number{% endif %}">
                         {{ cell.selected_item.number }}
                     </span>
                 {% endif %}
@@ -64,42 +46,55 @@ function showQuote() {
             <div class="block-cell
                 {% if cell.selected_item and cell.is_correct %} correct{% endif %}
                 {% if cell.selected_item and not cell.is_correct %} incorrect{% endif %}"
-                onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.id }}{% else %}-1{% endif %})">
-                {{ cell.selected_item.number|default:"" }} - {{ cell.selected_item.name|default:"" }}
+                onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.number }}{% else %}-1{% endif %})">
+                {% if cell.selected_item %}
+                    {{ block_item_names|get_item:cell.selected_item.number }}
+                {% endif %}
             </div>
         {% endfor %}
     </div>
 
-<div class="block-selector">
-    <p>Vyber blok:</p>
-    {% for i in block_range %}
-<a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id i %}')" class="{% if i == block_index %}active{% endif %}">
-    Blok {{ i }}
-</a>
-    {% endfor %}
-</div>
+    <h2>Vyber předmět v místnosti: {{ room_name }}</h2>
+    <div>
+        {% for item in items %}
+            <button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
+                {{ item.name }}
+            </button>
+        {% endfor %}
+    </div>
+
+    <div class="block-selector">
+        <p>Vyber blok:</p>
+        {% for i in block_range %}
+            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id i %}')" class="{% if i == block_index %}active{% endif %}">
+                Blok {{ i }}
+            </a>
+        {% endfor %}
+    </div>
 
     <a href="{% url 'start_new_game' %}" onclick="return confirmNewGame();">
         Spustit novou hru
     </a>
 
-<button onclick="transitionTo('/gameplay/{{ game.id }}/block/1/')">TEST FADE</button>
+    <button onclick="transitionTo('/gameplay/{{ game.id }}/block/1/')">TEST FADE</button>
+    <button onclick="showQuote()">Zobraz citaci</button>
+
 </div>
 
 <script>
-    let selectedItem = null;
+    let selectedNumber = null;
 
-    function selectItem(itemId) {
-        selectedItem = itemId;
+    function selectItem(number) {
+        selectedNumber = number;
         document.querySelectorAll('.item-btn').forEach(btn => btn.classList.remove('selected'));
-        document.getElementById('item-' + itemId).classList.add('selected');
+        document.querySelectorAll(`.item-btn[data-number="${number}"]`).forEach(btn => btn.classList.add('selected'));
     }
 
-    function placeItem(cellId, currentItemId) {
-        let itemToSend = selectedItem !== null ? selectedItem : -1;
+    function placeItem(cellId, currentItemNumber) {
+        let numberToSend = selectedNumber !== null ? selectedNumber : -1;
 
-        if (currentItemId === selectedItem) {
-            itemToSend = -1;
+        if (currentItemNumber === selectedNumber) {
+            numberToSend = -1;
         }
 
         fetch(`/gameplay/place/${cellId}/`, {
@@ -108,7 +103,7 @@ function showQuote() {
                 "X-CSRFToken": "{{ csrf_token }}",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ item_id: itemToSend })
+            body: JSON.stringify({ number: numberToSend })
         })
         .then(response => response.json())
         .then(data => {
@@ -125,5 +120,4 @@ function showQuote() {
         return confirm("⚠️ Opravdu chceš spustit novou hru? Tvoje aktuální hra bude smazána!");
     }
 </script>
-    <button onclick="showQuote()">Zobraz citaci</button>
 {% endblock %}
