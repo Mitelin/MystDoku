@@ -11,7 +11,15 @@
         <a href="{% url 'game_view' game_id=existing_game.id %}" class="play-button">Pokračovat v hře</a>
     {% else %}
         <p>🆕 Nemáš žádnou rozehranou hru.</p>
-        <a href="{% url 'start_new_game' %}" class="play-button">Začít novou hru</a>
     {% endif %}
+
+    <hr style="margin: 2em 0; width: 60%; border-color: #666;">
+
+    <p>🔁 Začni novou hru:</p>
+    <div class="difficulty-buttons">
+        <a href="{% url 'start_new_game' %}?difficulty=easy" class="play-button">Easy</a>
+        <a href="{% url 'start_new_game' %}?difficulty=medium" class="play-button">Medium</a>
+        <a href="{% url 'start_new_game' %}?difficulty=hard" class="play-button">Hard</a>
+    </div>
 </div>
 {% endblock %}

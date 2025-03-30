@@ -91,7 +91,7 @@ def build_number_to_item_mapping(selected_group_ids, group_map):
     return number_to_item
 
 
-def create_game_for_player(player):
+def create_game_for_player(player, difficulty='easy'):
     # Generate Sudoku grid (with numbers 1–9)
     board = generate_sudoku()
 
@@ -101,6 +101,7 @@ def create_game_for_player(player):
     # Create new game instance
     game = Game.objects.create(
         player=player,
+        difficulty=difficulty,
         block_rooms=[room.id for room in selected_rooms],
         block_items={}
     )
@@ -115,8 +116,10 @@ def create_game_for_player(player):
     game.save()
 
     # Fill the game board with Cells based on Sudoku logic
-    fill_cells(game, board, block_items)
-    return game
+    fill_cells(game, board, block_items, difficulty)
+    if is_sudoku_solvable(game):
+        return game
+
 
 
 def select_valid_rooms():
@@ -170,9 +173,17 @@ def build_block_items(room):
     return number_to_item
 
 
-def fill_cells(game, board, block_items):
-    # Randomly choose 30 hidden cells (for difficulty)
-    hidden_cells = set(random.sample(range(81), 30))
+def fill_cells(game, board, block_items, difficulty='easy'):
+    if difficulty == 'easy':
+        visible_count = 36
+    elif difficulty == 'medium':
+        visible_count = 30
+    elif difficulty == 'hard':
+        visible_count = 24
+    else:
+        visible_count = 30  # fallback
+
+    hidden_cells = set(random.sample(range(81), 81 - visible_count))
 
     for r in range(9):
         for c in range(9):
@@ -183,7 +194,6 @@ def fill_cells(game, board, block_items):
 
             is_prefilled = (r * 9 + c) not in hidden_cells
 
-            # Create a Cell object with correct and optionally pre-filled selected item
             Cell.objects.create(
                 game=game,
                 row=r,
@@ -192,3 +202,65 @@ def fill_cells(game, board, block_items):
                 selected_item=item if is_prefilled else None,
                 prefilled=is_prefilled
             )
+
+def print_sudoku_grid(game_id):
+    try:
+        game = Game.objects.get(id=game_id)
+    except Game.DoesNotExist:
+        print(f"❌ Hra {game_id} neexistuje.")
+        return
+
+    cells = Cell.objects.filter(game=game)
+    grid = [[0 for _ in range(9)] for _ in range(9)]
+
+    for cell in cells:
+        grid[cell.row][cell.column] = cell.correct_item.number
+
+    print(f"\n=== SUDOKU pro hru {game_id} ===")
+    for row in grid:
+        print(" ".join(str(n) for n in row))
+    print("===============================\n")
+
+def has_solution(grid):
+    """
+    Return True, if the sudoku have at least one solution (0 = for empty field).
+    """
+    def is_safe(row, col, num):
+        for i in range(9):
+            if grid[row][i] == num or grid[i][col] == num:
+                return False
+        start_row, start_col = 3 * (row // 3), 3 * (col // 3)
+        for r in range(3):
+            for c in range(3):
+                if grid[start_row + r][start_col + c] == num:
+                    return False
+        return True
+
+    def solve():
+        for r in range(9):
+            for c in range(9):
+                if grid[r][c] == 0:
+                    for num in range(1, 10):
+                        if is_safe(r, c, num):
+                            grid[r][c] = num
+                            if solve():
+                                return True
+                            grid[r][c] = 0
+                    return False
+        return True
+
+    return solve()
+
+
+def is_sudoku_solvable(game):
+    """
+    Load selected_items from Game Cells and check if sudoku can be solved.
+    """
+    cells = Cell.objects.filter(game=game)
+    grid = [[0 for _ in range(9)] for _ in range(9)]
+
+    for cell in cells:
+        if cell.selected_item:
+            grid[cell.row][cell.column] = cell.selected_item.number
+
+    return has_solution(grid)

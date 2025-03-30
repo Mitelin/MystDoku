@@ -7,20 +7,23 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 @login_required
+
+@login_required
 def start_new_game(request):
     """
-    Will remove all existing games and create new one whit unique UUID
-    Added debug messages for further changes current
-    REMOVE # For DEBUG
+    Will remove all existing games and create new one with unique UUID.
+    Now also supports difficulty from GET param (?difficulty=medium)
     """
     existing_games = Game.objects.filter(player=request.user, completed=False)
 
     if existing_games.exists():
-        # print(f"DEBUG: Deleting: {existing_games.count()} unfinished games of player: {request.user}")
         existing_games.delete()
 
-    # print(f"DEBUG: Creating new game for player: {request.user}")
-    game = create_game_for_player(request.user)
+    difficulty = request.GET.get("difficulty", "easy").lower()
+    if difficulty not in ["easy", "medium", "hard"]:
+        difficulty = "easy"  # fallback
+
+    game = create_game_for_player(request.user, difficulty=difficulty)
     return redirect('game_view', game_id=game.id)  # ✅ UUID instead of simple number ID
 
 
@@ -74,6 +77,7 @@ def game_view(request, game_id, block_index=0):
             block_item_names[int(number_str)] = item.name
     return render(request, 'gameplay/game.html', {
         'game': game,
+        "in_game": True,
         'cells': cells,
         'selected_block': selected_block,
         'items': items,

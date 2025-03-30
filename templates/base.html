@@ -15,7 +15,7 @@
             <li><a href="/">Domů</a></li>
 
             {% if user.is_authenticated %}
-                {% if user.is_authenticated and existing_game %}
+                {% if user.is_authenticated and existing_game and not in_game %}
                     <a href="{% url 'game_view' game_id=existing_game.id %}">Pokračovat v hře</a>
                 {% endif %}
                 <li><a href="{% url 'game_selection' %}">Herní výběr</a></li>

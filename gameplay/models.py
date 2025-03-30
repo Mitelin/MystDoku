@@ -32,6 +32,12 @@ class Item(models.Model):
     class Meta:
         unique_together = ('name', 'number', 'room')
 
+DIFFICULTY_CHOICES = [
+    ('easy', 'Easy'),
+    ('medium', 'Medium'),
+    ('hard', 'Hard'),
+]
+
 
 class Game(models.Model):
     """
@@ -47,6 +53,7 @@ class Game(models.Model):
     completed = models.BooleanField(default=False)  # Game status
     block_rooms = JSONField(default=list)  # List of 9 Room IDs for current game
     block_items = JSONField(default=dict)  # Dict: block -> number -> item ID
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='easy')
 
     def __str__(self):
         return f"Game {self.id} - User: {self.player.username} - {'Completed' if self.completed else 'In progress'}"
