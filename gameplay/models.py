@@ -23,7 +23,8 @@ class Item(models.Model):
     """
     name = models.CharField(max_length=100)
     number = models.IntegerField()  # Number 1–9
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='items')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='items') # Id of room
+    group_id = models.CharField(max_length=100) # Unique identifier for similar items
 
     def __str__(self):
         return f"{self.name} ({self.number}) in {self.room.name}"
@@ -75,6 +76,7 @@ class Cell(models.Model):
     column = models.IntegerField()  # Column (0-8) We are using 9 cells but computer naming start whit 0 so 0-8 but 9 total
     correct_item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="correct_cells")  # Correct item belonging to right cell
     selected_item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True, blank=True, related_name="selected_cells")  # Player selected item
+    prefilled = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Cell ({self.row}, {self.column})"

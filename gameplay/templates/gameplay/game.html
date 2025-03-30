@@ -39,16 +39,19 @@
             </div>
         {% endfor %}
     </div>
-
     <h2>Vybraný blok</h2>
     <div class="sudoku-block">
         {% for cell in selected_block %}
             <div class="block-cell
+                {% if cell.prefilled %} locked{% endif %}
                 {% if cell.selected_item and cell.is_correct %} correct{% endif %}
                 {% if cell.selected_item and not cell.is_correct %} incorrect{% endif %}"
-                onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.number }}{% else %}-1{% endif %})">
+                {% if not cell.prefilled %}
+                    onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.number }}{% else %}-1{% endif %})"
+                {% endif %}>
+
                 {% if cell.selected_item %}
-                    {{ block_item_names|get_item:cell.selected_item.number }}
+                    {{ block_item_names|get_item:cell.selected_item.number|default:cell.selected_item.number }}
                 {% endif %}
             </div>
         {% endfor %}

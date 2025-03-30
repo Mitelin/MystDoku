@@ -164,14 +164,15 @@ main {
     justify-content: center;
     border: 1px solid black;
     font-size: 18px;
+    font-weight: bold;
 }
 
 .correct {
-    background-color: lightgreen;
+    background-color: green;
 }
 
 .incorrect {
-    background-color: lightcoral;
+    background-color: coral;
 }
 .sudoku-grid {
     position: fixed;
@@ -307,4 +308,10 @@ main {
 @keyframes fadeOut {
     from { opacity: 1; }
     to { opacity: 0; }
+}
+
+.block-cell.locked {
+    background-color: green;
+    cursor: not-allowed;
+    font-weight: bold;
 }
