@@ -75,12 +75,14 @@ def game_view(request, game_id, block_index=0):
         item = Item.objects.filter(id=item_id).first()
         if item:
             block_item_names[int(number_str)] = item.name
+    neighbors = get_neighbors(block_index)
     return render(request, 'gameplay/game.html', {
         'game': game,
         "in_game": True,
         'cells': cells,
         'selected_block': selected_block,
         'items': items,
+        'neighbors': neighbors,
         'room_name': room.name,
         'block_index': block_index,
         'block_range': range(9),
@@ -144,3 +146,18 @@ def win_view(request):
     Will render the win page
     """
     return render(request, 'gameplay/win.html')
+
+def get_neighbors(block_index):
+    row, col = divmod(block_index, 3)
+    neighbors = {}
+
+    if row > 0:
+        neighbors['up'] = (row - 1) * 3 + col
+    if row < 2:
+        neighbors['down'] = (row + 1) * 3 + col
+    if col > 0:
+        neighbors['left'] = row * 3 + (col - 1)
+    if col < 2:
+        neighbors['right'] = row * 3 + (col + 1)
+
+    return neighbors

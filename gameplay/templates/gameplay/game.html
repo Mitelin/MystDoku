@@ -47,6 +47,23 @@
             </div>
         {% endfor %}
     </div>
+<div class="room-navigation">
+    <h3>Dveře do sousedních místností:</h3>
+    <div class="door-links">
+        {% if neighbors.up %}
+            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.up %}')">🔼 Nahoru</a>
+        {% endif %}
+        {% if neighbors.down %}
+            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.down %}')">🔽 Dolů</a>
+        {% endif %}
+        {% if neighbors.left %}
+            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.left %}')">◀️ Vlevo</a>
+        {% endif %}
+        {% if neighbors.right %}
+            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.right %}')">▶️ Vpravo</a>
+        {% endif %}
+    </div>
+</div>
     <h2>Vybraný blok</h2>
     <div class="sudoku-block">
         {% for cell in selected_block %}
