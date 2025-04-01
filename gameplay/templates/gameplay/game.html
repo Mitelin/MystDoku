@@ -5,6 +5,7 @@
 {% block title %}Hra {{ game.id }}{% endblock %}
 
 {% block content %}
+<!-- Overlay pro citace -->
 <div id="quote-overlay" class="hidden">
     <div class="quote-text">„Na počátku bylo Slovo…“ – Jan 1:1</div>
 </div>
@@ -21,142 +22,190 @@
     }
 </script>
 
+<h2 class="room-name">
+    {% for room in room_links %}
+        {% if forloop.counter0 == block_index %}
+            {{ room.name }}
+        {% endif %}
+    {% endfor %}
+</h2>
+
 <div class="game-wrapper">
+    <!-- Wrapper pro Inventář -->
+    <div class="inventory-wrapper">
+        <h3>Inventář</h3>
+        <div class="inventory">
+            {% for item in items %}
+                <div class="inventory-item">
+                   <button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
+                        {{ item.name }}
+                   </button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
-    <h1>Hráč: {{ game.player.username }}</h1>
+    <!-- Wrapper pro Blok místnosti a Minimapu -->
+    <div class="block-wrapper">
+        <div class="sudoku-grid">
+            {% for cell in cells %}
+                <div class="cell
+                    {% if cell.column in grid_borders %} grid-border{% endif %}
+                    {% if cell.row in grid_borders %} grid-border{% endif %}">
+                    {% if cell.selected_item %}
+                        {% if game.difficulty == 'easy' %}
+                            <span class="{% if cell.is_correct %}correct-number{% else %}incorrect-number{% endif %}">
+                                {{ cell.selected_item.number }}
+                            </span>
+                        {% else %}
+                            <span class="neutral-number">
+                                {{ cell.selected_item.number }}
+                            </span>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+        <!-- Minimapa místnosti -->
+        <div class="room-minimap">
+            {% for i in block_range %}
+                <div class="miniroom {% if i == block_index %}active{% endif %}" data-block="{{ i }}"></div>
+            {% endfor %}
+        </div>
 
-    <h2>Herní mřížka</h2>
-    <div class="sudoku-grid">
-        {% for cell in cells %}
-            <div class="cell
-                {% if cell.column in grid_borders %} grid-border{% endif %}
-                {% if cell.row in grid_borders %} grid-border{% endif %}">
-                {% if cell.selected_item %}
-{% if cell.selected_item %}
-    {% if game.difficulty == 'easy' %}
-        <span class="{% if cell.is_correct %}correct-number{% else %}incorrect-number{% endif %}">
-            {{ cell.selected_item.number }}
-        </span>
-    {% else %}
-        <span class="neutral-number">
-            {{ cell.selected_item.number }}
-        </span>
-    {% endif %}
-{% endif %}
-                {% endif %}
+        <!-- Wrapper pro Sudoku blok a dveře -->
+        <div class="block-with-doors-wrapper">
+
+            <div class="block-with-doors">
+                <!-- Dveře mezi místnostmi -->
+                <div class="door up">
+                    {% if neighbors.up is not None %}
+                <a href="#"
+                   data-block="{{ neighbors.up.index }}"
+                   onmouseover="highlightRoom({{ neighbors.up.index }})"
+                   onmouseout="unhighlightRoom({{ neighbors.up.index }})"
+                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.up.index %}')">
+                   🔼 {{ neighbors.up.name }}
+                </a>
+                    {% endif %}
+                </div>
+
+                <div class="door left">
+                    {% if neighbors.left is not None %}
+                <a href="#"
+                   data-block="{{ neighbors.left.index }}"
+                   onmouseover="highlightRoom({{ neighbors.left.index }})"
+                   onmouseout="unhighlightRoom({{ neighbors.left.index }})"
+                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.left.index %}')">
+                    ◀️ {{ neighbors.left.name }}
+                </a>
+                    {% endif %}
+                </div>
+
+
+                <div class="sudoku-block">
+                    {% for cell in selected_block %}
+                        <div class="block-cell {% if cell.prefilled %}locked{% if game.difficulty == 'easy' %} correct {% else %} prefilled-gray {% endif %} {% else %}{% if cell.selected_item %}{% if game.difficulty == 'easy' %}{% if cell.is_correct %} correct {% else %} incorrect {% endif %}{% else %} filled {% endif %}{% endif %}{% endif %}"
+                             {% if not cell.prefilled %}
+                                onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.number }}{% else %}-1{% endif %})"
+                             {% endif %}>
+                            {% if cell.selected_item %}
+                                {{ block_item_names|get_item:cell.selected_item.number|default:cell.selected_item.number }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="door right">
+                    {% if neighbors.right is not None %}
+                <a href="#"
+                   data-block="{{ neighbors.right.index }}"
+                   onmouseover="highlightRoom({{ neighbors.right.index }})"
+                   onmouseout="unhighlightRoom({{ neighbors.right.index }})"
+                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.right.index %}')">
+                    ▶️ {{ neighbors.right.name }}
+                </a>
+                    {% endif %}
+                </div>
+
+                <div class="door down">
+                    {% if neighbors.down is not None %}
+                <a href="#"
+                   data-block="{{ neighbors.down.index }}"
+                   onmouseover="highlightRoom({{ neighbors.down.index }})"
+                   onmouseout="unhighlightRoom({{ neighbors.down.index }})"
+                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.down.index %}')">
+                                            🔽 {{ neighbors.down.name }}
+                </a>
+                    {% endif %}
+                </div>
             </div>
-        {% endfor %}
+        </div>
     </div>
-<div class="room-navigation">
-    <h3>Dveře do sousedních místností:</h3>
-    <div class="door-links">
-        {% if neighbors.up %}
-            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.up %}')">🔼 Nahoru</a>
-        {% endif %}
-        {% if neighbors.down %}
-            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.down %}')">🔽 Dolů</a>
-        {% endif %}
-        {% if neighbors.left %}
-            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.left %}')">◀️ Vlevo</a>
-        {% endif %}
-        {% if neighbors.right %}
-            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.right %}')">▶️ Vpravo</a>
-        {% endif %}
-    </div>
-</div>
-    <h2>Vybraný blok</h2>
-    <div class="sudoku-block">
-        {% for cell in selected_block %}
-<div class="block-cell
-    {% if cell.prefilled %}
-        locked
-        {% if game.difficulty == 'easy' %}
-            correct
-        {% else %}
-            prefilled-gray
-        {% endif %}
-    {% else %}
-        {% if cell.selected_item %}
-            {% if game.difficulty == 'easy' %}
-                {% if cell.is_correct %} correct{% else %} incorrect{% endif %}
-            {% else %}
-                filled
-            {% endif %}
-        {% endif %}
-    {% endif %}"
-        {% if not cell.prefilled %}
-        onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.number }}{% else %}-1{% endif %})"
-    {% endif %}>
-    {% if cell.selected_item %}
-        {{ block_item_names|get_item:cell.selected_item.number|default:cell.selected_item.number }}
-    {% endif %}
-</div>
-        {% endfor %}
-    </div>
-    <h2>Vyber předmět v místnosti: {{ room_name }}</h2>
-    <div>
-        {% for item in items %}
-            <button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
-                {{ item.name }}
-            </button>
-        {% endfor %}
-    </div>
-
-    <div class="block-selector">
-        <p>Vyber blok:</p>
-        {% for i in block_range %}
-            <a href="#" onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id i %}')" class="{% if i == block_index %}active{% endif %}">
-                Blok {{ i }}
-            </a>
-        {% endfor %}
-    </div>
-
-    <a href="{% url 'start_new_game' %}" onclick="return confirmNewGame();">
-        Spustit novou hru
-    </a>
-
-    <button onclick="transitionTo('/gameplay/{{ game.id }}/block/1/')">TEST FADE</button>
-    <button onclick="showQuote()">Zobraz citaci</button>
-
 </div>
 
 <script>
     let selectedNumber = null;
 
-    function selectItem(number) {
-        selectedNumber = number;
-        document.querySelectorAll('.item-btn').forEach(btn => btn.classList.remove('selected'));
-        document.querySelectorAll(`.item-btn[data-number="${number}"]`).forEach(btn => btn.classList.add('selected'));
+// Funkce pro výběr položky z inventáře
+function selectItem(number) {
+    console.log("Item selected: " + number);  // Kontrola v konzoli
+
+    // Zrušíme výběr z ostatních položek
+    document.querySelectorAll('.item-btn').forEach(btn => btn.classList.remove('selected'));
+
+    // Přidáme třídu 'selected' k tlačítku, které bylo kliknuto
+    const selectedButton = document.querySelector(`.item-btn[data-number="${number}"]`);
+    if (selectedButton) {
+        selectedButton.classList.add('selected');
     }
 
-    function placeItem(cellId, currentItemNumber) {
-        let numberToSend = selectedNumber !== null ? selectedNumber : -1;
+    // Nastavíme číslo vybrané položky
+    selectedNumber = number;
+}
 
-        if (currentItemNumber === selectedNumber) {
-            numberToSend = -1;
+// Funkce pro umístění položky na mřížku
+function placeItem(cellId, currentItemNumber) {
+    console.log("Placing item:", selectedNumber, "on cell:", cellId); // Debugging
+
+    let numberToSend = selectedNumber !== null ? selectedNumber : -1;
+
+    // Zkontrolujte, zda číslo položky je stejné jako již umístěná položka, a případně položku zrušte
+    if (currentItemNumber === selectedNumber) {
+        numberToSend = -1;
+    }
+
+    // Odeslání požadavku na server
+    fetch(`/gameplay/place/${cellId}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ number: numberToSend })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Debugging
+        if (data.status === "completed") {
+            window.location.href = "/gameplay/win/";
+        } else {
+            location.reload(); // Reload the page to update state
         }
-
-        fetch(`/gameplay/place/${cellId}/`, {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ number: numberToSend })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === "completed") {
-                window.location.href = "/gameplay/win/";
-            } else {
-                location.reload();
-            }
-        })
-        .catch(error => console.error("Error communicating with server:", error));
+    })
+    .catch(error => console.error("Error communicating with server:", error));
+}
+    function highlightRoom(index) {
+        const mini = document.querySelector(`.miniroom[data-block='${index}']`);
+        if (mini) mini.classList.add('highlighted');
     }
 
-    function confirmNewGame() {
-        return confirm("⚠️ Opravdu chceš spustit novou hru? Tvoje aktuální hra bude smazána!");
+    function unhighlightRoom(index) {
+        const mini = document.querySelector(`.miniroom[data-block='${index}']`);
+        if (mini) mini.classList.remove('highlighted');
     }
 </script>
+
 {% endblock %}
+

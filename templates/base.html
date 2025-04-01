@@ -9,32 +9,45 @@
 <body>
 
 <header class="topbar">
-    <div class="logo">MystDoku</div>
-    <nav>
-        <ul>
-            <li><a href="/">Domů</a></li>
+    <a href="/" class="logo">MystDoku</a>
+    <ul>
+    {% if user.is_authenticated and in_game %}
+        {% for room in room_links %}
+            <li>
+                <a href="#"
+                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id room.index %}')"
+                   data-block="{{ room.index }}"
+                   onmouseover="highlightRoom({{ room.index }})"
+                   onmouseout="unhighlightRoom({{ room.index }})">
+                    {{ room.name }}
+                </a>
+            </li>
+        {% endfor %}
+        <li class="divider">|</li>
+    {% endif %}
 
-            {% if user.is_authenticated %}
-                {% if user.is_authenticated and existing_game and not in_game %}
-                    <a href="{% url 'game_view' game_id=existing_game.id %}">Pokračovat v hře</a>
-                {% endif %}
-                <li><a href="{% url 'game_selection' %}">Herní výběr</a></li>
-                <li><a href="#">Score</a></li>
-                <li><a href="#">Story</a></li>
-                <li>
-                    <form method="post" action="{% url 'logout' %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" style="background:none;border:none;color:inherit;cursor:pointer;padding:0;">
-                            Odhlásit
-                        </button>
-                    </form>
-                </li>
-                <li class="user">👤 {{ user.username }}</li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Přihlášení</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+    <li><a href="/">Domů</a></li>
+
+    {% if user.is_authenticated %}
+        {% if existing_game and not in_game %}
+            <li><a href="{% url 'game_view' game_id=existing_game.id %}">Pokračovat v hře</a></li>
+        {% endif %}
+        <li><a href="{% url 'game_selection' %}">Herní výběr</a></li>
+        <li><a href="#">Score</a></li>
+        <li><a href="#">Story</a></li>
+        <li>
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="background:none;border:none;color:inherit;cursor:pointer;padding:0;">
+                    Odhlásit
+                </button>
+            </form>
+        </li>
+        <li class="user">👤 {{ user.username }}</li>
+    {% else %}
+        <li><a href="{% url 'login' %}">Přihlášení</a></li>
+    {% endif %}
+    </ul>
 </header>
 
 <main>

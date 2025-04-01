@@ -75,19 +75,37 @@ def game_view(request, game_id, block_index=0):
         item = Item.objects.filter(id=item_id).first()
         if item:
             block_item_names[int(number_str)] = item.name
-    neighbors = get_neighbors(block_index)
+
+    neighbor_indexes = get_neighbors(block_index)
+    neighbor_rooms = {}
+
+    for direction, idx in neighbor_indexes.items():
+        room_id = game.block_rooms[idx]
+        room = Room.objects.get(id=room_id)
+        neighbor_rooms[direction] = {
+            "index": idx,
+            "name": room.name,
+        }
+
     return render(request, 'gameplay/game.html', {
         'game': game,
         "in_game": True,
         'cells': cells,
         'selected_block': selected_block,
         'items': items,
-        'neighbors': neighbors,
+        'neighbors': neighbor_rooms,
         'room_name': room.name,
         'block_index': block_index,
         'block_range': range(9),
         'item_names': item_names,
         'block_item_names': block_item_names,
+        'range9': range(9),
+        'current_room': game.block_rooms[block_index],
+        'room_links': [
+            {'index': i, 'name': Room.objects.get(id=rid).name}
+            for i, rid in enumerate(game.block_rooms)
+        ],
+
     })
 
 @csrf_exempt
@@ -147,17 +165,19 @@ def win_view(request):
     """
     return render(request, 'gameplay/win.html')
 
-def get_neighbors(block_index):
-    row, col = divmod(block_index, 3)
+def get_neighbors(index):
     neighbors = {}
 
+    row = index // 3
+    col = index % 3
+
     if row > 0:
-        neighbors['up'] = (row - 1) * 3 + col
+        neighbors["up"] = (row - 1) * 3 + col
     if row < 2:
-        neighbors['down'] = (row + 1) * 3 + col
+        neighbors["down"] = (row + 1) * 3 + col
     if col > 0:
-        neighbors['left'] = row * 3 + (col - 1)
+        neighbors["left"] = row * 3 + (col - 1)
     if col < 2:
-        neighbors['right'] = row * 3 + (col + 1)
+        neighbors["right"] = row * 3 + (col + 1)
 
     return neighbors

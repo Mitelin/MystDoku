@@ -1,4 +1,5 @@
 /* === Reset & Základní nastavení === */
+
 body {
     margin: 0;
     padding: 0;
@@ -6,9 +7,14 @@ body {
     background: url('../images/dark_house.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #e0e0e0;
+    min-height: 100vh; /* Zajistí, že tělo bude vždy alespoň velikosti viewportu */
+    overflow-y: hidden; /* Skryje vertikální posuvník */
 }
 
+
+
 /* === Top bar === */
+
 .topbar {
     background-color: #111;
     color: white;
@@ -45,7 +51,9 @@ main {
 }
 
 /* === Úvodní obrazovka === */
+
 .home-landing,
+
 .game-selection {
     text-align: center;
     background-color: rgba(0, 0, 0, 0.6);
@@ -56,18 +64,21 @@ main {
 }
 
 .home-landing h1,
+
 .game-selection h1 {
     font-size: 3em;
     margin-bottom: 0.4em;
 }
 
 .home-landing p,
+
 .game-selection p {
     font-size: 1.2em;
     margin-bottom: 2em;
 }
 
 .play-button,
+
 .game-selection a.play-button {
     display: inline-block;
     background-color: #9e0000;
@@ -81,18 +92,15 @@ main {
 }
 
 .play-button:hover,
+
 .game-selection a.play-button:hover {
     background-color: #d32f2f;
     transform: scale(1.05);
 }
 
 /* === Sudoku === */
-.game-wrapper {
-    display: grid;
-    place-items: center;
-    height: 100vh;
-    margin: 0;
-}
+
+
 
 .sudoku-grid {
     display: grid;
@@ -101,9 +109,10 @@ main {
     gap: 0;
     border: 3px solid black;
     box-sizing: border-box;
-    position: fixed;
+    position: absolute;
     top: 80px;
     right: 20px;
+    transform: scale(0.9);
 }
 
 .cell {
@@ -141,6 +150,11 @@ main {
     grid-template-rows: repeat(3, 80px);
     gap: 0;
     padding: 10px;
+    margin: 30px auto;
+    background-color: black;
+    border: 2px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
 }
 
 .block-cell {
@@ -154,6 +168,11 @@ main {
     border: 1px solid black;
 }
 
+
+
+.block-cell {
+    font-size: var(--container-fill-text-size, max(15px, var(--size-step-10)));
+}
 .correct {
     background-color: green;
     color: white;
@@ -175,28 +194,33 @@ main {
 }
 
 /* Easy predvyplněné buňky */
+
 .block-cell.locked.correct {
     background-color: green;
     color: white;
 }
 
 /* Medium + Hard predvyplněné buňky */
+
 .prefilled-gray {
     background-color: #555;
     color: white;
 }
 
 /* === Styl pro text === */
+
 .block-cell .item-text {
     color: white;
 }
 
 .block-cell.correct .item-text,
+
 .block-cell.incorrect .item-text {
     color: black;
 }
 
 /* === Quote overlay === */
+
 #quote-overlay {
   position: fixed;
   top: 0;
@@ -228,6 +252,7 @@ main {
 }
 
 /* === Přechodový efekt === */
+
 .transition-overlay {
     position: fixed;
     top: 0;
@@ -267,6 +292,7 @@ main {
 }
 
 /* === Auth === */
+
 .auth-form-container {
     max-width: 500px;
     margin: 5rem auto;
@@ -326,9 +352,420 @@ main {
 }
 
 .auth-form-container a,
+
 .auth-form-container a:visited,
+
 .auth-form-container a:active,
+
 .auth-form-container a:focus {
   color: #ffcc00 !important;
   text-decoration: none;
+}
+
+.room-navigation {
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left . right"
+        ". down .";
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.room-navigation a {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    transition: background 0.3s ease;
+    border: 1px solid #777;
+    display: inline-block;
+    text-align: center;
+}
+
+.room-navigation a:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.room-navigation a:nth-child(1) { grid-area: up; }
+
+.room-navigation a:nth-child(2) { grid-area: down; }
+
+.room-navigation a:nth-child(3) { grid-area: left; }
+
+.room-navigation a:nth-child(4) { grid-area: right; }
+
+.item-btn {
+    background-color: rgba(255,255,255,0.05);
+    color: white;
+    padding: 10px 15px;
+    margin: 5px;
+    border: 1px solid #666;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.item-btn:hover,
+
+.item-btn.selected {
+    background-color: rgba(255,255,255,0.2);
+    border-color: #aaa;
+}
+
+.block-with-doors {
+    position: relative;
+    width: fit-content;
+    margin: 40px auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.block-with-doors .sudoku-block {
+    position: relative;
+
+}
+
+.block-with-doors .door {
+    position: absolute;
+    justify-content: center;
+    z-index: 2;
+}
+
+.block-with-doors .door a {
+    background-color: rgba(255,255,255,0.08);
+    color: white;
+    font-size: 16px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid #666;
+    transition: background 0.2s ease;
+    white-space: nowrap;        /* zabrání přetečení na více řádků */
+    max-width: 160px;           /* max šířka, víc ne! */
+    overflow: hidden;           /* ořízne přesahující text */
+    text-overflow: ellipsis;    /* nahradí ho "..." */
+    display: inline-block;
+    text-align: center;
+}
+
+.block-with-doors .door a:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.block-with-doors .door.right {
+    justify-content: flex-start;
+}
+
+/* Pravá strana – klasicky */
+
+/* Pozice dveří */
+
+.block-with-doors .door.up    { top: -50px; left: 50%; transform: translateX(-50%); }
+
+.block-with-doors .door.down  { bottom: -50px; left: 50%; transform: translateX(-50%); }
+
+.block-with-doors .door.right {
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    transform: translate(100%, -50%);
+}
+/* === LEVÁ DVEŘE === */
+
+.block-with-doors .door.left {
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    transform: translate(-100%, -50%);
+}
+
+.block-with-doors .door.left a {
+    display: inline-block;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: rgba(255,255,255,0.08);
+    border: 1px solid #666;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-align: right;
+}
+
+.block-with-doors .door.left a:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+
+.block-with-doors .door.right a {
+    display: inline-block;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: rgba(255,255,255,0.08);
+    border: 1px solid #666;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.block-with-doors .door.right a:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+
+.block-with-doors .door.up {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translate(-50%, -100%);
+}
+
+.block-with-doors .door.up a {
+    display: inline-block;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: rgba(255,255,255,0.08);
+    border: 1px solid #666;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.block-with-doors .door.up a:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+
+.block-with-doors .door.down {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translate(-50%, 100%);
+}
+
+.block-with-doors .door.down a {
+    display: inline-block;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: rgba(255,255,255,0.08);
+    border: 1px solid #666;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.block-with-doors .door.down a:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+
+.topbar li a {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.topbar .divider {
+    color: #888;
+    margin: 0 10px;
+    user-select: none;
+}
+.divider {
+    display: inline-block;
+    margin: 0 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+.grid-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+    position: absolute;
+    top: 80px;
+    right: 20px;
+}
+
+.minimap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.minimap-row {
+    display: flex;
+    gap: 4px;
+}
+
+.miniroom {
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid #555;
+    border-radius: 3px;
+}
+
+.miniroom.active {
+    background-color: #fff;
+}
+.room-minimap {
+    position: absolute;
+    top: 90px;         /* stejné jako sudoku-grid */
+    right: 220px;      /* posune vlevo od sudoku-grid */
+    display: grid;
+    grid-template-columns: repeat(3, 20px);
+    grid-template-rows: repeat(3, 20px);
+    gap: 2px;
+
+}
+.miniroom.highlighted {
+    background-color: red;
+    box-shadow: 0 0 10px red;
+}
+
+.sudoku-container {
+  width: 75%;  /* Sudoku grid zabírá 75% prostoru */
+}
+/* === Rodičovský kontejner pro vše === */
+.game-wrapper {
+    display: flex;
+    justify-content: center; /* Vycentrování všech částí uvnitř */
+    align-items: flex-start; /* Zarovnání na začátek pro lepší rozložení */
+    height: 100vh; /* Výška pro správné zarovnání */
+    padding: 20px; /* Mezera kolem obsahu */
+    min-height: 100%; /* Ujisti se, že wrapper zabírá celou výšku obrazovky */
+    overflow: hidden; /* Zabrání posouvání uvnitř wrapperu */
+}
+
+
+/* === Wrapper pro Inventář === */
+.inventory-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column; /* Zajištění vertikálního rozložení pro inventář */
+    margin-right: 20px; /* Mezera mezi inventářem a blokem */
+}
+
+/* === Grid pro Inventář === */
+.inventory {
+    display: grid;
+    grid-template-columns: repeat(3, 100px); /* 3 sloupce pro inventář */
+    grid-template-rows: repeat(3, 100px); /* 3 řady pro inventář */
+    gap: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    padding: 10px;
+}
+
+/* === Styl pro jednotlivé položky === */
+.inventory-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10; /* Zajištění, že položky budou na vrchu */
+}
+
+/* === Styl pro tlačítka (item-btn) === */
+.item-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%; /* Zajistí, že tlačítko vyplní celou buňku */
+    background-color: #4444aa;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    overflow: hidden; /* Text bude oříznut pokud přesáhne */
+    text-overflow: ellipsis; /* Zobrazí "..." pokud je text příliš dlouhý */
+}
+
+/* Změna barvy tlačítka na hover */
+.item-btn:hover {
+    background-color: #333399;
+}
+
+:root {
+    --container-fill-text-size: 12px;
+    --size-step-10: 10px;
+}
+
+.item-btn {
+    font-size: var(--container-fill-text-size, max(15px, var(--size-step-10)));
+}
+/* Tlačítka se budou přizpůsobovat velikosti a text se bude zmenšovat */
+
+
+
+
+
+/* === Středové zarovnání sudoku bloku === */
+.block-wrapper {
+    display: flex;
+    justify-content: center; /* Horizontální zarovnání na střed */
+    align-items: center;     /* Vertikální zarovnání na střed */
+    flex-direction: column;  /* Udržuje obsah ve sloupci */
+    width: 100%;             /* Zajistí, že blok zabere celý prostor */
+}
+
+.sudoku-block {
+    display: grid;
+    grid-template-columns: repeat(3, 80px); /* 3 sloupce po 80px */
+    grid-template-rows: repeat(3, 80px);    /* 3 řady po 80px */
+    gap: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    width: auto;
+    height: auto;
+    margin: 0 auto; /* Centrování na stránce */
+}
+.block-with-doors-wrapper {
+    position: fixed; /* Umístění na absolutní pozici */
+    top: 55%; /* Zajišťuje, že bude ve vertikálním středu obrazovky */
+    left: 50%; /* Zajišťuje, že bude ve vodorovném středu obrazovky */
+    transform: translate(-50%, -50%)  scale(1.3); /* Umožňuje dokonale vycentrovat prvek */
+    width: 100%; /* Zajistí, že zabere celou šířku */
+    display: flex;
+    justify-content: center; /* Centrování obsahu */
+    align-items: center; /* Vertikální centrování */
+}
+
+.room-name {
+    margin: 0 auto; /* Horizontální zarovnání na střed */
+    text-align: center; /* Vertikální zarovnání textu */
+    width: 50%; /* Zajistí, že blok bude mít šířku 50% */
 }
