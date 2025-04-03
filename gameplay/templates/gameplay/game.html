@@ -34,6 +34,8 @@
     <!-- Wrapper pro Inventář -->
     <div class="inventory-wrapper">
         <h3>Inventář</h3>
+        <div class="inventory-bg">
+        <img src="{% static 'ui/inventory_bg.png' %}" class="inventory-background-img">
         <div class="inventory">
             {% for i in range9 %}
                 {% if i|add:1 in used_numbers %}
@@ -43,12 +45,11 @@
                         {% for item in items %}
                             {% if item.number == num %}
                                 <div class="inventory-item">
-<button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
-    <div class="item-content">
-        <img src="{% static 'items/' %}{{ item.group_id }}.png" alt="{{ item.name }}" class="item-icon">
-        <div class="item-name">{{ item.name }}</div>
-    </div>
-</button>
+                                    <button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
+                                        <div class="item-content">
+                                            <img src="{% static 'items/' %}{{ item.group_id }}.png" alt="{{ item.name }}" class="item-icon">
+                                            <div class="item-name">{{ item.name }}</div>
+                                        </div>
                                     </button>
                                 </div>
                             {% endif %}
@@ -56,6 +57,7 @@
                     {% endwith %}
                 {% endif %}
             {% endfor %}
+        </div>
         </div>
     </div>
 
@@ -95,28 +97,31 @@
             <div class="block-with-doors">
                 <!-- Dveře mezi místnostmi -->
                 <div class="door up">
-                    {% if neighbors.up is not None %}
-                <a href="#"
-                   data-block="{{ neighbors.up.index }}"
-                   onmouseover="highlightRoom({{ neighbors.up.index }})"
-                   onmouseout="unhighlightRoom({{ neighbors.up.index }})"
-                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.up.index %}')">
-                   🔼 {{ neighbors.up.name }}
-                </a>
-                    {% endif %}
-                </div>
 
-                <div class="door left">
-                    {% if neighbors.left is not None %}
-                <a href="#"
-                   data-block="{{ neighbors.left.index }}"
-                   onmouseover="highlightRoom({{ neighbors.left.index }})"
-                   onmouseout="unhighlightRoom({{ neighbors.left.index }})"
-                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.left.index %}')">
-                    ◀️ {{ neighbors.left.name }}
-                </a>
-                    {% endif %}
-                </div>
+    {% if neighbors.up is not None %}
+    <a href="#"
+       data-block="{{ neighbors.up.index }}"
+       onmouseover="highlightRoom({{ neighbors.up.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+       onmouseout="unhighlightRoom({{ neighbors.up.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+       onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.up.index %}')">
+        <img src="{% static 'doors/door_closed.png' %}" class="door-icon">
+        <div class="room-label">{{ neighbors.up.name }}</div>
+    </a>
+    {% endif %}
+</div>
+
+<div class="door left">
+    {% if neighbors.left is not None %}
+    <a href="#"
+       data-block="{{ neighbors.left.index }}"
+       onmouseover="highlightRoom({{ neighbors.left.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+       onmouseout="unhighlightRoom({{ neighbors.left.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+       onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.left.index %}')">
+        <img src="{% static 'doors/door_closed.png' %}" alt="Dveře vlevo" class="door-icon">
+        <div class="room-label">{{ neighbors.left.name }}</div>
+    </a>
+    {% endif %}
+</div>
 
 
                 <div class="sudoku-block">
@@ -129,7 +134,9 @@
                                 {% with block_item_names|get_item:cell.selected_item.number as data %}
     {% if data %}
         <div class="cell-content">
-            <img src="{% static 'items/' %}{{ data.group_id }}.png" alt="{{ data.name }}" class="item-icon">
+            <img src="{% static 'items/' %}{{ data.group_id }}.png"
+     alt="{{ data.name }}"
+     class="item-icon {% if game.difficulty == 'easy' %}{% if cell.is_correct %}icon-correct{% else %}icon-wrong{% endif %}{% endif %}">
             <div class="item-name">{{ data.name }}</div>
         </div>
     {% endif %}
@@ -139,29 +146,31 @@
                     {% endfor %}
                 </div>
 
-                <div class="door right">
-                    {% if neighbors.right is not None %}
-                <a href="#"
-                   data-block="{{ neighbors.right.index }}"
-                   onmouseover="highlightRoom({{ neighbors.right.index }})"
-                   onmouseout="unhighlightRoom({{ neighbors.right.index }})"
-                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.right.index %}')">
-                    ▶️ {{ neighbors.right.name }}
-                </a>
-                    {% endif %}
-                </div>
+<div class="door right">
+    {% if neighbors.right is not None %}
+    <a href="#"
+       data-block="{{ neighbors.right.index }}"
+       onmouseover="highlightRoom({{ neighbors.right.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+       onmouseout="unhighlightRoom({{ neighbors.right.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+       onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.right.index %}')">
+        <img src="{% static 'doors/door_closed.png' %}" alt="Dveře vpravo" class="door-icon">
+        <div class="room-label">{{ neighbors.right.name }}</div>
+    </a>
+    {% endif %}
+</div>
 
                 <div class="door down">
-                    {% if neighbors.down is not None %}
-                <a href="#"
-                   data-block="{{ neighbors.down.index }}"
-                   onmouseover="highlightRoom({{ neighbors.down.index }})"
-                   onmouseout="unhighlightRoom({{ neighbors.down.index }})"
-                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.down.index %}')">
-                                            🔽 {{ neighbors.down.name }}
-                </a>
-                    {% endif %}
-                </div>
+    {% if neighbors.down is not None %}
+    <a href="#"
+       data-block="{{ neighbors.down.index }}"
+       onmouseover="highlightRoom({{ neighbors.down.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+       onmouseout="unhighlightRoom({{ neighbors.down.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+       onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.down.index %}')">
+        <img src="{% static 'doors/door_closed.png' %}" alt="Dveře dolů" class="door-icon">
+        <div class="room-label">{{ neighbors.down.name }}</div>
+    </a>
+    {% endif %}
+</div>
             </div>
         </div>
     </div>

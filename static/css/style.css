@@ -173,15 +173,9 @@ main {
 .block-cell {
     font-size: var(--container-fill-text-size, max(15px, var(--size-step-10)));
 }
-.correct {
-    background-color: green;
-    color: white;
-}
 
-.incorrect {
-    background-color: coral;
-    color: white;
-}
+
+
 
 .filled {
     background-color: #666;
@@ -195,10 +189,7 @@ main {
 
 /* Easy predvyplněné buňky */
 
-.block-cell.locked.correct {
-    background-color: green;
-    color: white;
-}
+
 
 /* Medium + Hard predvyplněné buňky */
 
@@ -400,23 +391,23 @@ main {
 
 .room-navigation a:nth-child(4) { grid-area: right; }
 
-.item-btn {
-    background-color: rgba(255,255,255,0.05);
-    color: white;
-    padding: 10px 15px;
-    margin: 5px;
-    border: 1px solid #666;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s ease;
+
+
+.item-btn:hover img {
+     filter:
+        drop-shadow(1.5px 1.5px 0 #56ccf2)
+        drop-shadow(-1.5px 1.5px 0 #56ccf2)
+        drop-shadow(1.5px -1.5px 0 #56ccf2)
+        drop-shadow(-1.5px -1.5px 0 #56ccf2);
 }
 
-.item-btn:hover,
-
-.item-btn.selected {
-    background-color: rgba(255,255,255,0.2);
-    border-color: #aaa;
+.item-btn.selected img {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #56ccf2)
+        drop-shadow(-1.5px 1.5px 0 #56ccf2)
+        drop-shadow(1.5px -1.5px 0 #56ccf2)
+        drop-shadow(-1.5px -1.5px 0 #56ccf2);
+    font-size: 1.1em;
 }
 
 .block-with-doors {
@@ -432,20 +423,13 @@ main {
 
 }
 
-.block-with-doors .door {
-    position: absolute;
-    justify-content: center;
-    z-index: 2;
-}
+
 
 .block-with-doors .door a {
-    background-color: rgba(255,255,255,0.08);
     color: white;
     font-size: 16px;
     padding: 6px 10px;
-    border-radius: 8px;
     text-decoration: none;
-    border: 1px solid #666;
     transition: background 0.2s ease;
     white-space: nowrap;        /* zabrání přetečení na více řádků */
     max-width: 160px;           /* max šířka, víc ne! */
@@ -455,17 +439,11 @@ main {
     text-align: center;
 }
 
-.block-with-doors .door a:hover {
-    background-color: rgba(255,255,255,0.2);
-}
+
 
 .block-with-doors .door.right {
     justify-content: flex-start;
 }
-
-/* Pravá strana – klasicky */
-
-/* Pozice dveří */
 
 .block-with-doors .door.up    { top: -50px; left: 50%; transform: translateX(-50%); }
 
@@ -487,43 +465,40 @@ main {
 }
 
 .block-with-doors .door.left a {
-    display: inline-block;
+    display: flex;
     max-width: 160px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: rgba(255,255,255,0.08);
-    border: 1px solid #666;
-    color: white;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     padding: 6px 10px;
     border-radius: 8px;
     text-align: right;
 }
 
 .block-with-doors .door.left a:hover {
-    background-color: rgba(255,255,255,0.2);
     transform: scale(1.05);
-    box-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
 
 .block-with-doors .door.right a {
-    display: inline-block;
+    display: flex;
     max-width: 160px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: rgba(255,255,255,0.08);
-    border: 1px solid #666;
-    color: white;
     padding: 6px 10px;
     border-radius: 8px;
     text-align: left;
+    flex-direction: column;
+    align-items: center; /* 👉 Tohle zarovná obrázek i text na střed */
+    justify-content: center;
+
 }
 
 .block-with-doors .door.right a:hover {
-    background-color: rgba(255,255,255,0.2);
     transform: scale(1.05);
-    box-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
 
 .block-with-doors .door.up {
@@ -539,18 +514,12 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: rgba(255,255,255,0.08);
-    border: 1px solid #666;
-    color: white;
     padding: 6px 10px;
-    border-radius: 8px;
     text-align: center;
 }
 
 .block-with-doors .door.up a:hover {
-    background-color: rgba(255,255,255,0.2);
     transform: scale(1.05);
-    box-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
 
 .block-with-doors .door.down {
@@ -566,18 +535,13 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: rgba(255,255,255,0.08);
-    border: 1px solid #666;
-    color: white;
+    align-items: center;
     padding: 6px 10px;
-    border-radius: 8px;
     text-align: center;
 }
 
 .block-with-doors .door.down a:hover {
-    background-color: rgba(255,255,255,0.2);
     transform: scale(1.05);
-    box-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
 
 .topbar li a {
@@ -677,10 +641,6 @@ main {
     grid-template-columns: repeat(3, 100px); /* 3 sloupce pro inventář */
     grid-template-rows: repeat(3, 100px); /* 3 řady pro inventář */
     gap: 5px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 2px solid #444;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
     padding: 10px;
 }
 
@@ -695,34 +655,27 @@ main {
 
 /* === Styl pro tlačítka (item-btn) === */
 .item-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%; /* Zajistí, že tlačítko vyplní celou buňku */
-    background-color: #4444aa;
-    color: white;
-    text-align: center;
+    background: none;
     border: none;
-    border-radius: 8px;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
     cursor: pointer;
-    transition: background 0.3s ease;
-    overflow: hidden; /* Text bude oříznut pokud přesáhne */
-    text-overflow: ellipsis; /* Zobrazí "..." pokud je text příliš dlouhý */
+    outline: none;
+
 }
 
-/* Změna barvy tlačítka na hover */
-.item-btn:hover {
-    background-color: #333399;
-}
+
 
 :root {
-    --container-fill-text-size: 12px;
+    --container-fill-text-size: 14px;
     --size-step-10: 10px;
 }
 
 .item-btn {
     font-size: var(--container-fill-text-size, max(15px, var(--size-step-10)));
+    transition: font-size 0.15s ease;
 }
 /* Tlačítka se budou přizpůsobovat velikosti a text se bude zmenšovat */
 
@@ -793,3 +746,69 @@ main {
     margin-top: 4px;
 }
 
+.icon-correct {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #6fcf97)
+        drop-shadow(-1.5px 1.5px 0 #6fcf97)
+        drop-shadow(1.5px -1.5px 0 #6fcf97)
+        drop-shadow(-1.5px -1.5px 0 #6fcf97);
+}
+
+.icon-wrong {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #eb5757)
+        drop-shadow(-1.5px 1.5px 0 #eb5757)
+        drop-shadow(1.5px -1.5px 0 #eb5757)
+        drop-shadow(-1.5px -1.5px 0 #eb5757);
+}
+
+.door-icon {
+    width: 35px;
+    height: auto;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.room-label {
+    text-align: center;
+    font-size: 1em;
+    color: white;
+    margin-top: 4px;
+}
+.inventory-bg {
+    position: relative;
+}
+
+.inventory-background-img {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 175%; /* nebo pevné px */
+    z-index: -1;
+    height: 150%;
+    pointer-events: none;
+}
+.item-name {
+    transition: all 0.2s ease;
+    font-size: 1em;
+    color: white;
+}
+
+.item-btn:hover .item-name,
+.item-btn.selected .item-name {
+    font-size: 1.15em;
+    font-weight: bold;
+}
+.block-cell:not(.locked):hover img {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #56ccf2)
+        drop-shadow(-1.5px 1.5px 0 #56ccf2)
+        drop-shadow(1.5px -1.5px 0 #56ccf2)
+        drop-shadow(-1.5px -1.5px 0 #56ccf2);
+    transition: filter 0.2s ease;
+}
+.block-cell:not(.locked):hover {
+    color: #56ccf2;
+    text-decoration: underline;
+}
