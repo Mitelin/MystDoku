@@ -80,7 +80,10 @@ def game_view(request, game_id, block_index=0):
     for number_str, item_id in block_map.items():
         item = Item.objects.filter(id=item_id).first()
         if item:
-            block_item_names[int(number_str)] = item.name
+            block_item_names[int(number_str)] = {
+                "group_id": item.group_id,
+                "name": item.name,
+            }
 
     neighbor_indexes = get_neighbors(block_index)
     neighbor_rooms = {}
@@ -99,6 +102,7 @@ def game_view(request, game_id, block_index=0):
         'cells': cells,
         'selected_block': selected_block,
         'items': items,
+        "group_id": item.group_id,
         'neighbors': neighbor_rooms,
         'room_name': room.name,
         'block_index': block_index,

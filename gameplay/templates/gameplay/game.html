@@ -43,8 +43,12 @@
                         {% for item in items %}
                             {% if item.number == num %}
                                 <div class="inventory-item">
-                                    <button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
-                                        {{ item.name }}
+<button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
+    <div class="item-content">
+        <img src="{% static 'items/' %}{{ item.group_id }}.png" alt="{{ item.name }}" class="item-icon">
+        <div class="item-name">{{ item.name }}</div>
+    </div>
+</button>
                                     </button>
                                 </div>
                             {% endif %}
@@ -122,7 +126,14 @@
                                 onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.number }}{% else %}-1{% endif %})"
                              {% endif %}>
                             {% if cell.selected_item %}
-                                {{ block_item_names|get_item:cell.selected_item.number|default:cell.selected_item.number }}
+                                {% with block_item_names|get_item:cell.selected_item.number as data %}
+    {% if data %}
+        <div class="cell-content">
+            <img src="{% static 'items/' %}{{ data.group_id }}.png" alt="{{ data.name }}" class="item-icon">
+            <div class="item-name">{{ data.name }}</div>
+        </div>
+    {% endif %}
+{% endwith %}
                             {% endif %}
                         </div>
                     {% endfor %}

@@ -769,3 +769,27 @@ main {
     text-align: center; /* Vertikální zarovnání textu */
     width: 50%; /* Zajistí, že blok bude mít šířku 50% */
 }
+
+.item-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+.cell-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.7em;
+    text-align: center;
+}
+
+.item-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.item-name {
+    margin-top: 4px;
+}
+
