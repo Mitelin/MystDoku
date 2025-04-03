@@ -586,25 +586,29 @@ main {
 }
 
 .miniroom {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     background-color: rgba(255,255,255,0.1);
-    border: 1px solid #555;
-    border-radius: 3px;
+    border: 1px solid #555; /* ⚠️ tohle dělá mezeru vizuálně */
+    box-sizing: border-box; /* důležité – aby border neovlivnil velikost */
 }
 
 .miniroom.active {
     background-color: #fff;
 }
 .room-minimap {
-    position: absolute;
-    top: 90px;         /* stejné jako sudoku-grid */
-    right: 220px;      /* posune vlevo od sudoku-grid */
     display: grid;
-    grid-template-columns: repeat(3, 20px);
-    grid-template-rows: repeat(3, 20px);
-    gap: 2px;
+    grid-template-columns: repeat(3, 28px); /* nebo jiná velikost */
+    grid-template-rows: repeat(3, 28px);
+    gap: 0; /* žádné mezery */
+    justify-content: center;
+}
 
+.room-minimap-wrapper {
+position: absolute;
+top: 55%;
+left: 95%;
+transform: translate(-50%, -50%);
 }
 .miniroom.highlighted {
     background-color: red;
@@ -623,6 +627,7 @@ main {
     padding: 20px; /* Mezera kolem obsahu */
     min-height: 100%; /* Ujisti se, že wrapper zabírá celou výšku obrazovky */
     overflow: hidden; /* Zabrání posouvání uvnitř wrapperu */
+
 }
 
 
@@ -633,6 +638,7 @@ main {
     align-items: flex-start;
     flex-direction: column; /* Zajištění vertikálního rozložení pro inventář */
     margin-right: 20px; /* Mezera mezi inventářem a blokem */
+
 }
 
 /* === Grid pro Inventář === */
@@ -708,7 +714,7 @@ main {
 }
 .block-with-doors-wrapper {
     position: fixed; /* Umístění na absolutní pozici */
-    top: 55%; /* Zajišťuje, že bude ve vertikálním středu obrazovky */
+    top: 50%; /* Zajišťuje, že bude ve vertikálním středu obrazovky */
     left: 50%; /* Zajišťuje, že bude ve vodorovném středu obrazovky */
     transform: translate(-50%, -50%)  scale(1.3); /* Umožňuje dokonale vycentrovat prvek */
     width: 100%; /* Zajistí, že zabere celou šířku */
@@ -812,3 +818,56 @@ main {
     color: #56ccf2;
     text-decoration: underline;
 }
+
+
+.center-cell {
+    position: relative;
+}
+
+.sudoku-background-img {
+    position: absolute;
+    top: 140%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px; /* uprav velikost mapy dle potřeby */
+    z-index: -1;
+    pointer-events: none;
+}
+
+.center-block {
+    position: relative;
+}
+
+.room-background {
+    position: absolute;
+    top: 23%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 260px; /* uprav dle velikosti gridu */
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+}
+.sudoku-block {
+    position: relative;
+}
+
+.room-room-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 260px;  /* nebo klidně 100% */
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+}
+
+
+
+
+
+
+
+
+

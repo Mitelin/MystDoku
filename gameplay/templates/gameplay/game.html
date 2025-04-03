@@ -63,12 +63,20 @@
 
 
     <!-- Wrapper pro Blok místnosti a Minimapu -->
-    <div class="block-wrapper">
+<div class="block-wrapper">
+    <!-- Sudoku část -->
+    <div class="sudoku-bg">
         <div class="sudoku-grid">
             {% for cell in cells %}
                 <div class="cell
                     {% if cell.column in grid_borders %} grid-border{% endif %}
-                    {% if cell.row in grid_borders %} grid-border{% endif %}">
+                    {% if cell.row in grid_borders %} grid-border{% endif %}
+                    {% if forloop.counter0 == 40 %} center-cell{% endif %}">
+
+                    {% if forloop.counter0 == 40 %}
+                        <img src="{% static 'ui/mapa_bg.png' %}" class="sudoku-background-img">
+                    {% endif %}
+
                     {% if cell.selected_item %}
                         {% if game.difficulty == 'easy' %}
                             <span class="{% if cell.is_correct %}correct-number{% else %}incorrect-number{% endif %}">
@@ -84,13 +92,22 @@
             {% endfor %}
         </div>
     </div>
-        <!-- Minimapa místnosti -->
+
+    <!-- ✅ Minimapa přesunuta sem -->
+    <div class="room-minimap-wrapper">
         <div class="room-minimap">
             {% for i in block_range %}
-                <div class="miniroom {% if i == block_index %}active{% endif %}" data-block="{{ i }}"></div>
+                <div class="miniroom {% if i == block_index %}active{% endif %}" data-block="{{ i }}">
+                    {% if i == block_index %}
+                        <div class="room-background-wrapper">
+                            <img src="{% static 'ui/clock_image.png' %}" class="room-background">
+                        </div>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>
-
+    </div>
+</div>
         <!-- Wrapper pro Sudoku blok a dveře -->
         <div class="block-with-doors-wrapper">
 
@@ -125,6 +142,11 @@
 
 
                 <div class="sudoku-block">
+                    {% for r in room_links %}
+        {% if forloop.counter0 == block_index %}
+            <img src="{% static 'rooms/' %}{{ r.name|slugify }}.png" class="room-room-background">
+        {% endif %}
+    {% endfor %}
                     {% for cell in selected_block %}
                         <div class="block-cell {% if cell.prefilled %}locked{% if game.difficulty == 'easy' %} correct {% else %} prefilled-gray {% endif %} {% else %}{% if cell.selected_item %}{% if game.difficulty == 'easy' %}{% if cell.is_correct %} correct {% else %} incorrect {% endif %}{% else %} filled {% endif %}{% endif %}{% endif %}"
                              {% if not cell.prefilled %}
