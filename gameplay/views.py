@@ -33,7 +33,7 @@ def start_new_game(request):
 def game_view(request, game_id, block_index=0):
     """
     Render page for the game – display full sudoku + selected 3×3 blocks.
-
+    IM NEED TO BE SPLIT AND REFACTORED!!!
     """
     game = get_object_or_404(Game, id=game_id, player=request.user)
 
@@ -56,6 +56,12 @@ def game_view(request, game_id, block_index=0):
 
     selected_block = [cells[i] for i in block_mapping[block_index]]
 
+    used_numbers = set()
+    for cell in selected_block:
+        if cell.prefilled and cell.correct_item:
+            used_numbers.add(cell.correct_item.number)
+        elif cell.selected_item:
+            used_numbers.add(cell.selected_item.number)
     # part for getting id of rooms and translating it to our blocks.
     room_id = game.block_rooms[block_index]
     room = Room.objects.get(id=room_id)
@@ -98,6 +104,7 @@ def game_view(request, game_id, block_index=0):
         'block_index': block_index,
         'block_range': range(9),
         'item_names': item_names,
+        'used_numbers': used_numbers,
         'block_item_names': block_item_names,
         'range9': range(9),
         'current_room': game.block_rooms[block_index],

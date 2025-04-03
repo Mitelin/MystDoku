@@ -35,15 +35,26 @@
     <div class="inventory-wrapper">
         <h3>Inventář</h3>
         <div class="inventory">
-            {% for item in items %}
-                <div class="inventory-item">
-                   <button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
-                        {{ item.name }}
-                   </button>
-                </div>
+            {% for i in range9 %}
+                {% if i|add:1 in used_numbers %}
+                    <div class="inventory-item empty"></div>
+                {% else %}
+                    {% with i|add:1 as num %}
+                        {% for item in items %}
+                            {% if item.number == num %}
+                                <div class="inventory-item">
+                                    <button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
+                                        {{ item.name }}
+                                    </button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                {% endif %}
             {% endfor %}
         </div>
     </div>
+
 
     <!-- Wrapper pro Blok místnosti a Minimapu -->
     <div class="block-wrapper">
