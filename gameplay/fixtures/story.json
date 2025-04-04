@@ -1,0 +1,494 @@
+{
+  "intro": [
+    {
+      "id": 1,
+      "order": 1,
+      "text": "Probudil jsem se na chladné podlaze. Cítil jsem kámen pod zády, tvrdý a drsný, ale skutečný. Nevěděl jsem, kdo jsem, ani proč jsem tady. Jen ten tísnivý pocit, že tohle místo už znám."
+    },
+    {
+      "id": 2,
+      "order": 2,
+      "text": "Místnost byla tichá, až příliš. Ticho nepůsobilo klidně, spíš jako přikrčený stín. Stěny byly popraskané, ale pevné – dům držel, i když nevítal. Každý kout působil nehybně… až moc."
+    },
+    {
+      "id": 3,
+      "order": 3,
+      "text": "Stál jsem pomalu, svaly mě bolely, jako bych spal věčnost. Kolem mě nebyl žádný chaos, jen zvláštní pořádek. Věci byly uložené přesně – lampa, provaz, věšák, knoflík. Předměty, které spolu neměly souviset. A přesto působily důležitě."
+    },
+    {
+      "id": 4,
+      "order": 4,
+      "text": "Nevěděl jsem, co znamenají. Ale když jsem se jich dotkl, projel mnou slabý záblesk. Nebyly to vzpomínky… spíš ozvěny. Jako by každý předmět patřil do příběhu, který jsem zapomněl."
+    },
+    {
+      "id": 5,
+      "order": 5,
+      "text": "A pak přišla ta čísla. Z ničeho nic – v hlavě, v pulsu, v dechu. 3… 5… 7… a další, bez smyslu, bez řádu, ale silná. Nemohl jsem je zahnat. Jen je vnímat."
+    },
+    {
+      "id": 6,
+      "order": 6,
+      "text": "Našel jsem papír. Byl čistý, starý, ale připravený. Vedle něj ležela tužka – čekala tam, jako by věděla. Posadil jsem se ke stolu a začal psát ta čísla. Jeden řádek, pak další. Pomalu vznikal obraz."
+    },
+    {
+      "id": 7,
+      "order": 7,
+      "text": "Bylo to jako síť, jako mřížka. Čísla se skládala, vyplňovala prázdná místa v mé hlavě. Nechápal jsem, co přesně tvořím. Ale vnitřní hlas mi říkal: pokračuj."
+    },
+    {
+      "id": 8,
+      "order": 8,
+      "text": "Každé číslo přineslo lehké uvolnění. Jakoby ze mě opadávalo něco těžkého. A zároveň se v dálce cosi probouzelo. Něco ve mně, nebo něco v domě – nedokázal jsem rozeznat rozdíl."
+    },
+    {
+      "id": 9,
+      "order": 9,
+      "text": "V rohu místnosti byly dveře. Těžké, bez kliky, bez známek pohybu. A přesto jsem cítil, že se pohnou, až splním, co se po mně žádá. Dům mi dal úkol. A já ho přijal, aniž bych věděl proč."
+    },
+    {
+      "id": 10,
+      "order": 10,
+      "text": "Nevím, co mě sem přivedlo. Nevím, co jsem ztratil, nebo co hledám. Ale vím, že musím dokončit ten vzorec… tu hru… tu věc. Možná pak najdu odpovědi. Možná se něco otevře."
+    }
+  ],
+  "memories": [
+    {
+      "id": 1,
+      "difficulty": "easy",
+      "order": 1,
+      "text": "Jsem muž. A právě tím jsem porušil první z pravidel. Do jejího světa jsem neměl vstoupit – ne takový, jaký jsem byl. Ale chtěl jsem být blízko. Chtěl jsem ji jen spatřit zblízka, slyšet její hlas.",
+      "transition": "Muž...? Proč to zní jako něco zakázaného? Nechápu, co jsem udělal…"
+    },
+    {
+      "id": 2,
+      "difficulty": "easy",
+      "order": 2,
+      "text": "Nepamatuju si její jméno, ale její oči ano. Tmavé, klidné, jako voda v posvátném jezírku. Když se modlila, všechno kolem jako by ztichlo. A já zůstával stát, i když bych měl odejít.",
+      "transition": "Její oči… jsou klidné, ale něco ve mně se při tom pohledu chvěje. Proč si vůbec pamatuju jen tohle?"
+    },
+    {
+      "id": 3,
+      "difficulty": "easy",
+      "order": 3,
+      "text": "Převlékl jsem se. Vzal jsem si jméno, které nebylo moje, a tvář, která nebyla pravdivá. Bylo to zoufalé, ale v tu chvíli jediné, co dávalo smysl. Tam začala lež, která se stala mým druhým životem.",
+      "transition": "Převlékl jsem se za někoho jiného… to je jisté. Ale proč bych se chtěl stát někým, kým nejsem?"
+    },
+    {
+      "id": 4,
+      "difficulty": "easy",
+      "order": 4,
+      "text": "První noc jsem nespal. Ležel jsem mezi dívkami, které se smály, šeptaly si a zpívaly. Každé slovo, které jsem řekl, jsem vážil, abych nezradil pravdu. Ale nikdo si mě nevšímal – byl jsem jen další tvář v davu.",
+      "transition": "Dívky, smích, zpěv… proč tam jsem, když tam nepatřím? Tolik detailů – ale žádný smysl."
+    },
+    {
+      "id": 5,
+      "difficulty": "easy",
+      "order": 5,
+      "text": "Ona tam byla taky. Seděla blízko ohně, pletla květinový věnec a tiše zpívala. Poprvé jsme se na sebe podívali – a ona se usmála. Ten úsměv se mi vypálil do paměti víc než jakékoli slovo.",
+      "transition": "Usmála se na mě. Proč si na to pamatuju tak jasně?"
+    },
+    {
+      "id": 6,
+      "difficulty": "easy",
+      "order": 6,
+      "text": "Každý den začínal modlitbou. Zpívaly v kruhu, držely se za ruce – a já mezi nimi. Snažil jsem se dýchat klidně, být nenápadný. Ale její ruka byla vždy ta, která našla tu mou.",
+      "transition": "Držel jsem něčí ruku… a připadalo mi to správné. Ale kdo byla ona – a kdo jsem byl já?"
+    },
+    {
+      "id": 7,
+      "difficulty": "easy",
+      "order": 7,
+      "text": "Učila mě česat si vlasy, jako to dělají ony. Stála za mnou, mlčela, jen jemně vedla mé pohyby. Její dotek byl klidný, přirozený… jako by věděla. A přesto neřekla nic.",
+      "transition": "Učila mě česat si vlasy? To nedává smysl… ale její dotek byl skutečný."
+    },
+    {
+      "id": 8,
+      "difficulty": "easy",
+      "order": 8,
+      "text": "Nosil jsem šaty, které byly příliš lehké. Můj krok se musel stát tichým, můj hlas měkčím. Každý den jsem se učil být někým jiným. A pomalu jsem přestával být sám sebou.",
+      "transition": "Nosil jsem šaty, které mi nepatřily. Byl jsem někdo jiný – ale proč jsem to dělal dobrovolně?"
+    },
+    {
+      "id": 9,
+      "difficulty": "easy",
+      "order": 9,
+      "text": "Večer jsme sedávali pod stromy a vyprávěly si příběhy. Předstíral jsem, že jeden znám – o vlkovi, který se chtěl stát jelenem. Všichni se smály, ale ona se na mě jen dlouze podívala. Jako by hledala, co v tom příběhu chci skrýt.",
+      "transition": "Říkal jsem příběhy, které nebyly pravdivé. Možná jsem si něco skrýval i sám před sebou."
+    },
+    {
+      "id": 10,
+      "difficulty": "easy",
+      "order": 10,
+      "text": "Jedna z dívek se mě zeptala, odkud jsem přišla. Na okamžik se mi zadrhl hlas – musel jsem si vymyslet odpověď. Řekl jsem, že si pamatuju jen les a déšť. Ona tomu věřila. Možná mi chtěla věřit.",
+      "transition": "Lhal jsem o tom, odkud jsem. Ale proč mi na tom tehdy tolik záleželo?"
+    },
+    {
+      "id": 11,
+      "difficulty": "easy",
+      "order": 11,
+      "text": "Začal jsem se bát, že se mi to zalíbilo víc, než mělo. Že jsem už nehrál roli – ale že jsem v ní začal žít. Být mezi nimi bylo jako sen, ze kterého jsem nechtěl procitnout. Ale sny nevydrží věčně.",
+      "transition": "Bylo to… příliš krásné. Možná proto jsem začal zapomínat, kdo vlastně jsem."
+    },
+    {
+      "id": 12,
+      "difficulty": "easy",
+      "order": 12,
+      "text": "Při jednom rituálu jsme společně zpívali ke kameni bohyně. Slova mi zněla cize, ale rytmus se usadil hluboko ve mně. Když jsem otevřel oči, dívala se na mě – dlouho, zamyšleně. A mně se rozbušilo srdce.",
+      "transition": "Zpíval jsem slova, kterým jsem nerozuměl, a přesto se mi vrývala do duše. Možná to nebylo o slovech, ale o tom, kdo se na mě díval."
+    },
+    {
+      "id": 13,
+      "difficulty": "easy",
+      "order": 13,
+      "text": "Jednou večer jsem ji slyšel plakat. Nenašla věnec, který jí někdo schoval ze žertu. Přinesl jsem jí nový – upletený potají. Vzala ho do dlaní a řekla jen: „Děkuju.“ Ale její pohled řekl víc.",
+      "transition": "Plakala kvůli věnci… a já jsem jí chtěl pomoct. Proč mi na tom tak záleželo?"
+    },
+    {
+      "id": 14,
+      "difficulty": "easy",
+      "order": 14,
+      "text": "Přistihl jsem se, jak se modlím k Artemidě, aby mě neodhalila. Bylo to pokrytecké, ale upřímné. Neprosil jsem o odpuštění – jen o čas. Ještě trochu. Ještě jeden den.",
+      "transition": "Prosil jsem bohyni, aby mě neodhalila. Ale před kým jsem se vlastně skrýval?"
+    },
+    {
+      "id": 15,
+      "difficulty": "easy",
+      "order": 15,
+      "text": "Večery s ní byly nejhorší. Seděli jsme blízko, naše ruce se skoro dotýkaly. Chtěl jsem jí říct pravdu – tolikrát. Ale pokaždé jsem jen mlčel a poslouchal její dech.",
+      "transition": "Byli jsme si tak blízko… a já pořád mlčel. Co bych jí vlastně řekl, kdybych měl odvahu?"
+    },
+    {
+      "id": 16,
+      "difficulty": "easy",
+      "order": 16,
+      "text": "Začal jsem si všímat, že mě některé dívky pozorují déle než dřív. Jedna se mě zeptala, proč se nikdy nesvlékám u vody. Zasmál jsem se a něco si vymyslel, ale uvnitř jsem ztuhl. Něco se začalo lámat.",
+      "transition": "Pozorovali mě… něco začali tušit. Proč jsem měl takový strach být sám sebou?"
+    },
+    {
+      "id": 17,
+      "difficulty": "easy",
+      "order": 17,
+      "text": "Po večerech jsem psal slova, která jsem jí nikdy neřekl. Na kousek kůry, skrytý pod ložem. Byly to verše o kráse, o lži, o vině. Snad je někdy najde – až já budu pryč.",
+      "transition": "Schovával jsem slova pod ložem. Pro koho jsem je psal – pro ni, nebo pro sebe?"
+    },
+    {
+      "id": 18,
+      "difficulty": "easy",
+      "order": 18,
+      "text": "Při jednom rituálu jsem málem promluvil hlubším hlasem. Srdce mi bušilo tak silně, že jsem neslyšel zpěv ostatních. Jen ona si mě všimla – naklonila hlavu, ale neřekla nic. Začal jsem mít podezření, že ví.",
+      "transition": "Málem jsem promluvil svým hlasem. Jak dlouho se dá žít ve lži, než se člověk udusí?"
+    },
+    {
+      "id": 19,
+      "difficulty": "easy",
+      "order": 19,
+      "text": "Dal jsem jí malý talisman – dřevo vyřezané do tvaru lístku. Řekl jsem, že jí přinese klid. Vzala ho do dlaně a usmála se. Pak mě objala – poprvé a naposledy.",
+      "transition": "Talisman z listu… proč jí tolik znamenal? Cítil jsem, že to gesto bylo víc než jen dar."
+    },
+    {
+      "id": 20,
+      "difficulty": "easy",
+      "order": 20,
+      "text": "Ten večer jsem věděl, že to nebude trvat věčně. Něco viselo ve vzduchu – jako před bouří. Ale když jsem se na ni podíval, v očích měla pokoj. A já si poprvé přál, aby mě nikdy nenašli.",
+      "transition": "Chtěl jsem, aby mě nenašli. Ale koho jsem se doopravdy bál – bohyně… nebo pravdy?"
+    },
+    {
+      "id": 21,
+      "difficulty": "medium",
+      "order": 21,
+      "text": "Byli jsme spolu čím dál častěji. Našla si mě i tehdy, když jsme nebyli přiděleni ke stejné úloze. Někdy jsme mlčeli, někdy mluvili o věcech, které pro ostatní neměly význam. Mezi námi vznikalo něco, co jsem nedokázal skrýt – ani chtít skrýt.",
+      "transition": "Začalo to být víc než jen lež. Byli jsme spolu… ale nevěděli jsme, co za to zaplatíme."
+    },
+    {
+      "id": 22,
+      "difficulty": "medium",
+      "order": 22,
+      "text": "Jednou se mě dotkla tak, jak se dotýkají jen ti, kdo cítí víc. Zůstali jsme stát v chrámové zahradě, skrytí za sloupy. Její prsty sklouzly po mé paži a já se bál pohnout, aby to neskončilo. V tu chvíli jsem věděl, že už není cesty zpět.",
+      "transition": "Ten dotek si pamatuju. Jako by se čas zastavil – a pak zrychlil až k tragédii."
+    },
+    {
+      "id": 23,
+      "difficulty": "medium",
+      "order": 23,
+      "text": "Začal jsem se budit s jejím jménem na rtech. Nikdy jsem ho nevyslovil nahlas – bála by se, že to uslyší bohyně. Ale v hlavě mi znělo jako zaklínadlo. Nechtěl jsem víc lhát, ale ještě víc jsem nechtěl odejít.",
+      "transition": "Nosím její jméno ve vzpomínkách, i když ho neslyším nahlas. Musím najít způsob, jak ji znovu oslovit."
+    },
+    {
+      "id": 24,
+      "difficulty": "medium",
+      "order": 24,
+      "text": "Jednoho večera jsme se zapomněli vrátit. Zůstali jsme spolu v háji, mezi stromy, jen my dva. Nevyřkli jsme, co cítíme, ale každé gesto to křičelo. Ta noc ve mně zůstala jako otisk v hlíně, který nikdy nezmizel.",
+      "transition": "Ta noc… byla víc než všechna slova. Kvůli ní musím najít cestu ven."
+    },
+    {
+      "id": 25,
+      "difficulty": "medium",
+      "order": 25,
+      "text": "Začal jsem si všímat pohledů ostatních. Ne přímých, ale dlouhých, vyčkávavých. Něco se šeptalo mezi ostatními kněžkami. Věděl jsem, že dny jistoty končí.",
+      "transition": "Pozorují mě. Možná už ví, že něco skrývám. Musím jednat dřív, než se to celé zhroutí."
+    },
+    {
+      "id": 26,
+      "difficulty": "medium",
+      "order": 26,
+      "text": "Jedna z kněžek se mě zeptala, proč se tak často ztrácíme ze skupiny. Usmál jsem se a řekl, že sbíráme bylinky. Nevěřila mi. Ale jen přikývla a odešla beze slova – to bylo horší než obvinění.",
+      "transition": "Její ticho bolelo víc než výčitky. Musím zjistit, jak to skončilo… a proč se bojím odpovědi."
+    },
+    {
+      "id": 27,
+      "difficulty": "medium",
+      "order": 27,
+      "text": "Začal jsem se dívat přes rameno. Každý krok, každý pohled se mi zdál jako past. Ale když jsem byl s ní, všechen strach mizel. Láska má schopnost oslepit i ty, kdo vidí příliš jasně.",
+      "transition": "Strach mě nutil skrývat se, ale láska mě táhla k ní. Tohle přetahování mě zničí, pokud nenajdu cestu ven."
+    },
+    {
+      "id": 28,
+      "difficulty": "medium",
+      "order": 28,
+      "text": "Naše ruce se dotkly během rituálu – neplánovaně, ale déle, než by měly. Někdo to viděl, tím jsem si jistý. A přesto jsme dál mlčeli, jako by slova mohla zradit víc než činy. Ten okamžik byl sladký… a osudový.",
+      "transition": "Dotkli jsme se – a svět to viděl. Už není cesty zpět, jen vpřed… nebo dolů."
+    },
+    {
+      "id": 29,
+      "difficulty": "medium",
+      "order": 29,
+      "text": "Bohyně nás svolala na očistnou koupel. Poprvé jsem pocítil opravdovou hrůzu – věděl jsem, že tohle je zkouška. Začal jsem hledat výmluvu, nemoc, zranění – cokoli. Ale kněžky jsou učené v bylinkách i lžích. Neoklamal jsem je.",
+      "transition": "Koupel. Odhalení. Rozsudek. Cítím, že ten okamžik všechno zlomil."
+    },
+    {
+      "id": 30,
+      "difficulty": "medium",
+      "order": 30,
+      "text": "Večer před koupelí jsme spolu seděli mlčky. Drželi jsme se za ruce a věděli, že se něco blíží. Ona se na mě podívala a řekla jen: „Neboj se.“ Ale její hlas se chvěl – a já se bál za nás oba.",
+      "transition": "Řekla mi, ať se nebojím. Ale já vím, že se bála stejně jako já."
+    },
+    {
+      "id": 31,
+      "difficulty": "medium",
+      "order": 31,
+      "text": "Ráno bylo tiché, znepokojivě tiché. Chystaly jsme se k vodnímu prameni, všechny společně, jako tolikrát předtím. Ale tentokrát jsem věděl, že se pod povrchem něco chvěje. S každým krokem se mi dech krátil a ruce chladly.",
+      "transition": "Každý krok k prameni byl jako jít k popravě. Ale doufal jsem, že se třeba nestane nic… jako hlupák."
+    },
+    {
+      "id": 32,
+      "difficulty": "medium",
+      "order": 32,
+      "text": "Svlékaly se jedna po druhé, přirozeně, beze studu. Stál jsem stranou, v očích mlhu a strach. Pak mě zavolala jménem, které nebylo moje, a usmála se. A já musel předstoupit – nahý, zranitelný, pravdivý.",
+      "transition": "Oni neviděli člověka – jen klam. Ale já jsem tam stál pravdivě poprvé."
+    },
+    {
+      "id": 33,
+      "difficulty": "medium",
+      "order": 33,
+      "text": "Voda byla ledová, ale ten chlad nevycházel z ní. Cítil jsem na sobě pohledy, až mě bolela záda. Nikdo nic neřekl. Ale v tom tichu se všechno změnilo.",
+      "transition": "Ticho někdy křičí víc než slova. Všichni věděli. A já to poznal podle jejich pohledů."
+    },
+    {
+      "id": 34,
+      "difficulty": "medium",
+      "order": 34,
+      "text": "Jedna z dívek se dotkla mé hrudi. Zamračila se, ustoupila o krok a pohlédla na ostatní. Během vteřiny se z ticha stala zbraň. A já věděl, že jsem prozrazen.",
+      "transition": "Jeden dotek stačil. A celý ten příběh se začal hroutit."
+    },
+    {
+      "id": 35,
+      "difficulty": "medium",
+      "order": 35,
+      "text": "Ona na mě zůstala zírat. Ne pohledem zrady – ale bolesti. Jako by o tom věděla celou dobu, ale doufala, že to nikdy nebude vysloveno. A pak se odvrátila. To bylo horší než hněv.",
+      "transition": "Ten její pohled... nezapomenu ho. Věděla to dřív než ostatní – a stejně zůstala."
+    },
+    {
+      "id": 36,
+      "difficulty": "medium",
+      "order": 36,
+      "text": "Bohyně přišla bez zvuku, jako stín, který nesvrhá světlo. Dívala se na mě, a já měl pocit, že se dívá skrz čas. Nevyslovila mé jméno, ale v jejích očích bylo zklamání, které pálilo víc než oheň. Cítil jsem, že jsem porušil něco, co nelze napravit.",
+      "transition": "Artemis… její pohled byl jako nůž. Možná jsem ji zklamal víc než sebe."
+    },
+    {
+      "id": 37,
+      "difficulty": "medium",
+      "order": 37,
+      "text": "Kněžky mě obklopily, ale ne jako sestry – jako soudkyně. Nikdo nekřičel, nikdo mě nestrhl k zemi. Jejich mlčení bylo rozsudkem. A já ho přijal bez protestu.",
+      "transition": "Nevyslovili verdikt, ale cítil jsem ho v každém dechu. Musím najít způsob, jak to zlomit – dřív, než to udělají znovu."
+    },
+    {
+      "id": 38,
+      "difficulty": "medium",
+      "order": 38,
+      "text": "Chtěl jsem se rozběhnout k ní, říct jí, že to nebyla jen přetvářka. Ale ona stála mezi nimi, v bílém, bledá. Nehýbala se. Jako by čekala, co rozhodne bohyně.",
+      "transition": "Chtěl jsem za ní jít… ale stála mezi nimi. Byla tak blízko – a přitom nepřístupná."
+    },
+    {
+      "id": 39,
+      "difficulty": "medium",
+      "order": 39,
+      "text": "Artemis zvedla ruku. Nepotřebovala zbraň, její vůle byla dost. Ve vzduchu zhoustlo světlo a já věděl, že to je konec. Ne pro mě – ale pro to, co jsme byli spolu.",
+      "transition": "Zvedla ruku a vše se změnilo. V ten moment jsem pochopil, že už nic nevrátím."
+    },
+    {
+      "id": 40,
+      "difficulty": "medium",
+      "order": 40,
+      "text": "Neutekl jsem. Stál jsem tam, nahý a křehký, ale klidný. Přál jsem si jediné – aby si mě pamatovala. A pak přišla tma.",
+      "transition": "Stál jsem klidně, i když mě to ničilo. Aspoň ať si mě pamatuje… to jediné mi zůstalo."
+    },
+    {
+      "id": 41,
+      "difficulty": "hard",
+      "order": 41,
+      "text": "Nezemřel jsem hned. Byl jsem sražen na kolena, ale dýchal jsem dál. Ležel jsem mezi kořeny stromů, zatímco se kolem mě svět vzdaloval. Jako by mě bohyně nechala chvíli žít, abych si to všechno uvědomil.",
+      "transition": "Ještě jsem žil… ale už nebylo proč. Všechno se ve mně lámalo, i když tělo zůstalo."
+    },
+    {
+      "id": 42,
+      "difficulty": "hard",
+      "order": 42,
+      "text": "Slyšel jsem její kroky. Přistoupila ke mně a sklonila se, ne jako kněžka, ale jako žena. Řekla jen: „Odpusť mi.“ A já nevěděl, komu to patřilo – jí, mně, nebo bohyni.",
+      "transition": "Řekla „odpusť“… ale co z toho, když bylo příliš pozdě? Odpustit neznamená zapomenout."
+    },
+    {
+      "id": 43,
+      "difficulty": "hard",
+      "order": 43,
+      "text": "Pak jsem ucítil chlad kovu. Neprosil jsem, neuhnul jsem. Její dýka byla pevná, ale ruka se jí třásla. Bylo to její rozhodnutí. Nebo možná poslední příkaz, kterému se podvolila.",
+      "transition": "Přijal jsem to. Nepadlo jediné slovo, a přesto jsem slyšel rozsudek. Byla to ona – a byla to bohyně."
+    },
+    {
+      "id": 44,
+      "difficulty": "hard",
+      "order": 44,
+      "text": "Když čepel projela mou kůží, neucítil jsem bolest. Jen lítost. Ne nad smrtí, ale nad tím, že už neuslyším její hlas. A pak už nebylo nic – jen ticho.",
+      "transition": "Nebolelo to, alespoň ne tělem. Ale ztratit její hlas… to byla ta pravá smrt."
+    },
+    {
+      "id": 45,
+      "difficulty": "hard",
+      "order": 45,
+      "text": "Ale smrt nebyla koncem. Probudil jsem se znovu – v místnosti, kterou jsem nepoznával, a přitom důvěrně znal. Nepamatoval jsem si, jak jsem se sem dostal. Jen ten pocit, že tohle všechno… už se stalo.",
+      "transition": "A pak jsem se probudil. Znovu. Zas a znova… vždycky znovu."
+    },
+    {
+      "id": 46,
+      "difficulty": "hard",
+      "order": 46,
+      "text": "Všude kolem byly předměty, které mi nic neříkaly, a přesto ve mně cosi probouzely. Stůl, dveře, podlaha… jako by mě ten dům znal. V hlavě mi zněla čísla, bez kontextu, bez smyslu. A přesto jsem věděl, že v nich je klíč.",
+      "transition": "Ten dům mě zná líp než já sám. Každý jeho kout dýchá mou vinou."
+    },
+    {
+      "id": 47,
+      "difficulty": "hard",
+      "order": 47,
+      "text": "Začal jsem psát ta čísla na papír. Nevěděl jsem proč – jen že musím. Bylo to jako nutkání, jako ozvěna něčeho zapomenutého. Jakmile jsem je seřadil, v hlavě se něco pohnulo.",
+      "transition": "Ta čísla… nechtějí odejít. Tlačí mě k něčemu, co si ani nepřeju pochopit."
+    },
+    {
+      "id": 48,
+      "difficulty": "hard",
+      "order": 48,
+      "text": "S každým vyřešeným obrazcem se mi vracelo něco víc. Střípky tváře, hlas, dotek, bolest… Vzpomínky mě pronásledovaly jako stín, který roste s každým světlem. A s nimi přicházel i strach, že vím víc, než chci.",
+      "transition": "Každá hra odkrývá další bolest. A přesto nemůžu přestat – jako bych byl součástí mechanismu."
+    },
+    {
+      "id": 49,
+      "difficulty": "hard",
+      "order": 49,
+      "text": "Nakonec jsem pochopil. Ten dům se nikdy nezmění – ale nikdy nebude stejný. Je to vězení, které se přetváří, aby mě znovu zlomilo. A trest, který jsem dostal, není smrt – je to věčnost.",
+      "transition": "Teď už chápu, proč se to stále opakuje. Tohle není hra. Tohle je rozsudek bez konce."
+    },
+    {
+      "id": 50,
+      "difficulty": "hard",
+      "order": 50,
+      "text": "Byla to ona, kdo mi zanechal ten malý flakónek. U skryté stěny, mezi předměty, které se nehodily k ničemu. Nesl známou vůni – vůni její kůže. A v tu chvíli jsem pochopil, co musím udělat.",
+      "transition": "Ona mi zanechala tu lahvičku. A já si nejsem jistý, jestli to byl dar… nebo omluva."
+    },
+    {
+      "id": 51,
+      "difficulty": "hard",
+      "order": 51,
+      "text": "Víčko se otevřelo bez odporu. Vůně uvnitř byla sladká, známá a smutná zároveň. Byl to elixír zapomnění – poznal jsem to, aniž bych to musel vědět. Dala mi únik… ale ne od trestu. Jen od vzpomínek.",
+      "transition": "Ta vůně mi sevřela hrdlo. Věděl jsem, co dělám – a stejně jsem to udělal."
+    },
+    {
+      "id": 52,
+      "difficulty": "hard",
+      "order": 52,
+      "text": "Držel jsem lahvičku v ruce a váhal. Chtěl jsem si pamatovat její tvář, její smích, její poslední pohled. Ale s každou další myšlenkou přicházel i žal, který jsem nemohl unést. A tak jsem ji znovu ztratil – vlastní vůlí.",
+      "transition": "Chtěl jsem si ji pamatovat. Ale bolest byla silnější než vzpomínky."
+    },
+    {
+      "id": 53,
+      "difficulty": "hard",
+      "order": 53,
+      "text": "Vypil jsem vše až do dna. Svět se zatočil, barvy vybledly a hlasy ztichly. Stěny domu se protáhly, jako by se nadechly. A když jsem znovu otevřel oči, byl jsem zpět na začátku.",
+      "transition": "Když jsem vypil poslední kapku, uvnitř mě něco prasklo. A svět začal znovu… jako vždy."
+    },
+    {
+      "id": 54,
+      "difficulty": "hard",
+      "order": 54,
+      "text": "Nevěděl jsem, kdo jsem. Nevěděl jsem, proč tu jsem. Ale něco ve mně mě nutilo zapsat si čísla, která se objevila v mé mysli. Tak začal další den.",
+      "transition": "Nemám jméno, nemám minulost. Jen čísla – a pocit, že jsem tohle všechno už jednou prožil."
+    },
+    {
+      "id": 55,
+      "difficulty": "hard",
+      "order": 55,
+      "text": "A kdesi v dálce – snad za stěnami – jsem slyšel ozvěnu smíchu, který jsem kdysi znal. Nevěděl jsem, proč mě to dojímá. Ale srdce mi bilo rychleji, jako bych někoho postrádal. Někoho, koho jsem nikdy neměl zapomenout.",
+      "transition": "Tohle jsem tu nechal já… v jiném životě? Každý otisk mi připomíná, že tohle není poprvé."
+    },
+    {
+      "id": 56,
+      "difficulty": "hard",
+      "order": 56,
+      "text": "Dům mě přijal bez výčitek. Je tichý, nekonečný, poslušný vůli bohyně. Každý jeho kout byl kdysi scénou mého provinění. A teď je mým domovem. Mým vězením. Mým světem.",
+      "transition": "Vzpomínky se vrací s bolestí. A bolest mě nutí znovu zapomenout."
+    },
+    {
+      "id": 57,
+      "difficulty": "hard",
+      "order": 57,
+      "text": "Nevím, kolikrát se to už stalo. Každá nová hra vypadá jako první, ale uvnitř cítím ozvěnu mnoha předešlých. Někdy si všimnu detailu, který by mi neměl být povědomý. A jindy mám pocit, že mě stěny pozorují.",
+      "transition": "Tohle je můj trest. A v každém dalším probuzení bolí o trochu víc."
+    },
+    {
+      "id": 58,
+      "difficulty": "hard",
+      "order": 58,
+      "text": "Začal jsem nacházet stopy, které jsem tu snad zanechal já sám. Rýhu ve dřevě, verš vyrytý hřebíkem, uschlý věnec pod podlahou. Jsou to otisky mé minulosti – důkazy, že jsem tu byl. Ale jejich smysl mi uniká, dokud nevyplním další pole.",
+      "transition": "Ztrácím pojem o čase. Nevím, kolik cyklů už jsem přežil… nebo podlehl."
+    },
+    {
+      "id": 59,
+      "difficulty": "hard",
+      "order": 59,
+      "text": "Někdy, těsně před koncem hry, cítím bolest v hrudi. Jako by se s návratem paměti vracelo i její zlomení. A já vím, že ve chvíli, kdy si vzpomenu na vše, už nebude cesty zpět. Proto znovu sáhnu po elixíru.",
+      "transition": "Dům mě nechce pustit. A možná… možná už ani nechci odejít."
+    },
+    {
+      "id": 60,
+      "difficulty": "hard",
+      "order": 60,
+      "text": "Trest není smrt. Trest je věčnost v kruhu, ve kterém každé pochopení bolí víc než nevědomost. Artemis mě potrestala spravedlivě, ale krutě. A přesto… v tom trestu zůstala i její stopa.",
+      "transition": "Dala mi možnost zapomenout. A já ji pokaždé využiju – i když vím, že tím všechno začíná znovu."
+    }
+  ],
+  "difficulty_transitions": [
+    {
+      "difficulty": "easi",
+      "text": "Nevím, kdo jsem… ale znám její hlas.\nPamatuju si vůně, barvy, doteky – útržky, které spolu nesouvisí.\nNěco jsem udělal. Něco důležitého.\nJe v tom klam, převlek, strach…\nAle i něha. A láska.\nMusím jít dál. Musím zjistit pravdu."
+    },
+    {
+      "difficulty": "medium",
+      "text": "Všechno se začíná skládat.\nUž si pamatuju, kdo jsem byl. A koho jsem miloval.\nByl jsem blízko. Moc blízko.\nA přesto jsem selhal.\nMožná je ještě šance něco napravit.\nMusím se dostat ven – za každou cenu."
+    },
+    {
+      "difficulty": "hard",
+      "text": "Už není kam utéct.\nTohle není hádanka – je to trest.\nBohyně mě viděla. A odsoudila.\nOna… ta, kterou jsem miloval…\nByla se mnou až do konce.\nA přesto jsem zůstal sám."
+    },
+    {
+      "difficulty": "end",
+      "text": "Už si pamatuju všechno.\nKaždý detail, každý hřích, každý pohled.\nA taky proč se to musí znovu opakovat.\nTen elixír… byl klíč i past.\nTeď vím, že jakmile zapomenu, začnu znovu.\nA tenhle dům bude čekat. Stejně jako ona."
+    }
+  ]
+}

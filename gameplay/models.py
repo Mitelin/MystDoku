@@ -98,3 +98,59 @@ class Cell(models.Model):
                 self.selected_item.number == self.correct_item.number
         )
 
+class Intro(models.Model):
+    """
+    Model for representing Introduction data.
+    It selected in order for easy step by step load.
+    """
+    order = models.PositiveIntegerField(unique=True)
+    text = models.TextField()
+
+    class Meta:
+        ordering = ['order']
+
+    # Read data for admin Intro 1 , 2 , 3
+    def __str__(self):
+        return f"Intro {self.order}"
+
+
+class Memory(models.Model):
+    """
+    Model for each memory from protagonist
+    Its split to 3 blocks each representing different memory sets.
+    Links memory difficulty and transition together
+    """
+    DIFFICULTY_CHOICES = [
+        ('easy', 'Easy'),
+        ('medium', 'Medium'),
+        ('hard', 'Hard'),
+    ]
+
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES)
+    order = models.PositiveIntegerField(unique=True)
+    text = models.TextField()
+    transition = models.TextField()
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"Memory {self.order} ({self.difficulty})"
+
+
+class DifficultyTransition(models.Model):
+    """
+    Create difficulty transitions between difficulty levels.
+    """
+    DIFFICULTY_CHOICES = [
+        ('easy', 'Easy'),
+        ('medium', 'Medium'),
+        ('hard', 'Hard'),
+        ('end', 'End'),
+    ]
+
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, unique=True)
+    text = models.TextField()
+
+    def __str__(self):
+        return f"Transition ({self.difficulty})"

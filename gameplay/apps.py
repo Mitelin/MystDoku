@@ -1,4 +1,3 @@
-import json
 import os
 
 from django.apps import AppConfig
@@ -111,3 +110,80 @@ def reload_items():
     except Exception:
         pass
 
+def load_fixture_story():
+    """
+    Loads story.json
+    """
+    import os, json
+    fixture_path = os.path.join(settings.BASE_DIR, 'gameplay', 'fixtures', 'story.json')
+
+    if not os.path.exists(fixture_path):
+        return None
+
+    try:
+        with open(fixture_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def story_matches_fixture(fixture_story):
+    """
+    Will check if story json data matches fixture data.
+    Returns true if matches, false otherwise.
+    """
+    from gameplay.models import Intro, Memory, DifficultyTransition
+
+    intro_match = list(Intro.objects.order_by('order').values('order', 'text')) == \
+        [{'order': i['order'], 'text': i['text']} for i in fixture_story['intro']]
+
+    memory_match = list(Memory.objects.order_by('order').values('order', 'difficulty', 'text', 'transition')) == \
+        [
+            {
+                'order': m['order'],
+                'difficulty': m['difficulty'],
+                'text': m['text'],
+                'transition': m['transition']
+            }
+            for m in fixture_story['memories']
+        ]
+
+    transition_match = list(DifficultyTransition.objects.order_by('difficulty').values('difficulty', 'text')) == \
+        [{'difficulty': dt['difficulty'], 'text': dt['text']} for dt in fixture_story['difficulty_transitions']]
+
+    return intro_match and memory_match and transition_match
+
+
+def reload_story(fixture_story):
+    """
+    Deletes old data and loads from story.json
+    """
+    from gameplay.models import Intro, Memory, DifficultyTransition
+
+    Intro.objects.all().delete()
+    Memory.objects.all().delete()
+    DifficultyTransition.objects.all().delete()
+
+    # Load data from fixture:
+    Intro.objects.bulk_create([
+        Intro(order=i['order'], text=i['text'])
+        for i in fixture_story['intro']
+    ])
+
+    Memory.objects.bulk_create([
+        Memory(
+            difficulty=m['difficulty'],
+            order=m['order'],
+            text=m['text'],
+            transition=m['transition']
+        )
+        for m in fixture_story['memories']
+    ])
+
+    DifficultyTransition.objects.bulk_create([
+        DifficultyTransition(
+            difficulty=dt['difficulty'],
+            text=dt['text']
+        )
+        for dt in fixture_story['difficulty_transitions']
+    ])
