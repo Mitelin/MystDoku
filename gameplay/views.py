@@ -1,9 +1,10 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .utils import create_game_for_player
-from .models import Game, Cell, Item, Room
+from .models import Game, Cell, Item, Room, Intro, Memory, DifficultyTransition
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
 import json
 
 @login_required
@@ -192,3 +193,137 @@ def get_neighbors(index):
         neighbors["right"] = row * 3 + (col + 1)
 
     return neighbors
+
+
+
+
+
+def story_so_far(request):
+    # intro sekvence
+    intro = Intro.objects.order_by("order")
+    intro_texts = list(intro.values_list("text", flat=True))
+    intro_images = {
+        1: "Intro1.png",
+        2: "Intro1.png",
+        3: "Intro1.png",
+        4: "Intro2.png",
+        5: "Intro2.png",
+        6: "Intro2.png",
+        7: "Intro2.png",
+        8: "Intro3.png",
+        9: "Intro3.png",
+    }
+
+    # easy sekvence
+    easy_memories = Memory.objects.filter(difficulty="easy").order_by("order")
+    easy_texts = list(easy_memories.values_list("text", flat=True))
+
+    try:
+        easy_transition = DifficultyTransition.objects.get(difficulty="easy")
+        easy_texts.append(easy_transition.text)
+    except ObjectDoesNotExist:
+        easy_texts.append("[CHYBÍ PŘECHOD EASY – story.json nebyl načten]")
+
+    easy_images = {
+        0: "easy1.webp",
+        1: "easy1.webp",
+        2: "easy1.webp",
+        3: "easy2.webp",
+        4: "easy2.webp",
+        5: "easy2.webp",
+        6: "easy3.webp",
+        7: "easy3.webp",
+        8: "easy3.webp",
+        9: "easy4.webp",
+        10: "easy4.webp",
+        11: "easy4.webp",
+        12: "easy5.webp",
+        13: "easy5.webp",
+        14: "easy5.webp",
+        15: "easy6.webp",
+        16: "easy6.webp",
+        17: "easy6.webp",
+        18: "easy7.webp",
+        19: "easy7.webp",
+        20: "easy8.webp",
+    }
+
+    medium_memories = Memory.objects.filter(difficulty="medium").order_by("order")
+    medium_texts = list(medium_memories.values_list("text", flat=True))
+
+    try:
+        medium_transition = DifficultyTransition.objects.get(difficulty="medium")
+        medium_texts.append(medium_transition.text)
+    except ObjectDoesNotExist:
+        medium_texts.append("[CHYBÍ PŘECHOD medium – story.json nebyl načten]")
+
+    medium_images = {
+        0: "easy1.webp",
+        1: "easy1.webp",
+        2: "easy1.webp",
+        3: "easy2.webp",
+        4: "easy2.webp",
+        5: "easy2.webp",
+        6: "easy3.webp",
+        7: "easy3.webp",
+        8: "easy3.webp",
+        9: "easy4.webp",
+        10: "easy4.webp",
+        11: "easy4.webp",
+        12: "easy5.webp",
+        13: "easy5.webp",
+        14: "easy5.webp",
+        15: "easy6.webp",
+        16: "easy6.webp",
+        17: "easy6.webp",
+        18: "easy7.webp",
+        19: "easy7.webp",
+        20: "easy8.webp",
+    }
+    # hard sekvence
+    hard_memories = Memory.objects.filter(difficulty="hard").order_by("order")
+    hard_texts = list(hard_memories.values_list("text", flat=True))
+
+    try:
+        hard_transition = DifficultyTransition.objects.get(difficulty="hard")
+        hard_texts.append(hard_transition.text)
+    except ObjectDoesNotExist:
+        hard_texts.append("[CHYBÍ PŘECHOD HARD – story.json nebyl načten]")
+
+    hard_images = {
+        0: "easy1.webp",
+        1: "easy1.webp",
+        2: "easy1.webp",
+        3: "easy2.webp",
+        4: "easy2.webp",
+        5: "easy2.webp",
+        6: "easy3.webp",
+        7: "easy3.webp",
+        8: "easy3.webp",
+        9: "easy4.webp",
+        10: "easy4.webp",
+        11: "easy4.webp",
+        12: "easy5.webp",
+        13: "easy5.webp",
+        14: "easy5.webp",
+        15: "easy6.webp",
+        16: "easy6.webp",
+        17: "easy6.webp",
+        18: "easy7.webp",
+        19: "easy7.webp",
+        20: "easy8.webp",
+    }
+    return render(request, "gameplay/story_so_far.html", {
+        "sequences": {
+            "intro": intro_texts,
+            "easy_end": easy_texts,
+            "medium_end": medium_texts,
+            "hard_end": hard_texts,
+        },
+        "sequence_images": {
+            "intro": intro_images,
+            "easy_end": easy_images,
+            "medium_end": medium_images,
+            "hard_end": hard_images,
+        }
+    })

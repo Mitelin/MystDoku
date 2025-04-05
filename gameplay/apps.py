@@ -12,21 +12,21 @@ class GameplayConfig(AppConfig):
         if 'makemigrations' in os.sys.argv or 'migrate' in os.sys.argv:
             return
 
-        if 'gameplay_item' not in connection.introspection.table_names():
-            return
+        # 1. Kontrola a načtení items.json
+        if 'gameplay_item' in connection.introspection.table_names():
+            fixture_items = load_fixture_items()
+            if fixture_items and validate_group_numbers(fixture_items):
+                if not items_match_fixture(fixture_items):
+                    print("Reloading item data from items.json")
+                    reload_items()
 
-        fixture_items = load_fixture_items()
-        if fixture_items is None:
-            return
-
-        if not validate_group_numbers(fixture_items):
-            return
-
-        if items_match_fixture(fixture_items):
-            return
-
-        reload_items()
-
+        # 2. Kontrola a načtení story.json
+        if 'gameplay_intro' in connection.introspection.table_names():
+            fixture_story = load_fixture_story()
+            if fixture_story:
+                if not story_matches_fixture(fixture_story):
+                    print("Reloading story data from story.json")
+                    reload_story(fixture_story)
 
 def load_fixture_items():
     """
@@ -128,30 +128,35 @@ def load_fixture_story():
 
 
 def story_matches_fixture(fixture_story):
-    """
-    Will check if story json data matches fixture data.
-    Returns true if matches, false otherwise.
-    """
     from gameplay.models import Intro, Memory, DifficultyTransition
 
-    intro_match = list(Intro.objects.order_by('order').values('order', 'text')) == \
-        [{'order': i['order'], 'text': i['text']} for i in fixture_story['intro']]
+    # Intro
+    intro_db = list(Intro.objects.order_by('order').values('order', 'text'))
+    intro_json = [{'order': i['order'], 'text': i['text']} for i in fixture_story['intro']]
 
-    memory_match = list(Memory.objects.order_by('order').values('order', 'difficulty', 'text', 'transition')) == \
-        [
-            {
-                'order': m['order'],
-                'difficulty': m['difficulty'],
-                'text': m['text'],
-                'transition': m['transition']
-            }
-            for m in fixture_story['memories']
-        ]
+    # Memories
+    memory_db = list(Memory.objects.order_by('order').values('order', 'difficulty', 'text', 'transition'))
+    memory_json = [
+        {
+            'order': m['order'],
+            'difficulty': m['difficulty'],
+            'text': m['text'],
+            'transition': m['transition']
+        } for m in fixture_story['memories']
+    ]
 
-    transition_match = list(DifficultyTransition.objects.order_by('difficulty').values('difficulty', 'text')) == \
-        [{'difficulty': dt['difficulty'], 'text': dt['text']} for dt in fixture_story['difficulty_transitions']]
+    # Difficulty transitions – kontrola i existence všech 4 záznamů
+    transition_db = list(DifficultyTransition.objects.all().values('difficulty', 'text'))
+    transition_json = fixture_story['difficulty_transitions']
 
-    return intro_match and memory_match and transition_match
+    def normalize(lst):
+        return sorted(lst, key=lambda x: x['difficulty'])
+
+    return (
+        intro_db == intro_json and
+        memory_db == memory_json and
+        normalize(transition_db) == normalize(transition_json)
+    )
 
 
 def reload_story(fixture_story):

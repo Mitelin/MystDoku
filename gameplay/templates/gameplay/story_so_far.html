@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Příběh zatím{% endblock %}
+
+{% block content %}
+<style>
+body {
+  overflow-y: auto;
+}
+</style>
+<h1>Story So Far</h1>
+<p>Tady budeme zobrazovat intro, outro, vzpomínky a další sekvence.</p>
+<div class="sequence-buttons">
+  <button onclick="playSequence('intro')">Přehrát Intro</button>
+  <button onclick="playSequence('easy_end')">Přehrát Konec Easy</button>
+  <button onclick="playSequence('medium_end')">Přehrát Konec Medium</button>
+  <button onclick="playSequence('hard_end')">Přehrát Konec Hard</button>
+</div>
+<h3>Debug: Intro data</h3>
+<ul>
+  {% for line in sequences.intro %}
+    <li>{{ line }}</li>
+  {% empty %}
+    <li><strong>Žádná data v sequences["intro"]</strong></li>
+  {% endfor %}
+</ul>
+<ul>
+  {% for line in sequences.easy_end %}
+    <li>{{ line }}</li>
+  {% empty %}
+    <li><strong>Žádná data v sequences["easy_end"]</strong></li>
+  {% endfor %}
+</ul>
+<ul>
+  {% for line in sequences.medium_end %}
+    <li>{{ line }}</li>
+  {% empty %}
+    <li><strong>Žádná data v sequences["medium_end"]</strong></li>
+  {% endfor %}
+</ul>
+<ul>
+  {% for line in sequences.hard_end %}
+    <li>{{ line }}</li>
+  {% empty %}
+    <li><strong>Žádná data v sequences["hard_end"]</strong></li>
+  {% endfor %}
+</ul>
+{% include "partials/sequence.html" %}
+{% endblock %}

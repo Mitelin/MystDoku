@@ -1,10 +1,90 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}MystDoku - Začátek tajemství{% endblock %}
 
 {% block content %}
+<style>
+body {
+  overflow-y: auto;
+}
+</style>
 <div class="home-landing">
     <h1>Vítej v MystDoku</h1>
     <p>V každé mřížce se skrývá příběh. Každá místnost je výzva. Odhal pravdu…</p>
     <a href="{% url 'play_redirect' %}" class="play-button">HRAJ</a>
 </div>
+
+<div class="section-wrapper">
+    <section class="about-game">
+        <h2>O hře MystDoku</h2>
+        <p>
+            MystDoku je unikátní spojení klasické logické hry sudoku a tajemného příběhového dobrodružství.
+            Vstup do opuštěného domu, kde každá místnost ukrývá část zapomenuté pravdy.
+            V řešení mřížek nejde jen o čísla – ale o předměty, které reprezentují vzpomínky.
+            Každá položka má svůj význam, každá chyba může odhalit víc, než čekáš.
+        </p>
+        <p>
+            Hra tě provede sérií logických výzev rozmístěných do devíti tematických místností.
+            Postupně budeš odhalovat části příběhu hlavního hrdiny – muže, který se probouzí bez vzpomínek, uvězněný na neznámém místě.
+        </p>
+        <p>
+            Hraješ-li pečlivě, možná najdeš cestu ven. Ale otázkou zůstává: <em>chceš si vůbec vzpomenout?</em>
+        </p>
+    </section>
+</div>
+
+<div class="section-wrapper">
+    <section class="story-teaser">
+        <h2>Tajemství, které čeká na odhalení</h2>
+        <p>
+            Příběh MystDoku není servírován po lžičkách. Je roztroušený napříč místnostmi, ukrytý mezi předměty a probouzen každým vyřešeným blokem.
+            Co se stalo? Kdo jsi? A proč jsi tady? Každý pokrok odemyká novou část vzpomínek.
+        </p>
+        <p>
+            Nečekej lineární vyprávění. Čekej fragmenty. Symboly. Záblesky minulosti. A jednu otázku, která ti nedá spát.
+        </p>
+    </section>
+</div>
+
+<div class="section-wrapper">
+    <section class="screenshots">
+        <h2>Galerie</h2>
+        <div class="gallery">
+            <img src="{% static 'images/grid_sample.png' %}" alt="Ukázka herní mřížky"
+                 onerror="this.src='{% static 'images/placeholder.png' %}'">
+            <img src="{% static 'images/story_sample.png' %}" alt="Ukázka příběhové sekvence"
+                 onerror="this.src='{% static 'images/placeholder.png' %}'">
+            <img src="{% static 'images/item_sample.png' %}" alt="Ukázka herního předmětu"
+                 onerror="this.src='{% static 'images/placeholder.png' %}'">
+            <img src="{% static 'images/item_sample.png' %}" alt="Ukázka herního předmětu"
+                 onerror="this.src='{% static 'images/placeholder.png' %}'"
+        </div>
+    </section>
+</div>
+
+<div class="section-wrapper">
+    <section class="features">
+        <h2>Co tě čeká</h2>
+        <ul>
+            <li>🧩 Unikátní předmětové sudoku s logickou výzvou</li>
+            <li>🏠 Devět tematických místností, každá se svou atmosférou</li>
+            <li>📖 Příběh odhalovaný po částech pomocí vzpomínek</li>
+            <li>🎭 Atmosféra tajemství, ztráty a poznání</li>
+            <li>🎨 Stylizovaná vizuální prezentace a podmanivý zvuk</li>
+        </ul>
+    </section>
+</div>
+    <div id="lightbox" onclick="this.classList.remove('active')">
+    <img id="lightbox-img" src="" alt="Zvětšený obrázek">
+</div>
+    <script>
+document.querySelectorAll('.gallery img').forEach(img => {
+    img.addEventListener('click', () => {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        lightboxImg.src = img.src;
+        lightbox.classList.add('active');
+    });
+});
+</script>
 {% endblock %}

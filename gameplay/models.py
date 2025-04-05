@@ -23,7 +23,7 @@ class Item(models.Model):
     """
     name = models.CharField(max_length=100)
     number = models.IntegerField()  # Number 1–9
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='items') # Id of room
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='items') # Ids of room
     group_id = models.CharField(max_length=100) # Unique identifier for similar items
 
     def __str__(self):
@@ -154,3 +154,16 @@ class DifficultyTransition(models.Model):
 
     def __str__(self):
         return f"Transition ({self.difficulty})"
+
+class PlayerStoryProgress(models.Model):
+    """
+    Tracks user memory progress for each difficulty.
+    """
+    player = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    unlocked_easy = models.JSONField(default=list)
+    unlocked_medium = models.JSONField(default=list)
+    unlocked_hard = models.JSONField(default=list)
+
+    def __str__(self):
+        return f"{self.player.username} memory progress"

@@ -34,7 +34,7 @@
         {% endif %}
         <li><a href="{% url 'game_selection' %}">Herní výběr</a></li>
         <li><a href="#">Score</a></li>
-        <li><a href="#">Story</a></li>
+        <li><a href="{% url 'story_so_far' %}">Story</a></li>
         <li>
             <form method="post" action="{% url 'logout' %}" style="display:inline;">
                 {% csrf_token %}
@@ -80,6 +80,7 @@ window.addEventListener('load', () => {
         overlay.classList.add('hidden');  // při normálním načtení zůstane skrytý
     }
 });
+
 </script>
 </body>
 </html>
