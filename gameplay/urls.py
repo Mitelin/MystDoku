@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import start_new_game, game_view, place_item, win_view
+from .views import start_new_game, game_view, place_item, win_view, auto_fill, reset_progress, debug_add_memory
 from gameplay.views import story_so_far
 
 urlpatterns = [
@@ -9,4 +9,6 @@ urlpatterns = [
     path('win/', win_view, name='win_page'),
     path('<uuid:game_id>/block/<int:block_index>/', game_view, name='game_block'),  # URL pro block ID
     path("story/", story_so_far, name="story_so_far"),
-]
+    path("auto_fill/<uuid:game_id>/", auto_fill, name="auto_fill"),
+    path("debug/reset_progress/", reset_progress, name="reset_progress"),
+    path("debug/add_memory/<str:difficulty>/", debug_add_memory, name="debug_add_memory"),]

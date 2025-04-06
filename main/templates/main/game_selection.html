@@ -3,6 +3,11 @@
 {% block title %}MystDoku – Hlavní herní stránka{% endblock %}
 
 {% block content %}
+    {% if play_intro %}
+  <div style="color: lime;">🔊 Intro SE MÁ přehrát</div>
+{% else %}
+  <div style="color: red;">🔕 Intro se nemá přehrát</div>
+{% endif %}
 <div class="game-selection">
     <h1>Vítej v MystDoku!</h1>
 
@@ -22,4 +27,13 @@
         <a href="{% url 'start_new_game' %}?difficulty=hard" class="play-button">Hard</a>
     </div>
 </div>
+{% include "partials/sequence.html" %}
+{% if play_intro %}
+  <script>
+window.onload = function() {
+  playSequence("intro");
+};
+  </script>
+{% endif %}
+
 {% endblock %}

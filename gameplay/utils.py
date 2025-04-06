@@ -1,8 +1,7 @@
 import random
-from .models import Game, Cell, Item, Room
+from .models import Game, Cell, Item, Room, PlayerStoryProgress, Memory
 #from django.contrib.auth.models import User
 from collections import defaultdict
-from .models import Item
 
 def generate_sudoku():
     """
@@ -264,3 +263,72 @@ def is_sudoku_solvable(game):
             grid[cell.row][cell.column] = cell.selected_item.number
 
     return has_solution(grid)
+
+def try_unlock_memory(game):
+    player = game.player
+    difficulty = game.difficulty
+
+    # Získáme nebo vytvoříme progres hráče
+    progress, _ = PlayerStoryProgress.objects.get_or_create(player=player)
+
+    # Vybereme správný seznam odemčených memory podle obtížnosti
+    if difficulty == "easy":
+        unlocked = progress.unlocked_easy
+    elif difficulty == "medium":
+        unlocked = progress.unlocked_medium
+    else:
+        unlocked = progress.unlocked_hard
+
+    # Debug výpisy
+    print(f"--- try_unlock_memory ---")
+    print(f"Hráč: {player.username}")
+    print(f"Obtížnost: {difficulty}")
+    print(f"Už odemčeno: {unlocked}")
+
+    # Najdeme všechny memory pro danou obtížnost
+    available_memories = Memory.objects.filter(difficulty=difficulty)
+    locked_memories = [m for m in available_memories if m.order not in unlocked]
+
+    print(f"Počet dostupných: {available_memories.count()}")
+    print(f"Počet zamčených: {len(locked_memories)}")
+
+    if not locked_memories:
+        return None
+
+    new_memory = random.choice(locked_memories)
+
+    if difficulty == "easy":
+        progress.unlocked_easy.append(new_memory.order)
+    elif difficulty == "medium":
+        progress.unlocked_medium.append(new_memory.order)
+    else:
+        progress.unlocked_hard.append(new_memory.order)
+
+    progress.save()
+    return new_memory
+
+def get_sequence_for_trigger(trigger, player, memory=None):
+    from gameplay.models import PlayerStoryProgress
+
+    progress, _ = PlayerStoryProgress.objects.get_or_create(player=player)
+
+    if trigger == "start":
+        total = (
+            len(progress.unlocked_easy)
+            + len(progress.unlocked_medium)
+            + len(progress.unlocked_hard)
+        )
+        if total == 0:
+            return "intro"
+
+    if trigger == "complete":
+        if len(progress.unlocked_easy) == 20:
+            return "easy_end"
+        if len(progress.unlocked_medium) == 20:
+            return "medium_end"
+        if len(progress.unlocked_hard) == 20:
+            return "hard_end"
+        if memory:
+            return "memory"
+
+    return None

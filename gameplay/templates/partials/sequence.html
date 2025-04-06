@@ -88,7 +88,7 @@ const sequences = {
 };
 
 const sequenceImages = {
-  {% for key, images in sequence_images.items %}
+  {% for key, images in sequence_image_map.items %}
     "{{ key }}": {
       {% for index, path in images.items %}
         {{ index }}: "{% static 'story/' %}{{ path }}",
@@ -132,7 +132,7 @@ function playSequence(type = "intro", callback = null) {
 
   const sequenceTexts = sequences[type];
   const imageMap = sequenceImages[type] || {};
-  if (!sequenceTexts) return;
+  if (!sequenceTexts || sequenceTexts.length === 0) return;
 
   sequenceInterrupted = false;
   sequenceTimeouts = [];
@@ -198,6 +198,14 @@ document.addEventListener("keydown", function (e) {
     cancelSequence();
   }
 });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const name = "{{ name }}";
+    if (name && sequences[name] && sequences[name].length > 0) {
+      playSequence(name);
+    }
+  });
 </script>
 </body>
 </html>

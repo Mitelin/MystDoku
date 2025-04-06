@@ -15,6 +15,7 @@ body {
   <button onclick="playSequence('easy_end')">Přehrát Konec Easy</button>
   <button onclick="playSequence('medium_end')">Přehrát Konec Medium</button>
   <button onclick="playSequence('hard_end')">Přehrát Konec Hard</button>
+
 </div>
 <h3>Debug: Intro data</h3>
 <ul>
@@ -45,5 +46,41 @@ body {
     <li><strong>Žádná data v sequences["hard_end"]</strong></li>
   {% endfor %}
 </ul>
-{% include "partials/sequence.html" %}
+
+<hr>
+<h3 style="color: crimson;">🛠 Debug: Memory výpis podle obtížnosti</h3>
+
+<h4>🟢 Easy ({{ unlocked_easy|length }}/20)</h4>
+<ul>
+  {% for mem in unlocked_easy %}
+    <li>#{{ mem.order }} – {{ mem.text|truncatechars:80 }}</li>
+  {% empty %}
+    <li><i>Žádné odemčené vzpomínky</i></li>
+  {% endfor %}
+</ul>
+
+<h4>🟠 Medium ({{ unlocked_medium|length }}/20)</h4>
+<ul>
+  {% for mem in unlocked_medium %}
+    <li>#{{ mem.order }} – {{ mem.text|truncatechars:80 }}</li>
+  {% empty %}
+    <li><i>Žádné odemčené vzpomínky</i></li>
+  {% endfor %}
+</ul>
+
+<h4>🔴 Hard ({{ unlocked_hard|length }}/20)</h4>
+<ul>
+  {% for mem in unlocked_hard %}
+    <li>#{{ mem.order }} – {{ mem.text|truncatechars:80 }}</li>
+  {% empty %}
+    <li><i>Žádné odemčené vzpomínky</i></li>
+  {% endfor %}
+</ul>
+<h3>🛠 Debug: Přidat vzpomínku</h3>
+<a href="{% url 'debug_add_memory' 'easy' %}" class="debug-button">➕ Easy Memory</a>
+<a href="{% url 'debug_add_memory' 'medium' %}" class="debug-button">➕ Medium Memory</a>
+<a href="{% url 'debug_add_memory' 'hard' %}" class="debug-button">➕ Hard Memory</a>
+<br>
+<a href="{% url 'reset_progress' %}" class="debug-button" style="background: darkred;">🔁 Resetuj všechny vzpomínky</a>
+{% include "partials/sequence.html" with name=sequence_name frames=sequence_frames images=sequence_images %}
 {% endblock %}

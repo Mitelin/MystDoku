@@ -28,6 +28,7 @@
             {{ room.name }}
         {% endif %}
     {% endfor %}
+<a href="{% url 'auto_fill' game.id %}" class="debug-button">🧪 Vyplň hru</a>
 </h2>
 
 <div class="game-wrapper">
@@ -242,7 +243,7 @@ function placeItem(cellId, currentItemNumber) {
     .then(data => {
         console.log(data); // Debugging
         if (data.status === "completed") {
-            window.location.href = "/gameplay/win/";
+            window.location.href = "/gameplay/story/";
         } else {
             location.reload(); // Reload the page to update state
         }
@@ -259,6 +260,17 @@ function placeItem(cellId, currentItemNumber) {
         if (mini) mini.classList.remove('highlighted');
     }
 </script>
+{% if play_intro %}
+<script>
+  setTimeout(() => {
+    console.log("🔥 Intro trigger!");
+    console.log("Is playSequence a function?", typeof playSequence);  // Zkontroluj, jestli je playSequence dostupné
+    if (typeof playSequence === 'function') {
+      playSequence("intro");
+    }
+  }, 100);
+</script>
+{% endif %}
 {% include "partials/sequence.html" %}
 {% endblock %}
 

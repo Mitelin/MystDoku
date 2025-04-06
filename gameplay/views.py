@@ -1,13 +1,12 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .utils import create_game_for_player
-from .models import Game, Cell, Item, Room, Intro, Memory, DifficultyTransition
+from .utils import create_game_for_player, get_sequence_for_trigger, try_unlock_memory
+from .models import Game, Cell, Item, Room, Intro, Memory, DifficultyTransition, PlayerStoryProgress
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 import json
 
-@login_required
 
 @login_required
 def start_new_game(request):
@@ -15,10 +14,15 @@ def start_new_game(request):
     Will remove all existing games and create new one with unique UUID.
     Now also supports difficulty from GET param (?difficulty=medium)
     """
-    existing_games = Game.objects.filter(player=request.user, completed=False)
 
+    existing_games = Game.objects.filter(player=request.user, completed=False)
     if existing_games.exists():
         existing_games.delete()
+
+    # 🔍 Zjistíme, jestli je to první hra hráče
+    progress, _ = PlayerStoryProgress.objects.get_or_create(player=request.user)
+    if not progress.unlocked_easy and not progress.unlocked_medium and not progress.unlocked_hard:
+        request.session["play_intro"] = True
 
     difficulty = request.GET.get("difficulty", "easy").lower()
     if difficulty not in ["easy", "medium", "hard"]:
@@ -26,8 +30,6 @@ def start_new_game(request):
 
     game = create_game_for_player(request.user, difficulty=difficulty)
     return redirect('game_view', game_id=game.id)  # ✅ UUID instead of simple number ID
-
-
 
 
 @login_required
@@ -160,9 +162,16 @@ def place_item(request, cell_id):
                 print("DEBUG: Game is finished")
                 game.completed = True
                 game.save()
+
+                # 🔓 Odemkni memory hned po výhře
+                new_memory = try_unlock_memory(game)
+                if new_memory:
+                    request.session["just_unlocked_order"] = new_memory.order
+                print(f"DEBUG: Unlocked memory: {new_memory}")
+
                 return JsonResponse({"status": "completed"})
 
-            return JsonResponse({"status": "success"})
+                return JsonResponse({"status": "completed"})
         except Exception as e:
             print(f"DEBUG: Error {str(e)}")
             return JsonResponse({"status": "error", "message": str(e)}, status=400)
@@ -313,17 +322,125 @@ def story_so_far(request):
         19: "easy7.webp",
         20: "easy8.webp",
     }
-    return render(request, "gameplay/story_so_far.html", {
-        "sequences": {
-            "intro": intro_texts,
-            "easy_end": easy_texts,
-            "medium_end": medium_texts,
-            "hard_end": hard_texts,
-        },
-        "sequence_images": {
-            "intro": intro_images,
-            "easy_end": easy_images,
-            "medium_end": medium_images,
-            "hard_end": hard_images,
+    progress, _ = PlayerStoryProgress.objects.get_or_create(player=request.user)
+
+    unlocked_easy = Memory.objects.filter(
+        difficulty="easy", order__in=progress.unlocked_easy
+    ).order_by("order")
+
+    unlocked_medium = Memory.objects.filter(
+        difficulty="medium", order__in=progress.unlocked_medium
+    ).order_by("order")
+
+    unlocked_hard = Memory.objects.filter(
+        difficulty="hard", order__in=progress.unlocked_hard
+    ).order_by("order")
+    game = Game.objects.filter(player=request.user, completed=True).order_by("-created_at").first()
+    just_unlocked = None
+    order = request.session.pop("just_unlocked_order", None)
+    if order is not None:
+        # Zjistíme, jaké difficulty to je
+        just_unlocked = Memory.objects.filter(order=order).first()
+    if just_unlocked:
+        memory = [
+            just_unlocked.text,
+            just_unlocked.transition or "[CHYBÍ TRANSITION]"
+        ]
+        memory_images = {
+            1: "easy8.webp"
         }
+    else:
+        memory = []
+        memory_images = {}
+
+    sequence_name = None
+
+    # 🎯 EASY END – pokud právě získal 20. vzpomínku
+    if just_unlocked and just_unlocked.difficulty == "easy" and len(unlocked_easy) == 20:
+        sequence_name = "easy_end"
+
+    # 🎯 MEDIUM END
+    elif just_unlocked and just_unlocked.difficulty == "medium" and len(unlocked_medium) == 20:
+        sequence_name = "medium_end"
+
+    # 🎯 HARD END
+    elif just_unlocked and just_unlocked.difficulty == "hard" and len(unlocked_hard) == 20:
+        sequence_name = "hard_end"
+
+    # 🧠 Pokud právě odemkl memory (ale nemá ještě 20)
+    elif just_unlocked and (len(unlocked_easy) < 20 and len(unlocked_medium) < 20 and len(unlocked_hard) < 20):
+        sequence_name = "memory"
+
+    # 🆕 Pokud není splněna žádná podmínka, neprovádí se nic
+    else:
+        sequence_name = None
+
+    sequences = {
+        "intro": intro_texts,
+        "easy_end": easy_texts,
+        "medium_end": medium_texts,
+        "hard_end": hard_texts,
+        "memory": memory,
+    }
+    sequence_image_map = {
+        "intro": intro_images,
+        "easy_end": easy_images,
+        "medium_end": medium_images,
+        "hard_end": hard_images,
+        "memory": memory_images,
+    }
+
+    return render(request, "gameplay/story_so_far.html", {
+        "unlocked_easy": unlocked_easy,
+        "unlocked_medium": unlocked_medium,
+        "unlocked_hard": unlocked_hard,
+        "sequence_name": sequence_name,
+        "sequence_frames": sequences.get(sequence_name, []),
+        "sequence_images": sequence_image_map.get(sequence_name, {}),
+        "sequences": sequences,
+        "sequence_image_map": sequence_image_map,
     })
+
+@login_required
+def auto_fill(request, game_id):
+    game = get_object_or_404(Game, id=game_id, player=request.user)
+
+    cells = Cell.objects.filter(game=game, prefilled=False)
+
+    for cell in cells:
+        cell.selected_item = cell.correct_item
+        cell.save()
+
+    return redirect("game_block", game_id=game.id, block_index=0)
+
+@login_required
+def reset_progress(request):
+    PlayerStoryProgress.objects.filter(player=request.user).delete()
+    return redirect("story_so_far")
+
+@login_required
+def debug_add_memory(request, difficulty):
+    progress, _ = PlayerStoryProgress.objects.get_or_create(player=request.user)
+    memory_qs = Memory.objects.filter(difficulty=difficulty).order_by("order")
+
+    if difficulty == "easy":
+        current = progress.unlocked_easy
+    elif difficulty == "medium":
+        current = progress.unlocked_medium
+    elif difficulty == "hard":
+        current = progress.unlocked_hard
+    else:
+        return redirect("game_selection")  # unknown difficulty fallback
+
+    next_mem = memory_qs.exclude(order__in=current).first()
+    if next_mem:
+        if difficulty == "easy":
+            progress.unlocked_easy.append(next_mem.order)
+        elif difficulty == "medium":
+            progress.unlocked_medium.append(next_mem.order)
+        elif difficulty == "hard":
+            progress.unlocked_hard.append(next_mem.order)
+        progress.save()
+        request.session["just_unlocked_order"] = next_mem.order  # spustíme přehrání
+
+    return redirect("story_so_far")
