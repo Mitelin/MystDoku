@@ -5909,7 +5909,7 @@
             "name": "První vydání knihy: Stíny nad krajinou",
             "number": 1,
             "room": 9,
-            "group_id": "vydání knihy: Stíny nad krajinou"
+            "group_id": "vydání knihy Stíny nad krajinou"
         }
     },
     {
@@ -5918,7 +5918,7 @@
             "name": "Druhé vydání knihy: Stíny nad krajinou",
             "number": 2,
             "room": 9,
-            "group_id": "vydání knihy: Stíny nad krajinou"
+            "group_id": "vydání knihy Stíny nad krajinou"
         }
     },
     {
@@ -5927,7 +5927,7 @@
             "name": "Třetí vydání knihy: Stíny nad krajinou",
             "number": 3,
             "room": 9,
-            "group_id": "vydání knihy: Stíny nad krajinou"
+            "group_id": "vydání knihy Stíny nad krajinou"
         }
     },
     {
@@ -5936,7 +5936,7 @@
             "name": "Čtvrté vydání knihy: Stíny nad krajinou",
             "number": 4,
             "room": 9,
-            "group_id": "vydání knihy: Stíny nad krajinou"
+            "group_id": "vydání knihy Stíny nad krajinou"
         }
     },
     {
@@ -5945,7 +5945,7 @@
             "name": "Páté vydání knihy: Stíny nad krajinou",
             "number": 5,
             "room": 9,
-            "group_id": "vydání knihy: Stíny nad krajinou"
+            "group_id": "vydání knihy Stíny nad krajinou"
         }
     },
     {
@@ -5954,7 +5954,7 @@
             "name": "Šesté vydání knihy: Stíny nad krajinou",
             "number": 6,
             "room": 9,
-            "group_id": "vydání knihy: Stíny nad krajinou"
+            "group_id": "vydání knihy Stíny nad krajinou"
         }
     },
     {
@@ -5963,7 +5963,7 @@
             "name": "Sedmé vydání knihy: Stíny nad krajinou",
             "number": 7,
             "room": 9,
-            "group_id": "vydání knihy: Stíny nad krajinou"
+            "group_id": "vydání knihy Stíny nad krajinou"
         }
     },
     {
@@ -5972,7 +5972,7 @@
             "name": "Osmé vydání knihy: Stíny nad krajinou",
             "number": 8,
             "room": 9,
-            "group_id": "vydání knihy: Stíny nad krajinou"
+            "group_id": "vydání knihy Stíny nad krajinou"
         }
     },
     {
@@ -5981,7 +5981,7 @@
             "name": "Deváté vydání knihy: Stíny nad krajinou",
             "number": 9,
             "room": 9,
-            "group_id": "vydání knihy: Stíny nad krajinou"
+            "group_id": "vydání knihy Stíny nad krajinou"
         }
     },
     {
@@ -5990,7 +5990,7 @@
             "name": "První vydání knihy: Zrcadla beze skla",
             "number": 1,
             "room": 9,
-            "group_id": "vydání knihy: Zrcadla beze skla"
+            "group_id": "vydání knihy Zrcadla beze skla"
         }
     },
     {
@@ -5999,7 +5999,7 @@
             "name": "Druhé vydání knihy: Zrcadla beze skla",
             "number": 2,
             "room": 9,
-            "group_id": "vydání knihy: Zrcadla beze skla"
+            "group_id": "vydání knihy Zrcadla beze skla"
         }
     },
     {
@@ -6008,7 +6008,7 @@
             "name": "Třetí vydání knihy: Zrcadla beze skla",
             "number": 3,
             "room": 9,
-            "group_id": "vydání knihy: Zrcadla beze skla"
+            "group_id": "vydání knihy Zrcadla beze skla"
         }
     },
     {
@@ -6017,7 +6017,7 @@
             "name": "Čtvrté vydání knihy: Zrcadla beze skla",
             "number": 4,
             "room": 9,
-            "group_id": "vydání knihy: Zrcadla beze skla"
+            "group_id": "vydání knihy Zrcadla beze skla"
         }
     },
     {
@@ -6026,7 +6026,7 @@
             "name": "Páté vydání knihy: Zrcadla beze skla",
             "number": 5,
             "room": 9,
-            "group_id": "vydání knihy: Zrcadla beze skla"
+            "group_id": "vydání knihy Zrcadla beze skla"
         }
     },
     {
@@ -6035,7 +6035,7 @@
             "name": "Šesté vydání knihy: Zrcadla beze skla",
             "number": 6,
             "room": 9,
-            "group_id": "vydání knihy: Zrcadla beze skla"
+            "group_id": "vydání knihy Zrcadla beze skla"
         }
     },
     {
@@ -6044,7 +6044,7 @@
             "name": "Sedmé vydání knihy: Zrcadla beze skla",
             "number": 7,
             "room": 9,
-            "group_id": "vydání knihy: Zrcadla beze skla"
+            "group_id": "vydání knihy Zrcadla beze skla"
         }
     },
     {
@@ -6053,7 +6053,7 @@
             "name": "Osmé vydání knihy: Zrcadla beze skla",
             "number": 8,
             "room": 9,
-            "group_id": "vydání knihy: Zrcadla beze skla"
+            "group_id": "vydání knihy Zrcadla beze skla"
         }
     },
     {
@@ -6062,7 +6062,7 @@
             "name": "Deváté vydání knihy: Zrcadla beze skla",
             "number": 9,
             "room": 9,
-            "group_id": "vydání knihy: Zrcadla beze skla"
+            "group_id": "vydání knihy Zrcadla beze skla"
         }
     },
     {
@@ -6071,7 +6071,7 @@
             "name": "První vydání knihy: Šepoty ve sklepě",
             "number": 1,
             "room": 9,
-            "group_id": "vydání knihy: Šepoty ve sklepě"
+            "group_id": "vydání knihy Šepoty ve sklepě"
         }
     },
     {
@@ -6080,7 +6080,7 @@
             "name": "Druhé vydání knihy: Šepoty ve sklepě",
             "number": 2,
             "room": 9,
-            "group_id": "vydání knihy: Šepoty ve sklepě"
+            "group_id": "vydání knihy Šepoty ve sklepě"
         }
     },
     {
@@ -6089,7 +6089,7 @@
             "name": "Třetí vydání knihy: Šepoty ve sklepě",
             "number": 3,
             "room": 9,
-            "group_id": "vydání knihy: Šepoty ve sklepě"
+            "group_id": "vydání knihy Šepoty ve sklepě"
         }
     },
     {
@@ -6098,7 +6098,7 @@
             "name": "Čtvrté vydání knihy: Šepoty ve sklepě",
             "number": 4,
             "room": 9,
-            "group_id": "vydání knihy: Šepoty ve sklepě"
+            "group_id": "vydání knihy Šepoty ve sklepě"
         }
     },
     {
@@ -6107,7 +6107,7 @@
             "name": "Páté vydání knihy: Šepoty ve sklepě",
             "number": 5,
             "room": 9,
-            "group_id": "vydání knihy: Šepoty ve sklepě"
+            "group_id": "vydání knihy Šepoty ve sklepě"
         }
     },
     {
@@ -6116,7 +6116,7 @@
             "name": "Šesté vydání knihy: Šepoty ve sklepě",
             "number": 6,
             "room": 9,
-            "group_id": "vydání knihy: Šepoty ve sklepě"
+            "group_id": "vydání knihy Šepoty ve sklepě"
         }
     },
     {
@@ -6125,7 +6125,7 @@
             "name": "Sedmé vydání knihy: Šepoty ve sklepě",
             "number": 7,
             "room": 9,
-            "group_id": "vydání knihy: Šepoty ve sklepě"
+            "group_id": "vydání knihy Šepoty ve sklepě"
         }
     },
     {
@@ -6134,7 +6134,7 @@
             "name": "Osmé vydání knihy: Šepoty ve sklepě",
             "number": 8,
             "room": 9,
-            "group_id": "vydání knihy: Šepoty ve sklepě"
+            "group_id": "vydání knihy Šepoty ve sklepě"
         }
     },
     {
@@ -6143,7 +6143,7 @@
             "name": "Deváté vydání knihy: Šepoty ve sklepě",
             "number": 9,
             "room": 9,
-            "group_id": "vydání knihy: Šepoty ve sklepě"
+            "group_id": "vydání knihy Šepoty ve sklepě"
         }
     },
     {
@@ -6152,7 +6152,7 @@
             "name": "První vydání knihy: Ticho mezi stěnami",
             "number": 1,
             "room": 9,
-            "group_id": "vydání knihy: Ticho mezi stěnami"
+            "group_id": "vydání knihy Ticho mezi stěnami"
         }
     },
     {
@@ -6161,7 +6161,7 @@
             "name": "Druhé vydání knihy: Ticho mezi stěnami",
             "number": 2,
             "room": 9,
-            "group_id": "vydání knihy: Ticho mezi stěnami"
+            "group_id": "vydání knihy Ticho mezi stěnami"
         }
     },
     {
@@ -6170,7 +6170,7 @@
             "name": "Třetí vydání knihy: Ticho mezi stěnami",
             "number": 3,
             "room": 9,
-            "group_id": "vydání knihy: Ticho mezi stěnami"
+            "group_id": "vydání knihy Ticho mezi stěnami"
         }
     },
     {
@@ -6179,7 +6179,7 @@
             "name": "Čtvrté vydání knihy: Ticho mezi stěnami",
             "number": 4,
             "room": 9,
-            "group_id": "vydání knihy: Ticho mezi stěnami"
+            "group_id": "vydání knihy Ticho mezi stěnami"
         }
     },
     {
@@ -6188,7 +6188,7 @@
             "name": "Páté vydání knihy: Ticho mezi stěnami",
             "number": 5,
             "room": 9,
-            "group_id": "vydání knihy: Ticho mezi stěnami"
+            "group_id": "vydání knihy Ticho mezi stěnami"
         }
     },
     {
@@ -6197,7 +6197,7 @@
             "name": "Šesté vydání knihy: Ticho mezi stěnami",
             "number": 6,
             "room": 9,
-            "group_id": "vydání knihy: Ticho mezi stěnami"
+            "group_id": "vydání knihy Ticho mezi stěnami"
         }
     },
     {
@@ -6206,7 +6206,7 @@
             "name": "Sedmé vydání knihy: Ticho mezi stěnami",
             "number": 7,
             "room": 9,
-            "group_id": "vydání knihy: Ticho mezi stěnami"
+            "group_id": "vydání knihy Ticho mezi stěnami"
         }
     },
     {
@@ -6215,7 +6215,7 @@
             "name": "Osmé vydání knihy: Ticho mezi stěnami",
             "number": 8,
             "room": 9,
-            "group_id": "vydání knihy: Ticho mezi stěnami"
+            "group_id": "vydání knihy Ticho mezi stěnami"
         }
     },
     {
@@ -6224,7 +6224,7 @@
             "name": "Deváté vydání knihy: Ticho mezi stěnami",
             "number": 9,
             "room": 9,
-            "group_id": "vydání knihy: Ticho mezi stěnami"
+            "group_id": "vydání knihy Ticho mezi stěnami"
         }
     },
     {
@@ -6233,7 +6233,7 @@
             "name": "První vydání knihy: Černé schody",
             "number": 1,
             "room": 9,
-            "group_id": "vydání knihy: Černé schody"
+            "group_id": "vydání knihy Černé schody"
         }
     },
     {
@@ -6242,7 +6242,7 @@
             "name": "Druhé vydání knihy: Černé schody",
             "number": 2,
             "room": 9,
-            "group_id": "vydání knihy: Černé schody"
+            "group_id": "vydání knihy Černé schody"
         }
     },
     {
@@ -6251,7 +6251,7 @@
             "name": "Třetí vydání knihy: Černé schody",
             "number": 3,
             "room": 9,
-            "group_id": "vydání knihy: Černé schody"
+            "group_id": "vydání knihy Černé schody"
         }
     },
     {
@@ -6260,7 +6260,7 @@
             "name": "Čtvrté vydání knihy: Černé schody",
             "number": 4,
             "room": 9,
-            "group_id": "vydání knihy: Černé schody"
+            "group_id": "vydání knihy Černé schody"
         }
     },
     {
@@ -6269,7 +6269,7 @@
             "name": "Páté vydání knihy: Černé schody",
             "number": 5,
             "room": 9,
-            "group_id": "vydání knihy: Černé schody"
+            "group_id": "vydání knihy Černé schody"
         }
     },
     {
@@ -6278,7 +6278,7 @@
             "name": "Šesté vydání knihy: Černé schody",
             "number": 6,
             "room": 9,
-            "group_id": "vydání knihy: Černé schody"
+            "group_id": "vydání knihy Černé schody"
         }
     },
     {
@@ -6287,7 +6287,7 @@
             "name": "Sedmé vydání knihy: Černé schody",
             "number": 7,
             "room": 9,
-            "group_id": "vydání knihy: Černé schody"
+            "group_id": "vydání knihy Černé schody"
         }
     },
     {
@@ -6296,7 +6296,7 @@
             "name": "Osmé vydání knihy: Černé schody",
             "number": 8,
             "room": 9,
-            "group_id": "vydání knihy: Černé schody"
+            "group_id": "vydání knihy Černé schody"
         }
     },
     {
@@ -6305,7 +6305,7 @@
             "name": "Deváté vydání knihy: Černé schody",
             "number": 9,
             "room": 9,
-            "group_id": "vydání knihy: Černé schody"
+            "group_id": "vydání knihy Černé schody"
         }
     },
     {
@@ -6314,7 +6314,7 @@
             "name": "První vydání knihy: Krev pod podlahou",
             "number": 1,
             "room": 9,
-            "group_id": "vydání knihy: Krev pod podlahou"
+            "group_id": "vydání knihy Krev pod podlahou"
         }
     },
     {
@@ -6323,7 +6323,7 @@
             "name": "Druhé vydání knihy: Krev pod podlahou",
             "number": 2,
             "room": 9,
-            "group_id": "vydání knihy: Krev pod podlahou"
+            "group_id": "vydání knihy Krev pod podlahou"
         }
     },
     {
@@ -6332,7 +6332,7 @@
             "name": "Třetí vydání knihy: Krev pod podlahou",
             "number": 3,
             "room": 9,
-            "group_id": "vydání knihy: Krev pod podlahou"
+            "group_id": "vydání knihy Krev pod podlahou"
         }
     },
     {
@@ -6341,7 +6341,7 @@
             "name": "Čtvrté vydání knihy: Krev pod podlahou",
             "number": 4,
             "room": 9,
-            "group_id": "vydání knihy: Krev pod podlahou"
+            "group_id": "vydání knihy Krev pod podlahou"
         }
     },
     {
@@ -6350,7 +6350,7 @@
             "name": "Páté vydání knihy: Krev pod podlahou",
             "number": 5,
             "room": 9,
-            "group_id": "vydání knihy: Krev pod podlahou"
+            "group_id": "vydání knihy Krev pod podlahou"
         }
     },
     {
@@ -6359,7 +6359,7 @@
             "name": "Šesté vydání knihy: Krev pod podlahou",
             "number": 6,
             "room": 9,
-            "group_id": "vydání knihy: Krev pod podlahou"
+            "group_id": "vydání knihy Krev pod podlahou"
         }
     },
     {
@@ -6368,7 +6368,7 @@
             "name": "Sedmé vydání knihy: Krev pod podlahou",
             "number": 7,
             "room": 9,
-            "group_id": "vydání knihy: Krev pod podlahou"
+            "group_id": "vydání knihy Krev pod podlahou"
         }
     },
     {
@@ -6377,7 +6377,7 @@
             "name": "Osmé vydání knihy: Krev pod podlahou",
             "number": 8,
             "room": 9,
-            "group_id": "vydání knihy: Krev pod podlahou"
+            "group_id": "vydání knihy Krev pod podlahou"
         }
     },
     {
@@ -6386,7 +6386,7 @@
             "name": "Deváté vydání knihy: Krev pod podlahou",
             "number": 9,
             "room": 9,
-            "group_id": "vydání knihy: Krev pod podlahou"
+            "group_id": "vydání knihy Krev pod podlahou"
         }
     },
     {
@@ -6395,7 +6395,7 @@
             "name": "První vydání knihy: Ztracená kapitola",
             "number": 1,
             "room": 9,
-            "group_id": "vydání knihy: Ztracená kapitola"
+            "group_id": "vydání knihy Ztracená kapitola"
         }
     },
     {
@@ -6404,7 +6404,7 @@
             "name": "Druhé vydání knihy: Ztracená kapitola",
             "number": 2,
             "room": 9,
-            "group_id": "vydání knihy: Ztracená kapitola"
+            "group_id": "vydání knihy Ztracená kapitola"
         }
     },
     {
@@ -6413,7 +6413,7 @@
             "name": "Třetí vydání knihy: Ztracená kapitola",
             "number": 3,
             "room": 9,
-            "group_id": "vydání knihy: Ztracená kapitola"
+            "group_id": "vydání knihy Ztracená kapitola"
         }
     },
     {
@@ -6422,7 +6422,7 @@
             "name": "Čtvrté vydání knihy: Ztracená kapitola",
             "number": 4,
             "room": 9,
-            "group_id": "vydání knihy: Ztracená kapitola"
+            "group_id": "vydání knihy Ztracená kapitola"
         }
     },
     {
@@ -6431,7 +6431,7 @@
             "name": "Páté vydání knihy: Ztracená kapitola",
             "number": 5,
             "room": 9,
-            "group_id": "vydání knihy: Ztracená kapitola"
+            "group_id": "vydání knihy Ztracená kapitola"
         }
     },
     {
@@ -6440,7 +6440,7 @@
             "name": "Šesté vydání knihy: Ztracená kapitola",
             "number": 6,
             "room": 9,
-            "group_id": "vydání knihy: Ztracená kapitola"
+            "group_id": "vydání knihy Ztracená kapitola"
         }
     },
     {
@@ -6449,7 +6449,7 @@
             "name": "Sedmé vydání knihy: Ztracená kapitola",
             "number": 7,
             "room": 9,
-            "group_id": "vydání knihy: Ztracená kapitola"
+            "group_id": "vydání knihy Ztracená kapitola"
         }
     },
     {
@@ -6458,7 +6458,7 @@
             "name": "Osmé vydání knihy: Ztracená kapitola",
             "number": 8,
             "room": 9,
-            "group_id": "vydání knihy: Ztracená kapitola"
+            "group_id": "vydání knihy Ztracená kapitola"
         }
     },
     {
@@ -6467,7 +6467,7 @@
             "name": "Deváté vydání knihy: Ztracená kapitola",
             "number": 9,
             "room": 9,
-            "group_id": "vydání knihy: Ztracená kapitola"
+            "group_id": "vydání knihy Ztracená kapitola"
         }
     },
     {
@@ -6476,7 +6476,7 @@
             "name": "První vydání knihy: Hlas, který psal sám",
             "number": 1,
             "room": 9,
-            "group_id": "vydání knihy: Hlas, který psal sám"
+            "group_id": "vydání knihy Hlas, který psal sám"
         }
     },
     {
@@ -6485,7 +6485,7 @@
             "name": "Druhé vydání knihy: Hlas, který psal sám",
             "number": 2,
             "room": 9,
-            "group_id": "vydání knihy: Hlas, který psal sám"
+            "group_id": "vydání knihy Hlas, který psal sám"
         }
     },
     {
@@ -6494,7 +6494,7 @@
             "name": "Třetí vydání knihy: Hlas, který psal sám",
             "number": 3,
             "room": 9,
-            "group_id": "vydání knihy: Hlas, který psal sám"
+            "group_id": "vydání knihy Hlas, který psal sám"
         }
     },
     {
@@ -6503,7 +6503,7 @@
             "name": "Čtvrté vydání knihy: Hlas, který psal sám",
             "number": 4,
             "room": 9,
-            "group_id": "vydání knihy: Hlas, který psal sám"
+            "group_id": "vydání knihy Hlas, který psal sám"
         }
     },
     {
@@ -6512,7 +6512,7 @@
             "name": "Páté vydání knihy: Hlas, který psal sám",
             "number": 5,
             "room": 9,
-            "group_id": "vydání knihy: Hlas, který psal sám"
+            "group_id": "vydání knihy Hlas, který psal sám"
         }
     },
     {
@@ -6521,7 +6521,7 @@
             "name": "Šesté vydání knihy: Hlas, který psal sám",
             "number": 6,
             "room": 9,
-            "group_id": "vydání knihy: Hlas, který psal sám"
+            "group_id": "vydání knihy Hlas, který psal sám"
         }
     },
     {
@@ -6530,7 +6530,7 @@
             "name": "Sedmé vydání knihy: Hlas, který psal sám",
             "number": 7,
             "room": 9,
-            "group_id": "vydání knihy: Hlas, který psal sám"
+            "group_id": "vydání knihy Hlas, který psal sám"
         }
     },
     {
@@ -6539,7 +6539,7 @@
             "name": "Osmé vydání knihy: Hlas, který psal sám",
             "number": 8,
             "room": 9,
-            "group_id": "vydání knihy: Hlas, který psal sám"
+            "group_id": "vydání knihy Hlas, který psal sám"
         }
     },
     {
@@ -6548,7 +6548,7 @@
             "name": "Deváté vydání knihy: Hlas, který psal sám",
             "number": 9,
             "room": 9,
-            "group_id": "vydání knihy: Hlas, který psal sám"
+            "group_id": "vydání knihy Hlas, který psal sám"
         }
     },
     {
@@ -6557,7 +6557,7 @@
             "name": "První vydání knihy: Poslední slovo",
             "number": 1,
             "room": 9,
-            "group_id": "vydání knihy: Poslední slovo"
+            "group_id": "vydání knihy Poslední slovo"
         }
     },
     {
@@ -6566,7 +6566,7 @@
             "name": "Druhé vydání knihy: Poslední slovo",
             "number": 2,
             "room": 9,
-            "group_id": "vydání knihy: Poslední slovo"
+            "group_id": "vydání knihy Poslední slovo"
         }
     },
     {
@@ -6575,7 +6575,7 @@
             "name": "Třetí vydání knihy: Poslední slovo",
             "number": 3,
             "room": 9,
-            "group_id": "vydání knihy: Poslední slovo"
+            "group_id": "vydání knihy Poslední slovo"
         }
     },
     {
@@ -6584,7 +6584,7 @@
             "name": "Čtvrté vydání knihy: Poslední slovo",
             "number": 4,
             "room": 9,
-            "group_id": "vydání knihy: Poslední slovo"
+            "group_id": "vydání knihy Poslední slovo"
         }
     },
     {
@@ -6593,7 +6593,7 @@
             "name": "Páté vydání knihy: Poslední slovo",
             "number": 5,
             "room": 9,
-            "group_id": "vydání knihy: Poslední slovo"
+            "group_id": "vydání knihy Poslední slovo"
         }
     },
     {
@@ -6602,7 +6602,7 @@
             "name": "Šesté vydání knihy: Poslední slovo",
             "number": 6,
             "room": 9,
-            "group_id": "vydání knihy: Poslední slovo"
+            "group_id": "vydání knihy Poslední slovo"
         }
     },
     {
@@ -6611,7 +6611,7 @@
             "name": "Sedmé vydání knihy: Poslední slovo",
             "number": 7,
             "room": 9,
-            "group_id": "vydání knihy: Poslední slovo"
+            "group_id": "vydání knihy Poslední slovo"
         }
     },
     {
@@ -6620,7 +6620,7 @@
             "name": "Osmé vydání knihy: Poslední slovo",
             "number": 8,
             "room": 9,
-            "group_id": "vydání knihy: Poslední slovo"
+            "group_id": "vydání knihy Poslední slovo"
         }
     },
     {
@@ -6629,7 +6629,7 @@
             "name": "Deváté vydání knihy: Poslední slovo",
             "number": 9,
             "room": 9,
-            "group_id": "vydání knihy: Poslední slovo"
+            "group_id": "vydání knihy Poslední slovo"
         }
     }
 ]

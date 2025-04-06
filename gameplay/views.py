@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .utils import create_game_for_player, get_sequence_for_trigger, try_unlock_memory
-from .models import Game, Cell, Item, Room, Intro, Memory, DifficultyTransition, PlayerStoryProgress
+from .models import Game, Cell, Item, Room, Intro, Memory, DifficultyTransition, PlayerStoryProgress, SequenceFrame
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
@@ -204,24 +204,16 @@ def get_neighbors(index):
     return neighbors
 
 
-
+def load_image_map(sequence_name: str) -> dict[int, str]:
+    frames = SequenceFrame.objects.filter(sequence=sequence_name).order_by("index")
+    return {frame.index: frame.image for frame in frames}
 
 
 def story_so_far(request):
     # intro sekvence
     intro = Intro.objects.order_by("order")
     intro_texts = list(intro.values_list("text", flat=True))
-    intro_images = {
-        1: "Intro1.png",
-        2: "Intro1.png",
-        3: "Intro1.png",
-        4: "Intro2.png",
-        5: "Intro2.png",
-        6: "Intro2.png",
-        7: "Intro2.png",
-        8: "Intro3.png",
-        9: "Intro3.png",
-    }
+    intro_images = load_image_map("intro")
 
     # easy sekvence
     easy_memories = Memory.objects.filter(difficulty="easy").order_by("order")
@@ -233,29 +225,7 @@ def story_so_far(request):
     except ObjectDoesNotExist:
         easy_texts.append("[CHYBÍ PŘECHOD EASY – story.json nebyl načten]")
 
-    easy_images = {
-        0: "easy1.webp",
-        1: "easy1.webp",
-        2: "easy1.webp",
-        3: "easy2.webp",
-        4: "easy2.webp",
-        5: "easy2.webp",
-        6: "easy3.webp",
-        7: "easy3.webp",
-        8: "easy3.webp",
-        9: "easy4.webp",
-        10: "easy4.webp",
-        11: "easy4.webp",
-        12: "easy5.webp",
-        13: "easy5.webp",
-        14: "easy5.webp",
-        15: "easy6.webp",
-        16: "easy6.webp",
-        17: "easy6.webp",
-        18: "easy7.webp",
-        19: "easy7.webp",
-        20: "easy8.webp",
-    }
+    easy_images = load_image_map("easy_end")
 
     medium_memories = Memory.objects.filter(difficulty="medium").order_by("order")
     medium_texts = list(medium_memories.values_list("text", flat=True))
@@ -266,29 +236,8 @@ def story_so_far(request):
     except ObjectDoesNotExist:
         medium_texts.append("[CHYBÍ PŘECHOD medium – story.json nebyl načten]")
 
-    medium_images = {
-        0: "easy1.webp",
-        1: "easy1.webp",
-        2: "easy1.webp",
-        3: "easy2.webp",
-        4: "easy2.webp",
-        5: "easy2.webp",
-        6: "easy3.webp",
-        7: "easy3.webp",
-        8: "easy3.webp",
-        9: "easy4.webp",
-        10: "easy4.webp",
-        11: "easy4.webp",
-        12: "easy5.webp",
-        13: "easy5.webp",
-        14: "easy5.webp",
-        15: "easy6.webp",
-        16: "easy6.webp",
-        17: "easy6.webp",
-        18: "easy7.webp",
-        19: "easy7.webp",
-        20: "easy8.webp",
-    }
+    medium_images = load_image_map("medium_end")
+
     # hard sekvence
     hard_memories = Memory.objects.filter(difficulty="hard").order_by("order")
     hard_texts = list(hard_memories.values_list("text", flat=True))
@@ -299,29 +248,8 @@ def story_so_far(request):
     except ObjectDoesNotExist:
         hard_texts.append("[CHYBÍ PŘECHOD HARD – story.json nebyl načten]")
 
-    hard_images = {
-        0: "easy1.webp",
-        1: "easy1.webp",
-        2: "easy1.webp",
-        3: "easy2.webp",
-        4: "easy2.webp",
-        5: "easy2.webp",
-        6: "easy3.webp",
-        7: "easy3.webp",
-        8: "easy3.webp",
-        9: "easy4.webp",
-        10: "easy4.webp",
-        11: "easy4.webp",
-        12: "easy5.webp",
-        13: "easy5.webp",
-        14: "easy5.webp",
-        15: "easy6.webp",
-        16: "easy6.webp",
-        17: "easy6.webp",
-        18: "easy7.webp",
-        19: "easy7.webp",
-        20: "easy8.webp",
-    }
+    hard_images = load_image_map("hard_end")
+
     progress, _ = PlayerStoryProgress.objects.get_or_create(player=request.user)
 
     unlocked_easy = Memory.objects.filter(
@@ -346,9 +274,7 @@ def story_so_far(request):
             just_unlocked.text,
             just_unlocked.transition or "[CHYBÍ TRANSITION]"
         ]
-        memory_images = {
-            1: "easy8.webp"
-        }
+        memory_images = load_image_map("memory")
     else:
         memory = []
         memory_images = {}
@@ -444,3 +370,4 @@ def debug_add_memory(request, difficulty):
         request.session["just_unlocked_order"] = next_mem.order  # spustíme přehrání
 
     return redirect("story_so_far")
+

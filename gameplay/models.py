@@ -167,3 +167,12 @@ class PlayerStoryProgress(models.Model):
 
     def __str__(self):
         return f"{self.player.username} memory progress"
+
+class SequenceFrame(models.Model):
+    sequence = models.CharField(max_length=50)
+    index = models.PositiveIntegerField()
+    image = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = ("sequence", "index")
+        ordering = ["sequence", "index"]
