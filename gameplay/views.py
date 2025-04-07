@@ -469,3 +469,7 @@ def game_selection(request):
         }
     })
 
+from django.shortcuts import render
+
+def manual_view(request):
+    return render(request, "gameplay/manual.html")

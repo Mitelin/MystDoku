@@ -28,6 +28,29 @@ body {
     {% endif %}
   </div>
 </div>
+
+{% if total_unlocked < 60 %}
+<div class="play-again-container">
+    <h3>Tajemství si ještě neodhalil</h3>
+    <a href="{% url 'game_selection' %}" class="play-again">Pokračuj</a>
+</div>
+{% else %}
+<div class="play-again-container">
+    <h3>Hru vytvořil:</h3>
+    <button class="play-again" onclick="showCreditsModal()">Credits</button>
+</div>
+
+<div id="credits-box" class="credits-box hidden">
+    <h4>🎬 Vývoj MystDoku</h4>
+    <ul>
+        <li><strong>Design & Kód:</strong> Mitelin</li>
+        <li><strong>Příběh:</strong> AI + Mitelin</li>
+        <li><strong>Hudba:</strong> Generated / CC0</li>
+        <li><strong>Styl & UX:</strong> Společný vývoj 🧠</li>
+        <li><strong>Speciální díky:</strong> Tobě, že hraješ ❤️</li>
+    </ul>
+</div>
+{% endif %}
 <div class="story-container">
   <h2 class="story-title">🌸 Tvůj příběh</h2>
 
@@ -131,6 +154,18 @@ body {
 <a href="{% url 'debug_add_memory' 'hard' %}" class="debug-button">➕ Hard Memory</a>
 <br>
 <a href="{% url 'reset_progress' %}" class="debug-button" style="background: darkred;">🔁 Resetuj všechny vzpomínky</a>
-
+<div id="credits-modal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h3>🎬 Vývoj MystDoku</h3>
+    <ul>
+      <li><strong>Design & Kód:</strong> Michal Pešta</li>
+      <li><strong>Příběh:</strong> AI + Michal Pešta</li>
+      <li><strong>Hudba:</strong> Generated / CC0</li>
+      <li><strong>Styl & UX:</strong> AI + Michal Pešta</li>
+      <li><strong>Speciální díky:</strong> Tobě, že hraješ </li>
+    </ul>
+    <button onclick="hideCreditsModal()" class="modal-close">Zavřít</button>
+  </div>
+</div>
 {% include "partials/sequence.html" with name=sequence_name frames=sequence_frames images=sequence_images %}
 {% endblock %}

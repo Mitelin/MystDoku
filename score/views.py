@@ -1,6 +1,9 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from .models import PlayerScore
+import markdown
+from django.shortcuts import render
+from pathlib import Path
 
 def scoreboard(request):
     sort_field = request.GET.get("sort", "total_completed_games")
@@ -50,4 +53,20 @@ def scoreboard(request):
         "page_obj": page_obj,
         "sort": sort_field,
         "current_player_score": current_player_score,
+    })
+
+from django.views.generic import TemplateView
+
+# views.py
+
+
+def api_docs(request):
+    md_path = Path("docs/api.md")
+    with open(md_path, "r", encoding="utf-8") as f:
+        md_content = f.read()
+
+    html_content = markdown.markdown(md_content, extensions=["extra", "tables"])
+
+    return render(request, "score/api_docs.html", {
+        "html_content": html_content
     })

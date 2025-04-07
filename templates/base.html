@@ -36,8 +36,13 @@
 
         <li><a href="{% url 'story_so_far' %}">Story</a></li>
         {% endif %}
-
+        {% if "/gameplay/" in request.path and "/story" not in request.path and "/manual" not in request.path %}
+    <li><a href="{% url 'manual' %}">Jak hrát</a></li>
+{% endif %}
         <li><a href="{% url 'scoreboard' %}">Score</a></li>
+{% if request.path == '/score/' %}
+    <li><a href="{% url 'api_docs' %}" class="text-xs text-gray-400 hover:text-white">API Docs</a></li>
+{% endif %}
     {% if user.is_authenticated %}
             <form method="post" action="{% url 'logout' %}" style="display:inline;">
                 {% csrf_token %}
@@ -83,7 +88,13 @@ window.addEventListener('load', () => {
         overlay.classList.add('hidden');  // při normálním načtení zůstane skrytý
     }
 });
+function showCreditsModal() {
+    document.getElementById("credits-modal").classList.remove("hidden");
+}
 
+function hideCreditsModal() {
+    document.getElementById("credits-modal").classList.add("hidden");
+}
 </script>
 </body>
 </html>
