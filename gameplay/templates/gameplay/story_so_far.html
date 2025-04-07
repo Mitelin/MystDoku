@@ -8,8 +8,57 @@ body {
   overflow-y: auto;
 }
 </style>
+
+<div class="section-wrapper" style="text-align: center;">
 <h1>Story So Far</h1>
-<p>Tady budeme zobrazovat intro, outro, vzpomínky a další sekvence.</p>
+  <h2>Přehraj spomínky:</h2>
+  <div class="sequence-buttons" style="justify-content: center;">
+    <button onclick="playSequence('intro')">🔁 Přehrát Intro</button>
+
+    {% if unlocked_easy|length == 20 and total_unlocked < 60 %}
+      <button onclick="playSequence('easy_end')">🔓 Konec Easy</button>
+    {% endif %}
+
+    {% if unlocked_easy|length == 20 and unlocked_medium|length == 20 and total_unlocked < 60 %}
+      <button onclick="playSequence('medium_end')">🔓 Konec Medium</button>
+    {% endif %}
+
+    {% if total_unlocked == 60 %}
+      <button onclick="playSequence('hard_end')">🏁 Konec Hard</button>
+    {% endif %}
+  </div>
+</div>
+<div class="story-container">
+  <h2 class="story-title">🌸 Tvůj příběh</h2>
+
+  {% if unlocked_easy %}
+    <h3 class="story-act">🟢 Expozice</h3>
+    <div class="story-content">
+      {% for mem in unlocked_easy %}
+        <p>{{ mem.text }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if unlocked_medium %}
+    <h3 class="story-act">🟠 Kolize</h3>
+    <div class="story-content">
+      {% for mem in unlocked_medium %}
+        <p>{{ mem.text }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if unlocked_hard %}
+    <h3 class="story-act">🔴 Krize a rozuzlení</h3>
+    <div class="story-content">
+      {% for mem in unlocked_hard %}
+        <p>{{ mem.text }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
 <div class="sequence-buttons">
   <button onclick="playSequence('intro')">Přehrát Intro</button>
   <button onclick="playSequence('easy_end')">Přehrát Konec Easy</button>
@@ -82,5 +131,6 @@ body {
 <a href="{% url 'debug_add_memory' 'hard' %}" class="debug-button">➕ Hard Memory</a>
 <br>
 <a href="{% url 'reset_progress' %}" class="debug-button" style="background: darkred;">🔁 Resetuj všechny vzpomínky</a>
+
 {% include "partials/sequence.html" with name=sequence_name frames=sequence_frames images=sequence_images %}
 {% endblock %}

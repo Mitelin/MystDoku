@@ -186,8 +186,23 @@ function cancelSequence() {
   sequenceInterrupted = true;
   sequenceTimeouts.forEach(clearTimeout);
   sequenceTimeouts = [];
+
   const overlay = document.getElementById("sequence-overlay");
   overlay.style.opacity = 0;
+
+  // 🌑 Reset pozadí
+  const bgA = document.querySelector(".bg-a");
+  const bgB = document.querySelector(".bg-b");
+  bgA.style.opacity = 0;
+  bgB.style.opacity = 0;
+  bgA.style.backgroundImage = "";
+  bgB.style.backgroundImage = "";
+
+  // 🧼 Reset textu
+  const textBox = document.getElementById("sequence-text");
+  textBox.innerText = "";
+  textBox.style.opacity = 0;
+
   setTimeout(() => {
     overlay.style.display = "none";
   }, 500);

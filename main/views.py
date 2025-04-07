@@ -17,7 +17,7 @@ def game_selection(request):
     """
     existing_game = Game.objects.filter(player=request.user, completed=False).first()
 
-    return render(request, 'main/game_selection.html', {'existing_game': existing_game})
+    return render(request, 'main/../gameplay/templates/gameplay/game_selection.html', {'existing_game': existing_game})
 
 def play_redirect(request):
     """
@@ -73,7 +73,7 @@ def game_selection(request):
 
     play_intro = not has_active_game and not has_any_memory
 
-    return render(request, 'main/game_selection.html', {
+    return render(request, 'main/../gameplay/templates/gameplay/game_selection.html', {
         'play_intro': play_intro,
         'intro_texts': intro_texts,
         'intro_images': intro_images,

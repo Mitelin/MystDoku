@@ -3,11 +3,6 @@
 {% block title %}MystDoku – Hlavní herní stránka{% endblock %}
 
 {% block content %}
-    {% if play_intro %}
-  <div style="color: lime;">🔊 Intro SE MÁ přehrát</div>
-{% else %}
-  <div style="color: red;">🔕 Intro se nemá přehrát</div>
-{% endif %}
 <div class="game-selection">
     <h1>Vítej v MystDoku!</h1>
 
@@ -23,17 +18,25 @@
     <p>🔁 Začni novou hru:</p>
     <div class="difficulty-buttons">
         <a href="{% url 'start_new_game' %}?difficulty=easy" class="play-button">Easy</a>
-        <a href="{% url 'start_new_game' %}?difficulty=medium" class="play-button">Medium</a>
-        <a href="{% url 'start_new_game' %}?difficulty=hard" class="play-button">Hard</a>
+        {% if unlocked_easy|length == 20 %}
+            <a href="{% url 'start_new_game' %}?difficulty=medium" class="play-button">Medium</a>
+        {% endif %}
+        {% if unlocked_easy|length == 20 and unlocked_medium|length == 20 %}
+            <a href="{% url 'start_new_game' %}?difficulty=hard" class="play-button">Hard</a>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 3em;">
+        <a href="{% url 'reset_progress' %}" class="danger-button" onclick="return confirm('Opravdu chceš resetovat veškerý příběhový postup? Tato akce je nevratná.')">🔁 Resetovat příběhový postup</a>
     </div>
 </div>
+
 {% include "partials/sequence.html" %}
 {% if play_intro %}
   <script>
-window.onload = function() {
-  playSequence("intro");
-};
+    window.onload = function() {
+      playSequence("intro");
+    };
   </script>
 {% endif %}
-
 {% endblock %}

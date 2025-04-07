@@ -208,67 +208,89 @@ def load_image_map(sequence_name: str) -> dict[int, str]:
     frames = SequenceFrame.objects.filter(sequence=sequence_name).order_by("index")
     return {frame.index: frame.image for frame in frames}
 
-
 def story_so_far(request):
-    # intro sekvence
+    # --- Intro ---
     intro = Intro.objects.order_by("order")
     intro_texts = list(intro.values_list("text", flat=True))
     intro_images = load_image_map("intro")
 
-    # easy sekvence
+    # --- Easy ---
     easy_memories = Memory.objects.filter(difficulty="easy").order_by("order")
     easy_texts = list(easy_memories.values_list("text", flat=True))
-
     try:
         easy_transition = DifficultyTransition.objects.get(difficulty="easy")
         easy_texts.append(easy_transition.text)
     except ObjectDoesNotExist:
         easy_texts.append("[CHYBÍ PŘECHOD EASY – story.json nebyl načten]")
-
     easy_images = load_image_map("easy_end")
 
+    # --- Medium ---
     medium_memories = Memory.objects.filter(difficulty="medium").order_by("order")
     medium_texts = list(medium_memories.values_list("text", flat=True))
-
     try:
         medium_transition = DifficultyTransition.objects.get(difficulty="medium")
         medium_texts.append(medium_transition.text)
     except ObjectDoesNotExist:
         medium_texts.append("[CHYBÍ PŘECHOD medium – story.json nebyl načten]")
-
     medium_images = load_image_map("medium_end")
 
-    # hard sekvence
-    hard_memories = Memory.objects.filter(difficulty="hard").order_by("order")
-    hard_texts = list(hard_memories.values_list("text", flat=True))
-
+    # --- Hard special case ---
+    easy_only_texts = list(
+        Memory.objects.filter(difficulty="easy").order_by("order").values_list("text", flat=True)
+    )
+    medium_only_texts = list(
+        Memory.objects.filter(difficulty="medium").order_by("order").values_list("text", flat=True)
+    )
+    hard_only_texts = list(
+        Memory.objects.filter(difficulty="hard").order_by("order").values_list("text", flat=True)
+    )
     try:
         hard_transition = DifficultyTransition.objects.get(difficulty="hard")
-        hard_texts.append(hard_transition.text)
+        hard_only_texts.append(hard_transition.text)
     except ObjectDoesNotExist:
-        hard_texts.append("[CHYBÍ PŘECHOD HARD – story.json nebyl načten]")
+        hard_only_texts.append("[CHYBÍ PŘECHOD HARD – story.json nebyl načten]")
 
-    hard_images = load_image_map("hard_end")
+    final_hard_texts = easy_only_texts + medium_only_texts + hard_only_texts
 
+    # Obrázky:
+    easy_only_images = load_image_map("easy_end")
+    medium_only_images = load_image_map("medium_end")
+    hard_only_images = load_image_map("hard_end")
+
+    final_hard_images = {}
+    i = 0
+    for j in range(20):
+        if j in easy_only_images:
+            final_hard_images[i] = easy_only_images[j]
+            i += 1
+    for j in range(20):
+        if j in medium_only_images:
+            final_hard_images[i] = medium_only_images[j]
+            i += 1
+    for j in range(len(hard_only_images)):
+        final_hard_images[i] = hard_only_images[j]
+        i += 1
+
+    # --- Player progress ---
     progress, _ = PlayerStoryProgress.objects.get_or_create(player=request.user)
 
     unlocked_easy = Memory.objects.filter(
         difficulty="easy", order__in=progress.unlocked_easy
     ).order_by("order")
-
     unlocked_medium = Memory.objects.filter(
         difficulty="medium", order__in=progress.unlocked_medium
     ).order_by("order")
-
     unlocked_hard = Memory.objects.filter(
         difficulty="hard", order__in=progress.unlocked_hard
     ).order_by("order")
+
+    # --- Poslední hra a právě odemčená vzpomínka ---
     game = Game.objects.filter(player=request.user, completed=True).order_by("-created_at").first()
     just_unlocked = None
     order = request.session.pop("just_unlocked_order", None)
     if order is not None:
-        # Zjistíme, jaké difficulty to je
         just_unlocked = Memory.objects.filter(order=order).first()
+
     if just_unlocked:
         memory = [
             just_unlocked.text,
@@ -279,42 +301,49 @@ def story_so_far(request):
         memory = []
         memory_images = {}
 
+    # --- Výběr sekvence k přehrání ---
     sequence_name = None
-
-    # 🎯 EASY END – pokud právě získal 20. vzpomínku
     if just_unlocked and just_unlocked.difficulty == "easy" and len(unlocked_easy) == 20:
         sequence_name = "easy_end"
-
-    # 🎯 MEDIUM END
     elif just_unlocked and just_unlocked.difficulty == "medium" and len(unlocked_medium) == 20:
         sequence_name = "medium_end"
-
-    # 🎯 HARD END
     elif just_unlocked and just_unlocked.difficulty == "hard" and len(unlocked_hard) == 20:
         sequence_name = "hard_end"
-
-    # 🧠 Pokud právě odemkl memory (ale nemá ještě 20)
-    elif just_unlocked and (len(unlocked_easy) < 20 and len(unlocked_medium) < 20 and len(unlocked_hard) < 20):
-        sequence_name = "memory"
-
-    # 🆕 Pokud není splněna žádná podmínka, neprovádí se nic
+    elif just_unlocked:
+        difficulty = just_unlocked.difficulty
+        unlocked_count = {
+            "easy": len(unlocked_easy),
+            "medium": len(unlocked_medium),
+            "hard": len(unlocked_hard),
+        }[difficulty]
+        if unlocked_count == 20:
+            sequence_name = f"{difficulty}_end"
+        else:
+            sequence_name = "memory"
     else:
         sequence_name = None
 
+    # --- Výstup ---
     sequences = {
         "intro": intro_texts,
         "easy_end": easy_texts,
         "medium_end": medium_texts,
-        "hard_end": hard_texts,
+        "hard_end": final_hard_texts,
         "memory": memory,
     }
     sequence_image_map = {
         "intro": intro_images,
         "easy_end": easy_images,
         "medium_end": medium_images,
-        "hard_end": hard_images,
+        "hard_end": final_hard_images,
         "memory": memory_images,
     }
+
+    total_unlocked = (
+        len(progress.unlocked_easy) +
+        len(progress.unlocked_medium) +
+        len(progress.unlocked_hard)
+    )
 
     return render(request, "gameplay/story_so_far.html", {
         "unlocked_easy": unlocked_easy,
@@ -325,6 +354,7 @@ def story_so_far(request):
         "sequence_images": sequence_image_map.get(sequence_name, {}),
         "sequences": sequences,
         "sequence_image_map": sequence_image_map,
+        "total_unlocked": total_unlocked,
     })
 
 @login_required
@@ -342,7 +372,7 @@ def auto_fill(request, game_id):
 @login_required
 def reset_progress(request):
     PlayerStoryProgress.objects.filter(player=request.user).delete()
-    return redirect("story_so_far")
+    return redirect("game_selection")
 
 @login_required
 def debug_add_memory(request, difficulty):
@@ -370,4 +400,42 @@ def debug_add_memory(request, difficulty):
         request.session["just_unlocked_order"] = next_mem.order  # spustíme přehrání
 
     return redirect("story_so_far")
+
+@login_required
+def game_selection(request):
+    """
+    Main game page here player will be selecting modes for the game continuation or more options.
+    Also loads intro sequence if no game and no memories are unlocked.
+    """
+    existing_game = Game.objects.filter(player=request.user, completed=False).first()
+
+    # Načtení textů a obrázků intro
+    intro = Intro.objects.order_by("order")
+    intro_texts = list(intro.values_list("text", flat=True))
+    intro_images = load_image_map("intro")  # používáme novou logiku z databáze
+
+    # Detekce: má hráč rozehranou hru / nějakou vzpomínku?
+    has_active_game = existing_game is not None
+    progress, _ = PlayerStoryProgress.objects.get_or_create(player=request.user)
+    has_any_memory = (
+        progress.unlocked_easy or
+        progress.unlocked_medium or
+        progress.unlocked_hard
+    )
+
+    play_intro = not has_active_game and not has_any_memory
+
+    return render(request, 'gameplay/game_selection.html', {
+        'progress': progress,  # pokud chceme stav
+        'unlocked_easy': progress.unlocked_easy,
+        'unlocked_medium': progress.unlocked_medium,
+        'existing_game': existing_game,
+        'play_intro': play_intro,
+        'sequences': {
+            'intro': intro_texts
+        },
+        'sequence_image_map': {
+            'intro': intro_images
+        }
+    })
 
