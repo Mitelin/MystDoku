@@ -8,11 +8,42 @@ body {
 </style>
 <div class="auth-form-container">
     <h2>Registrace</h2>
-    <form method="post" class="auth-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Registrovat</button>
-    </form>
-    <p>Již máš účet? <a href="{% url 'login' %}">Přihlásit se</a></p>
-</div>
+<form method="post" class="auth-form">
+    {% csrf_token %}
+
+    <div>
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {% if form.username.help_text %}
+            <small class="form-help">{{ form.username.help_text }}</small>
+        {% endif %}
+        {% for error in form.username.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <div>
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {% if form.password1.help_text %}
+            <small class="form-help">{{ form.password1.help_text }}</small>
+        {% endif %}
+        {% for error in form.password1.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <div>
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {% if form.password2.help_text %}
+            <small class="form-help">{{ form.password2.help_text }}</small>
+        {% endif %}
+        {% for error in form.password2.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <button type="submit">Registrovat</button>
+</form>
 {% endblock %}
