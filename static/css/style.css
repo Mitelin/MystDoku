@@ -1036,3 +1036,149 @@ html, body {
   font-style: italic;
   text-align: justify;
 }
+/* základní nastavení pro tabulku */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    text-align: left;
+}
+
+/* Hlavička tabulky */
+th {
+    background-color: #2b2b2b;
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #444;
+}
+
+/* Řádky tabulky */
+tbody tr {
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #444;
+}
+
+tbody tr:hover {
+    background-color: #333;
+}
+
+/* Zvláštní zvýraznění pro vítěze nebo top hráče */
+tbody tr:first-child {
+    background-color: #4b9e3f;
+    color: white;
+}
+
+/* Vycentrování textu v buňkách */
+td {
+    font-size: 14px;
+    color: #ccc;
+    padding: 12px 20px;
+}
+
+/* Barvy pro různé typy údajů */
+td:first-child {
+    font-weight: bold;
+    color: #fff;
+}
+
+td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(7), td:nth-child(8), td:nth-child(9) {
+    text-align: center;
+}
+th {
+    cursor: pointer;
+}
+
+th:hover {
+    background-color: #444;
+}
+
+th a {
+    display: block;
+    padding: 12px 20px;
+    background-color: #333;  /* Výchozí tmavé pozadí */
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover efekt */
+th a:hover {
+    background-color: #444; /* Trochu světlejší pozadí */
+}
+
+/* Aktivní / ztlacené tlačítko */
+th a.active {
+    background-color: #2b9d4e; /* Zelené pozadí pro stisknuté tlačítko */
+    color: #fff;
+    transform: scale(0.98);  /* Drobné zmenšení tlačítka, jak když je stisknuté */
+}
+th a:focus {
+    outline: none;  /* Odstranění modrého rámečku při kliknutí */
+}
+.scoreboard-header {
+    text-align: center;  /* Zarovná nadpis na střed */
+    background-color: #333;  /* Tmavé pozadí */
+    padding: 10px 0;  /* Větší padding pro hezký vzhled */
+    border-radius: 8px;  /* Zaoblení rohů */
+}
+
+.scoreboard-header h2 {
+    color: #fff;  /* Bílý text */
+    font-size: 1.25rem;  /* Velikost písma */
+    font-weight: bold;  /* Tučný text */
+    margin: 0;  /* Zrušíme margin, aby se nadpis hezky vešel do divu */
+}
+.pagination {
+    display: flex;
+    justify-content: center;  /* Zarovnáno na střed */
+    margin-top: 20px;  /* Větší mezera nahoře */
+}
+
+.pagination .step-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination .current {
+    font-weight: bold;
+    color: #fff;
+}
+
+.pagination a {
+    color: #4CAF50;  /* Zelené odkazy */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.pagination a:hover {
+    color: #fff;  /* Bílý text při hoveru */
+    background-color: #4CAF50;  /* Zelené pozadí při hoveru */
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+/* 🥇 TOP 1 */
+tr.rank-1 {
+    background-color: #bfa004;  /* Tmavě zlatá */
+    color: white;
+}
+
+tr.rank-2 {
+    background-color: #888;  /* Tmavší stříbrná */
+    color: white;
+}
+
+tr.rank-3 {
+    background-color: #8b572a;  /* Tmavší bronz */
+    color: white;
+}

@@ -1,12 +1,12 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .utils import create_game_for_player, get_sequence_for_trigger, try_unlock_memory
-from .models import Game, Cell, Item, Room, Intro, Memory, DifficultyTransition, PlayerStoryProgress, SequenceFrame
+from .models import Game, Cell, Item, Room, Intro, Memory, DifficultyTransition, SequenceFrame, PlayerStoryProgress
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 import json
-
+from django.apps import apps
 
 @login_required
 def start_new_game(request):
@@ -167,11 +167,19 @@ def place_item(request, cell_id):
                 new_memory = try_unlock_memory(game)
                 if new_memory:
                     request.session["just_unlocked_order"] = new_memory.order
-                print(f"DEBUG: Unlocked memory: {new_memory}")
+                    print(f"DEBUG: Unlocked memory: {new_memory}")
 
-                return JsonResponse({"status": "completed"})
+                # 💾 Nejdřív skóre, pak smažeme hru
+                from score.utils import update_score_for_game
+                update_score_for_game(game)
+                game.delete()
 
-                return JsonResponse({"status": "completed"})
+                return JsonResponse({
+                    "status": "completed",
+                    "redirect_url": "/gameplay/story/"
+                })
+
+
         except Exception as e:
             print(f"DEBUG: Error {str(e)}")
             return JsonResponse({"status": "error", "message": str(e)}, status=400)
@@ -369,9 +377,31 @@ def auto_fill(request, game_id):
 
     return redirect("game_block", game_id=game.id, block_index=0)
 
+
 @login_required
 def reset_progress(request):
+    # Dynamicky importujeme model PlayerStoryProgress
+    PlayerStoryProgress = apps.get_model('gameplay', 'PlayerStoryProgress')
+
+    # Smazání všech pokroků ve vzpomínkách
     PlayerStoryProgress.objects.filter(player=request.user).delete()
+
+    # Dynamicky importujeme model PlayerScore
+    PlayerScore = apps.get_model('score', 'PlayerScore')
+
+    # Resetování skóre hráče
+    player_score = PlayerScore.objects.get(user=request.user)
+    player_score.unlocked_memories = 0
+    player_score.completed_easy = 0
+    player_score.completed_medium = 0
+    player_score.completed_hard = 0
+    player_score.best_time_easy = None
+    player_score.best_time_medium = None
+    player_score.best_time_hard = None
+    player_score.total_completed_games = 0
+    player_score.save()
+
+    # Přesměrování na výběr hry po resetu
     return redirect("game_selection")
 
 @login_required

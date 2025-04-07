@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'ui',  # User interface
     'player',  # Player organisation
     'main',  # Main page
+    'score',  # Main page
 ]
 
 MIDDLEWARE = [

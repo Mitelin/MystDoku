@@ -28,4 +28,5 @@ urlpatterns = [
     path('', home_landing, name='home_landing'),
     path('register/', register, name='register'),
     path('logout/', auth_views.LogoutView.as_view(next_page='home_landing'), name='logout'),
+    path("score/", include("score.urls")),
 ]

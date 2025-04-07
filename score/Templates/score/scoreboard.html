@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="scoreboard-header">
+    <h2>Scoreboard hráčů</h2>
+</div>
+
+<table class="w-full text-sm text-left text-gray-200 bg-gray-900 border border-gray-700">
+    <thead class="text-xs uppercase bg-gray-800 text-gray-400">
+        <tr>
+            <th class="px-4 py-3 text-center">#</th>
+            <th class="px-4 py-3"><a href="?sort=user__username" class="{% if sort == 'user__username' %}active{% endif %}">Hráč</a></th>
+            <th class="px-4 py-3"><a href="?sort=total_completed_games" class="{% if sort == 'total_completed_games' %}active{% endif %}">🎮 Celkem</a></th>
+            <th class="px-4 py-3"><a href="?sort=completed_easy" class="{% if sort == 'completed_easy' %}active{% endif %}">🟢 Easy</a></th>
+            <th class="px-4 py-3"><a href="?sort=completed_medium" class="{% if sort == 'completed_medium' %}active{% endif %}">🟠 Medium</a></th>
+            <th class="px-4 py-3"><a href="?sort=completed_hard" class="{% if sort == 'completed_hard' %}active{% endif %}">🔴 Hard</a></th>
+            <th class="px-4 py-3"><a href="?sort=unlocked_memories" class="{% if sort == 'unlocked_memories' %}active{% endif %}">🧠 Vzpomínky</a></th>
+            <th class="px-4 py-3"><a href="?sort=best_time_easy" class="{% if sort == 'best_time_easy' %}active{% endif %}">⏱️ Nej. čas Easy</a></th>
+            <th class="px-4 py-3"><a href="?sort=best_time_medium" class="{% if sort == 'best_time_medium' %}active{% endif %}">⏱️ Medium</a></th>
+            <th class="px-4 py-3"><a href="?sort=best_time_hard" class="{% if sort == 'best_time_hard' %}active{% endif %}">⏱️ Hard</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for score in page_obj %}
+        <tr class="border-t border-gray-700 hover:bg-gray-800 rank-{{ score.rank }}">
+            <td class="px-4 py-2 text-center font-bold">
+                {% if score.rank == 1 %}🥇{% elif score.rank == 2 %}🥈{% elif score.rank == 3 %}🥉{% else %}{{ score.rank }}{% endif %}
+            </td>
+            <td class="px-4 py-2 font-semibold">{{ score.user.username }}</td>
+            <td class="px-4 py-2 text-center">{{ score.total_completed_games }}</td>
+            <td class="px-4 py-2 text-center">{{ score.completed_easy }}</td>
+            <td class="px-4 py-2 text-center">{{ score.completed_medium }}</td>
+            <td class="px-4 py-2 text-center">{{ score.completed_hard }}</td>
+            <td class="px-4 py-2 text-center">{{ score.unlocked_memories_percent|floatformat:1 }} %</td>
+            <td class="px-4 py-2 text-center">{{ score.best_time_easy|floatformat:1 }} s</td>
+            <td class="px-4 py-2 text-center">{{ score.best_time_medium|floatformat:1 }} s</td>
+            <td class="px-4 py-2 text-center">{{ score.best_time_hard|floatformat:1 }} s</td>
+        </tr>
+        {% endfor %}
+
+        {% if current_player_score %}
+        <tr class="border-t border-gray-700 bg-yellow-900">
+            <td class="px-4 py-2 text-center font-bold">{{ current_player_score.rank }}</td>
+            <td class="px-4 py-2 font-semibold">
+                {{ current_player_score.user.username }} <span class="text-xs text-yellow-300">(Ty)</span>
+            </td>
+            <td class="px-4 py-2 text-center">{{ current_player_score.total_completed_games }}</td>
+            <td class="px-4 py-2 text-center">{{ current_player_score.completed_easy }}</td>
+            <td class="px-4 py-2 text-center">{{ current_player_score.completed_medium }}</td>
+            <td class="px-4 py-2 text-center">{{ current_player_score.completed_hard }}</td>
+            <td class="px-4 py-2 text-center">{{ current_player_score.unlocked_memories_percent|floatformat:1 }} %</td>
+            <td class="px-4 py-2 text-center">{{ current_player_score.best_time_easy|floatformat:1 }} s</td>
+            <td class="px-4 py-2 text-center">{{ current_player_score.best_time_medium|floatformat:1 }} s</td>
+            <td class="px-4 py-2 text-center">{{ current_player_score.best_time_hard|floatformat:1 }} s</td>
+        </tr>
+        {% endif %}
+
+        {% if not page_obj %}
+        <tr>
+            <td colspan="10" class="px-4 py-2 text-center">Žádná data zatím nejsou.</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<!-- Stránkování -->
+<div class="pagination mt-4 text-center">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1{% if sort %}&sort={{ sort }}{% endif %}">&laquo; první</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if sort %}&sort={{ sort }}{% endif %}">Předchozí</a>
+        {% endif %}
+
+        <span class="current mx-4">
+            Strana {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if sort %}&sort={{ sort }}{% endif %}">Další</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if sort %}&sort={{ sort }}{% endif %}">Poslední &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
