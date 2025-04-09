@@ -17,16 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.views import LogoutView
 from main.views import register, home_landing
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('gameplay/', include('gameplay.urls')),  # We are adding our URL from game plays
-    path('', include('main.urls')),  # Main page
+    path('score/', include('score.urls')),
+    path('gameplay/', include('gameplay.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='auth/login.html'), name='login'),
-    path('', home_landing, name='home_landing'),
     path('register/', register, name='register'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='home_landing'), name='logout'),
-    path("score/", include("score.urls")),
+    path("logout/", auth_views.LogoutView.as_view(next_page='main_page'), name="logout"),
+    path('', include('main.urls')),
 ]

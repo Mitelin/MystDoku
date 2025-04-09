@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+        <!-- Enable vertical scroll if form is tall -->
     <style>
 body {
   overflow-y: auto;
 }
 </style>
+        <!-- Registration form container -->
 <div class="auth-form-container">
     <h2>Registrace</h2>
+        <!-- Registration form -->
 <form method="post" class="auth-form">
     {% csrf_token %}
 
@@ -21,7 +24,7 @@ body {
             <p class="form-error">{{ error }}</p>
         {% endfor %}
     </div>
-
+            <!-- Password 1 field -->
     <div>
         {{ form.password1.label_tag }}
         {{ form.password1 }}
@@ -32,7 +35,7 @@ body {
             <p class="form-error">{{ error }}</p>
         {% endfor %}
     </div>
-
+            <!-- Password 2 field (confirmation) -->
     <div>
         {{ form.password2.label_tag }}
         {{ form.password2 }}
@@ -43,7 +46,7 @@ body {
             <p class="form-error">{{ error }}</p>
         {% endfor %}
     </div>
-
+            <!-- Submit button -->
     <button type="submit">Registrovat</button>
 </form>
 {% endblock %}

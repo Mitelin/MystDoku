@@ -38,8 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gameplay',  # Game logic
-    'ui',  # User interface
-    'player',  # Player organisation
     'main',  # Main page
     'score',  # Main page
 ]
