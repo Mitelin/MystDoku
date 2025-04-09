@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
+       <!-- Make sure vertical scrolling is enabled -->
     <style>
 body {
   overflow-y: auto;
 }
 </style>
+    <!-- Scoreboard title -->
 <div class="scoreboard-header">
     <h2>Scoreboard hráčů</h2>
 </div>
-
+<!-- Table with all player stats -->
 <table class="w-full text-sm text-left text-gray-200 bg-gray-900 border border-gray-700">
     <thead class="text-xs uppercase bg-gray-800 text-gray-400">
         <tr>
@@ -25,6 +27,7 @@ body {
         </tr>
     </thead>
     <tbody>
+    <!-- Display each player in the current page -->
         {% for score in page_obj %}
         <tr class="border-t border-gray-700 hover:bg-gray-800 rank-{{ score.rank }}">
             <td class="px-4 py-2 text-center font-bold">
@@ -41,7 +44,7 @@ body {
             <td class="px-4 py-2 text-center">{{ score.best_time_hard|floatformat:1 }} s</td>
         </tr>
         {% endfor %}
-
+        <!-- If current player is not on current page, show them separately -->
         {% if current_player_score %}
         <tr class="border-t border-gray-700 bg-yellow-900">
             <td class="px-4 py-2 text-center font-bold">{{ current_player_score.rank }}</td>
@@ -58,7 +61,7 @@ body {
             <td class="px-4 py-2 text-center">{{ current_player_score.best_time_hard|floatformat:1 }} s</td>
         </tr>
         {% endif %}
-
+        <!-- If there are no scores to display -->
         {% if not page_obj %}
         <tr>
             <td colspan="10" class="px-4 py-2 text-center">Žádná data zatím nejsou.</td>
@@ -67,7 +70,7 @@ body {
     </tbody>
 </table>
 
-<!-- Stránkování -->
+<!-- Pagination controls -->
 <div class="pagination mt-4 text-center">
     <span class="step-links">
         {% if page_obj.has_previous %}

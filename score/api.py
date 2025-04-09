@@ -2,12 +2,22 @@ from django.http import JsonResponse
 from score.models import PlayerScore
 
 def api_scoreboard(request):
+    """
+    API endpoint for retrieving player scores in JSON format.
+
+    Supports limit & offset for pagination via GET params.
+    Returns a list of player stats including completion counts and best times.
+    """
+    # Read pagination params from GET query (?limit=...&offset=...)
     limit = int(request.GET.get("limit", 100))
     offset = int(request.GET.get("offset", 0))
 
+
+    # Load scores and prefetch related user object
     scores = PlayerScore.objects.all().select_related("user")
     scores = scores[offset : offset + limit]
 
+    # Serialize selected fields into a list of dictionaries
     data = [
         {
             "username": score.user.username,
@@ -22,5 +32,5 @@ def api_scoreboard(request):
         }
         for score in scores
     ]
-
+    # Return JSON response (safe=False allows returning a list directly)
     return JsonResponse(data, safe=False)

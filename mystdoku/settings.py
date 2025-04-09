@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+from operator import truediv
 from pathlib import Path
 import os
 
@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-h@b29t2!ywvbyq44zuy=3=y7+ljkee8!p=%*k48v(c#i)twzk9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 

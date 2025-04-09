@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+    <!-- Ensure vertical scrolling is allowed -->
         <style>
 body {
   overflow-y: auto;
 }
 </style>
+    <!-- Rendered Markdown content from docs/api.md -->
 <div class="prose mx-auto p-6 bg-gray-900 text-gray-200 rounded">
     {{ html_content|safe }}
 </div>

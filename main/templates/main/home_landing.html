@@ -3,17 +3,20 @@
 {% block title %}MystDoku - Začátek tajemství{% endblock %}
 
 {% block content %}
+<!-- Enable vertical scrolling -->
 <style>
 body {
   overflow-y: auto;
 }
 </style>
+<!-- Landing section with intro and play button -->
 <div class="home-landing">
     <h1>Vítej v MystDoku</h1>
     <p>V každé mřížce se skrývá příběh. Každá místnost je výzva. Odhal pravdu…</p>
     <a href="{% url 'play_redirect' %}" class="play-button">HRAJ</a>
 </div>
 
+<!-- Game description section -->
 <div class="section-wrapper">
     <section class="about-game">
         <h2>O hře MystDoku</h2>
@@ -33,6 +36,7 @@ body {
     </section>
 </div>
 
+<!-- Story teaser section -->
 <div class="section-wrapper">
     <section class="story-teaser">
         <h2>Tajemství, které čeká na odhalení</h2>
@@ -45,7 +49,7 @@ body {
         </p>
     </section>
 </div>
-
+<!-- Screenshot gallery section -->
 <div class="section-wrapper">
     <section class="screenshots">
         <h2>Galerie</h2>
@@ -61,7 +65,7 @@ body {
         </div>
     </section>
 </div>
-
+<!-- Feature list -->
 <div class="section-wrapper">
     <section class="features">
         <h2>Co tě čeká</h2>
@@ -70,13 +74,15 @@ body {
             <li>🏠 Devět tematických místností, každá se svou atmosférou</li>
             <li>📖 Příběh odhalovaný po částech pomocí vzpomínek</li>
             <li>🎭 Atmosféra tajemství, ztráty a poznání</li>
-            <li>🎨 Stylizovaná vizuální prezentace a podmanivý zvuk</li>
+            <li>🎨 Stylizovaná vizuální prezentace</li>
         </ul>
     </section>
 </div>
+    <!-- Lightbox image preview -->
     <div id="lightbox" onclick="this.classList.remove('active')">
     <img id="lightbox-img" src="" alt="Zvětšený obrázek">
 </div>
+    <!-- Lightbox script for gallery image enlargement -->
     <script>
 document.querySelectorAll('.gallery img').forEach(img => {
     img.addEventListener('click', () => {

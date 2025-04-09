@@ -1,276 +1,246 @@
 {% extends "base.html" %}
 {% load custom_filters %}
 {% load static %}
-
-{% block title %}Hra {{ game.id }}{% endblock %}
-
+{% block title %}Hra{% endblock %}
 {% block content %}
-<!-- Overlay pro citace -->
-<div id="quote-overlay" class="hidden">
-    <div class="quote-text">„Na počátku bylo Slovo…“ – Jan 1:1</div>
-</div>
-
-<script>
-    function showQuote() {
-        const overlay = document.getElementById('quote-overlay');
-        const quote = overlay.querySelector('.quote-text');
-
-        overlay.classList.add('visible');
-        setTimeout(() => quote.style.opacity = 1, 1500);
-        setTimeout(() => quote.style.opacity = 0, 4500);
-        setTimeout(() => overlay.classList.remove('visible'), 6000);
-    }
-</script>
-
-<h2 class="room-name">
-    {% for room in room_links %}
-        {% if forloop.counter0 == block_index %}
-            {{ room.name }}
-        {% endif %}
-    {% endfor %}
+{% comment %}
+<!-- Button to autofill the game (for debugging purposes) -->
 <a href="{% url 'auto_fill' game.id %}" class="debug-button">🧪 Vyplň hru</a>
+{% endcomment %}
+<h2 class="room-name">
+   {% for room in room_links %}
+   {% if forloop.counter0 == block_index %}
+   {{ room.name }}
+   {% endif %}
+   {% endfor %}
 </h2>
-
 <div class="game-wrapper">
-    <!-- Wrapper pro Inventář -->
-    <div class="inventory-wrapper">
-        <h3>Inventář</h3>
-        <div class="inventory-bg">
-        <img src="{% static 'ui/inventory_bg.png' %}" class="inventory-background-img">
-        <div class="inventory">
+   <!-- Inventory Wrapper: Displays the player's available items -->
+   <div class="inventory-wrapper">
+      <h3>Inventář</h3>
+      <div class="inventory-bg">
+         <img src="{% static 'ui/inventory_bg.png' %}" class="inventory-background-img">
+         <div class="inventory">
+            <!-- Loop through range9 to display each item in the inventory -->
             {% for i in range9 %}
-                {% if i|add:1 in used_numbers %}
-                    <div class="inventory-item empty"></div>
-                {% else %}
-                    {% with i|add:1 as num %}
-                        {% for item in items %}
-                            {% if item.number == num %}
-                                <div class="inventory-item">
-                                    <button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
-                                        <div class="item-content">
-                                            <img src="{% static 'items/' %}{{ item.group_id }}.png" alt="{{ item.name }}" class="item-icon">
-                                            <div class="item-name">{{ item.name }}</div>
-                                        </div>
-                                    </button>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endwith %}
-                {% endif %}
-            {% endfor %}
-        </div>
-        </div>
-    </div>
-
-
-    <!-- Wrapper pro Blok místnosti a Minimapu -->
-<div class="block-wrapper">
-    <!-- Sudoku část -->
-    <div class="sudoku-bg">
-        <div class="sudoku-grid">
-            {% for cell in cells %}
-                <div class="cell
-                    {% if cell.column in grid_borders %} grid-border{% endif %}
-                    {% if cell.row in grid_borders %} grid-border{% endif %}
-                    {% if forloop.counter0 == 40 %} center-cell{% endif %}">
-
-                    {% if forloop.counter0 == 40 %}
-                        <img src="{% static 'ui/mapa_bg.png' %}" class="sudoku-background-img">
-                    {% endif %}
-
-                    {% if cell.selected_item %}
-                        {% if game.difficulty == 'easy' %}
-                            <span class="{% if cell.is_correct %}correct-number{% else %}incorrect-number{% endif %}">
-                                {{ cell.selected_item.number }}
-                            </span>
-                        {% else %}
-                            <span class="neutral-number">
-                                {{ cell.selected_item.number }}
-                            </span>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <!-- ✅ Minimapa přesunuta sem -->
-    <div class="room-minimap-wrapper">
-        <div class="room-minimap">
-            {% for i in block_range %}
-                <div class="miniroom {% if i == block_index %}active{% endif %}" data-block="{{ i }}">
-                    {% if i == block_index %}
-                        <div class="room-background-wrapper">
-                            <img src="{% static 'ui/clock_image.png' %}" class="room-background">
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-        <!-- Wrapper pro Sudoku blok a dveře -->
-        <div class="block-with-doors-wrapper">
-
-            <div class="block-with-doors">
-                <!-- Dveře mezi místnostmi -->
-                <div class="door up">
-
-    {% if neighbors.up is not None %}
-    <a href="#"
-       data-block="{{ neighbors.up.index }}"
-       onmouseover="highlightRoom({{ neighbors.up.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
-       onmouseout="unhighlightRoom({{ neighbors.up.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
-       onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.up.index %}')">
-        <img src="{% static 'doors/door_closed.png' %}" class="door-icon">
-        <div class="room-label">{{ neighbors.up.name }}</div>
-    </a>
-    {% endif %}
-</div>
-
-<div class="door left">
-    {% if neighbors.left is not None %}
-    <a href="#"
-       data-block="{{ neighbors.left.index }}"
-       onmouseover="highlightRoom({{ neighbors.left.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
-       onmouseout="unhighlightRoom({{ neighbors.left.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
-       onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.left.index %}')">
-        <img src="{% static 'doors/door_closed.png' %}" alt="Dveře vlevo" class="door-icon">
-        <div class="room-label">{{ neighbors.left.name }}</div>
-    </a>
-    {% endif %}
-</div>
-
-
-                <div class="sudoku-block">
-                    {% for r in room_links %}
-        {% if forloop.counter0 == block_index %}
-            <img src="{% static 'rooms/' %}{{ r.name|slugify }}.png" class="room-room-background">
-        {% endif %}
-    {% endfor %}
-                    {% for cell in selected_block %}
-                        <div class="block-cell {% if cell.prefilled %}locked{% if game.difficulty == 'easy' %} correct {% else %} prefilled-gray {% endif %} {% else %}{% if cell.selected_item %}{% if game.difficulty == 'easy' %}{% if cell.is_correct %} correct {% else %} incorrect {% endif %}{% else %} filled {% endif %}{% endif %}{% endif %}"
-                             {% if not cell.prefilled %}
-                                onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.number }}{% else %}-1{% endif %})"
-                             {% endif %}>
-                            {% if cell.selected_item %}
-                                {% with block_item_names|get_item:cell.selected_item.number as data %}
-    {% if data %}
-        <div class="cell-content">
-            <img src="{% static 'items/' %}{{ data.group_id }}.png"
-     alt="{{ data.name }}"
-     class="item-icon {% if game.difficulty == 'easy' %}{% if cell.is_correct %}icon-correct{% else %}icon-wrong{% endif %}{% endif %}">
-            <div class="item-name">{{ data.name }}</div>
-        </div>
-    {% endif %}
-{% endwith %}
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-
-<div class="door right">
-    {% if neighbors.right is not None %}
-    <a href="#"
-       data-block="{{ neighbors.right.index }}"
-       onmouseover="highlightRoom({{ neighbors.right.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
-       onmouseout="unhighlightRoom({{ neighbors.right.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
-       onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.right.index %}')">
-        <img src="{% static 'doors/door_closed.png' %}" alt="Dveře vpravo" class="door-icon">
-        <div class="room-label">{{ neighbors.right.name }}</div>
-    </a>
-    {% endif %}
-</div>
-
-                <div class="door down">
-    {% if neighbors.down is not None %}
-    <a href="#"
-       data-block="{{ neighbors.down.index }}"
-       onmouseover="highlightRoom({{ neighbors.down.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
-       onmouseout="unhighlightRoom({{ neighbors.down.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
-       onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.down.index %}')">
-        <img src="{% static 'doors/door_closed.png' %}" alt="Dveře dolů" class="door-icon">
-        <div class="room-label">{{ neighbors.down.name }}</div>
-    </a>
-    {% endif %}
-</div>
+            {% if i|add:1 in used_numbers %}
+            <div class="inventory-item empty"></div>
+            {% else %}
+            {% with i|add:1 as num %}
+            {% for item in items %}
+            {% if item.number == num %}
+            <!-- Display item button with number and icon -->
+            <div class="inventory-item">
+               <button class="item-btn" data-number="{{ item.number }}" onclick="selectItem({{ item.number }})">
+                  <div class="item-content">
+                     <img src="{% static 'items/' %}{{ item.group_id }}.png" alt="{{ item.name }}" class="item-icon">
+                     <div class="item-name">{{ item.name }}</div>
+                  </div>
+               </button>
             </div>
-        </div>
-    </div>
+            {% endif %}
+            {% endfor %}
+            {% endwith %}
+            {% endif %}
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+   <!-- Sudoku Grid Wrapper -->
+   <div class="block-wrapper">
+      <!-- Sudoku section: grid of cells with dynamic styling -->
+      <div class="sudoku-bg">
+         <div class="sudoku-grid">
+            <!-- Loop through all cells to display their contents -->
+            {% for cell in cells %}
+            <div class="cell
+               {% if cell.column in grid_borders %} grid-border{% endif %}
+               {% if cell.row in grid_borders %} grid-border{% endif %}
+               {% if forloop.counter0 == 40 %} center-cell{% endif %}">
+               {% if forloop.counter0 == 40 %}
+               <!-- Special styling for the center cell -->
+               <img src="{% static 'ui/mapa_bg.png' %}" class="sudoku-background-img">
+               {% endif %}
+               {% if cell.selected_item %}
+               {% if game.difficulty == 'easy' %}
+               <!-- Show selected item for easy difficulty with correct/incorrect style -->
+               <span class="{% if cell.is_correct %}correct-number{% else %}incorrect-number{% endif %}">
+               {{ cell.selected_item.number }}
+               </span>
+               {% else %}
+               <!-- Show selected item for medium/hard difficulty -->
+               <span class="neutral-number">
+               {{ cell.selected_item.number }}
+               </span>
+               {% endif %}
+               {% endif %}
+            </div>
+            {% endfor %}
+         </div>
+      </div>
+      <!-- Mini map for rooms -->
+      <div class="room-minimap-wrapper">
+         <div class="room-minimap">
+            {% for i in block_range %}
+            <!-- Highlight the current block in the mini map -->
+            <div class="miniroom {% if i == block_index %}active{% endif %}" data-block="{{ i }}">
+               {% if i == block_index %}
+               <div class="room-background-wrapper">
+                  <img src="{% static 'ui/clock_image.png' %}" class="room-background">
+               </div>
+               {% endif %}
+            </div>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+   <!-- Wrapper for blocks and doors between rooms -->
+   <div class="block-with-doors-wrapper">
+      <div class="block-with-doors">
+         <!-- Door to the room up -->
+         <div class="door up">
+            {% if neighbors.up is not None %}
+            <a href="#"
+               data-block="{{ neighbors.up.index }}"
+               onmouseover="highlightRoom({{ neighbors.up.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+               onmouseout="unhighlightRoom({{ neighbors.up.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+               onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.up.index %}')">
+               <img src="{% static 'doors/door_closed.png' %}" class="door-icon">
+               <div class="room-label">{{ neighbors.up.name }}</div>
+            </a>
+            {% endif %}
+         </div>
+         <div class="door left">
+            {% if neighbors.left is not None %}
+            <a href="#"
+               data-block="{{ neighbors.left.index }}"
+               onmouseover="highlightRoom({{ neighbors.left.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+               onmouseout="unhighlightRoom({{ neighbors.left.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+               onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.left.index %}')">
+               <img src="{% static 'doors/door_closed.png' %}" alt="Dveře vlevo" class="door-icon">
+               <div class="room-label">{{ neighbors.left.name }}</div>
+            </a>
+            {% endif %}
+         </div>
+         <!-- Similar structure for left, right, down doors -->
+         <div class="sudoku-block">
+            {% for r in room_links %}
+            {% if forloop.counter0 == block_index %}
+            <img src="{% static 'rooms/' %}{{ r.name|slugify }}.png" class="room-room-background">
+            {% endif %}
+            {% endfor %}
+            <!-- Loop through the selected block's cells to display the sudoku items -->
+            {% for cell in selected_block %}
+            <div class="block-cell {% if cell.prefilled %}locked{% if game.difficulty == 'easy' %} correct {% else %} prefilled-gray {% endif %} {% else %}{% if cell.selected_item %}{% if game.difficulty == 'easy' %}{% if cell.is_correct %} correct {% else %} incorrect {% endif %}{% else %} filled {% endif %}{% endif %}{% endif %}"
+            {% if not cell.prefilled %}
+            onclick="placeItem({{ cell.id }}, {% if cell.selected_item %}{{ cell.selected_item.number }}{% else %}-1{% endif %})"
+            {% endif %}>
+            {% if cell.selected_item %}
+            {% with block_item_names|get_item:cell.selected_item.number as data %}
+            {% if data %}
+            <div class="cell-content">
+               <img src="{% static 'items/' %}{{ data.group_id }}.png"
+                  alt="{{ data.name }}"
+                  class="item-icon {% if game.difficulty == 'easy' %}{% if cell.is_correct %}icon-correct{% else %}icon-wrong{% endif %}{% endif %}">
+               <div class="item-name">{{ data.name }}</div>
+            </div>
+            {% endif %}
+            {% endwith %}
+            {% endif %}
+         </div>
+         {% endfor %}
+      </div>
+      <div class="door right">
+         {% if neighbors.right is not None %}
+         <a href="#"
+            data-block="{{ neighbors.right.index }}"
+            onmouseover="highlightRoom({{ neighbors.right.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+            onmouseout="unhighlightRoom({{ neighbors.right.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+            onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.right.index %}')">
+            <img src="{% static 'doors/door_closed.png' %}" alt="Dveře vpravo" class="door-icon">
+            <div class="room-label">{{ neighbors.right.name }}</div>
+         </a>
+         {% endif %}
+      </div>
+      <div class="door down">
+         {% if neighbors.down is not None %}
+         <a href="#"
+            data-block="{{ neighbors.down.index }}"
+            onmouseover="highlightRoom({{ neighbors.down.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+            onmouseout="unhighlightRoom({{ neighbors.down.index }}); this.querySelector('img').src='{% static 'doors/door_closed.png' %}'"
+            onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id neighbors.down.index %}')">
+            <img src="{% static 'doors/door_closed.png' %}" alt="Dveře dolů" class="door-icon">
+            <div class="room-label">{{ neighbors.down.name }}</div>
+         </a>
+         {% endif %}
+      </div>
+   </div>
 </div>
-
+</div>
+</div>
 <script>
-    let selectedNumber = null;
+   let selectedNumber = null;
 
-// Funkce pro výběr položky z inventáře
-function selectItem(number) {
-    console.log("Item selected: " + number);  // Kontrola v konzoli
+    // Function for selecting an item from the inventory
+   function selectItem(number) {
+   console.log("Item selected: " + number);  // Debugging
 
-    // Zrušíme výběr z ostatních položek
-    document.querySelectorAll('.item-btn').forEach(btn => btn.classList.remove('selected'));
+        // Unselect other items
+   document.querySelectorAll('.item-btn').forEach(btn => btn.classList.remove('selected'));
 
-    // Přidáme třídu 'selected' k tlačítku, které bylo kliknuto
-    const selectedButton = document.querySelector(`.item-btn[data-number="${number}"]`);
-    if (selectedButton) {
-        selectedButton.classList.add('selected');
-    }
+        // Highlight the selected button
+   const selectedButton = document.querySelector(`.item-btn[data-number="${number}"]`);
+   if (selectedButton) {
+       selectedButton.classList.add('selected');
+   }
 
-    // Nastavíme číslo vybrané položky
-    selectedNumber = number;
-}
 
-// Funkce pro umístění položky na mřížku
-function placeItem(cellId, currentItemNumber) {
-    console.log("Placing item:", selectedNumber, "on cell:", cellId); // Debugging
+        // Set the selected number
+   selectedNumber = number;
+   }
 
-    let numberToSend = selectedNumber !== null ? selectedNumber : -1;
 
-    // Zkontrolujte, zda číslo položky je stejné jako již umístěná položka, a případně položku zrušte
-    if (currentItemNumber === selectedNumber) {
-        numberToSend = -1;
-    }
+    // Function to place the selected item into the sudoku grid
+   function placeItem(cellId, currentItemNumber) {
+   console.log("Placing item:", selectedNumber, "on cell:", cellId); // Debugging
 
-    // Odeslání požadavku na server
-    fetch(`/gameplay/place/${cellId}/`, {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": "{{ csrf_token }}",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ number: numberToSend })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data); // Debugging
-        if (data.status === "completed" && data.redirect_url) {
-    window.location.href = data.redirect_url;
-        } else {
-            location.reload(); // Reload the page to update state
-        }
-    })
-    .catch(error => console.error("Error communicating with server:", error));
-}
-    function highlightRoom(index) {
-        const mini = document.querySelector(`.miniroom[data-block='${index}']`);
-        if (mini) mini.classList.add('highlighted');
-    }
+   let numberToSend = selectedNumber !== null ? selectedNumber : -1;
 
-    function unhighlightRoom(index) {
-        const mini = document.querySelector(`.miniroom[data-block='${index}']`);
-        if (mini) mini.classList.remove('highlighted');
-    }
+        // If the number is the same as the selected one, remove it
+   if (currentItemNumber === selectedNumber) {
+       numberToSend = -1;
+   }
+
+        // Send the request to the server to place/remove the item
+   fetch(`/gameplay/place/${cellId}/`, {
+       method: "POST",
+       headers: {
+           "X-CSRFToken": "{{ csrf_token }}",
+           "Content-Type": "application/json",
+       },
+       body: JSON.stringify({ number: numberToSend })
+   })
+   .then(response => response.json())
+   .then(data => {
+       console.log(data); // Debugging
+       if (data.status === "completed" && data.redirect_url) {
+   window.location.href = data.redirect_url;
+       } else {
+           location.reload(); // Reload the page to update state
+       }
+   })
+   .catch(error => console.error("Error communicating with server:", error));
+   }
+   function highlightRoom(index) {
+       const mini = document.querySelector(`.miniroom[data-block='${index}']`);
+       if (mini) mini.classList.add('highlighted');
+   }
+
+   function unhighlightRoom(index) {
+       const mini = document.querySelector(`.miniroom[data-block='${index}']`);
+       if (mini) mini.classList.remove('highlighted');
+   }
 </script>
-{% if play_intro %}
-<script>
-  setTimeout(() => {
-    console.log("🔥 Intro trigger!");
-    console.log("Is playSequence a function?", typeof playSequence);  // Zkontroluj, jestli je playSequence dostupné
-    if (typeof playSequence === 'function') {
-      playSequence("intro");
-    }
-  }, 100);
-</script>
-{% endif %}
 {% include "partials/sequence.html" %}
 {% endblock %}
 
