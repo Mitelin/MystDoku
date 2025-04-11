@@ -19,7 +19,7 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your_username/MystDoku.git
+git clone https://github.com/Mitelin/MystDoku.git
 cd MystDoku
 ```
 2. Create and activate a virtual environment:
