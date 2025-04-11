@@ -1413,3 +1413,26 @@ tr.rank-3 {
 .hidden {
     display: none;
 }
+/* Styling for gallery images */
+.gallery {
+    display: flex;
+    flex-wrap: wrap;  /* Ensures images are arranged into multiple rows */
+    justify-content: space-around;  /* Space between images */
+    gap: 10px;  /* Space between individual images */
+}
+
+.gallery img {
+    width: 200px;  /* Set uniform width for all images */
+    height: 200px;  /* Set uniform height for all images */
+    object-fit: cover;  /* Ensures the image fills the space without distortion */
+    border-radius: 8px;  /* Rounds the corners of the images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Adds shadow around the images */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;  /* Smooth transition effect when enlarging the image */
+    cursor: pointer;  /* Changes cursor to a hand when hovering over the image */
+}
+
+/* Hover effect for images */
+.gallery img:hover {
+    transform: scale(1.05);  /* Enlarges the image by 5% when hovered */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);  /* Highlights the shadow on hover */
+}
