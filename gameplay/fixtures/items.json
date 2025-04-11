@@ -1703,7 +1703,7 @@
     {
         "model": "gameplay.item",
         "fields": {
-            "name": "Dva Pasty",
+            "name": "Dvě Pasty",
             "number": 2,
             "room": 3,
             "group_id": "Pasta"
@@ -2918,7 +2918,7 @@
     {
         "model": "gameplay.item",
         "fields": {
-            "name": "Dva Ramínka na věšení",
+            "name": "Dvě Ramínka na věšení",
             "number": 2,
             "room": 4,
             "group_id": "Ramínko na věšení"
