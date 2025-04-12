@@ -41,7 +41,7 @@ python manage.py migrate
 Then, load the fixture data manually:
 
 ```bash
-python manage.py import_story
+python manage.py loaddata gameplay/fixtures/story.json
 python manage.py loaddata gameplay/fixtures/items.json
 python manage.py loaddata gameplay/fixtures/sequence_frames.json
 ```
