@@ -5,8 +5,8 @@ from .models import Game, Cell, Item, Room, Intro, Memory, DifficultyTransition,
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-import json
 from django.apps import apps
+import json
 
 @login_required
 def start_new_game(request):

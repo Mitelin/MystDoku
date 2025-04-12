@@ -1,8 +1,6 @@
 from django.urls import path
 from .views import (start_new_game, game_view, place_item, auto_fill, reset_progress, debug_add_memory,
-                    game_selection, manual_view)
-from gameplay.views import story_so_far
-
+                    game_selection, manual_view, story_so_far)
 urlpatterns = [
     path('start/', start_new_game, name='start_new_game'),
     path('<uuid:game_id>/', game_view, name='game_view'),  # UUID instead of int

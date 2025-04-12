@@ -1,6 +1,5 @@
 import random
 from .models import Game, Cell, Item, Room, PlayerStoryProgress, Memory
-#from django.contrib.auth.models import User
 from collections import defaultdict
 
 def generate_sudoku():

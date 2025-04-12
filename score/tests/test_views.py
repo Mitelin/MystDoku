@@ -44,14 +44,26 @@ class ScoreboardViewTests(TestCase):
         self.assertIsNotNone(response.context["current_player_score"])
         self.assertEqual(response.context["current_player_score"].user.username, "alice")
 
+
 class ApiDocsViewTests(TestCase):
     def setUp(self):
         self.md_path = Path("docs/api.md")
-        self.md_path.parent.mkdir(exist_ok=True)
+        self.md_path.parent.mkdir(parents=True, exist_ok=True)
+        self.original_content = None
+
+        # záloha původního obsahu (pokud soubor existuje)
+        if self.md_path.exists():
+            self.original_content = self.md_path.read_text(encoding="utf-8")
+
+        # zapíšeme testovací obsah
         self.md_path.write_text("# API Docs\n\nThis is test content.", encoding="utf-8")
 
     def tearDown(self):
-        self.md_path.unlink()  # smažeme testovací markdown
+        # Obnovíme původní obsah nebo smažeme testovací soubor
+        if self.original_content is not None:
+            self.md_path.write_text(self.original_content, encoding="utf-8")
+        elif self.md_path.exists():
+            self.md_path.unlink()
 
     def test_api_docs_renders_markdown(self):
         response = self.client.get(reverse("api_docs"))

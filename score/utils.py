@@ -1,7 +1,4 @@
-from django.utils import timezone
 from score.models import PlayerScore
-from datetime import datetime
-
 from django.utils import timezone
 
 def update_score_for_game(game):
