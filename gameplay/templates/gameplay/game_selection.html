@@ -31,10 +31,12 @@
         {% endif %}
     </div>
 
-    <div style="margin-top: 3em;">
-        <!-- Link for resetting the player's story progress -->
-        <a href="{% url 'reset_progress' %}" class="danger-button" onclick="return confirm('Opravdu chceš resetovat veškerý příběhový postup? Tato akce je nevratná.')">🔁 Resetovat příběhový postup</a>
-    </div>
+<div style="margin-top: 3em;">
+    <a href="{% url 'reset_progress' %}" class="play-button"
+       onclick="return confirm('Opravdu chceš resetovat veškerý příběhový postup? Tato akce je nevratná.')">
+        🔁 Resetovat příběhový postup
+    </a>
+</div>
 </div>
 
 {% include "partials/sequence.html" %}

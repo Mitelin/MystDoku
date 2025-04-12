@@ -513,24 +513,18 @@ def reset_progress(request):
     - Deletes all unlocked memories.
     - Resets player score and progress statistics.
     Redirects the player to the game selection page after resetting.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponseRedirect: Redirects to the game selection view.
     """
-    # Dynamically import the PlayerStoryProgress model (needed for resetting)
+
+
+    # Získání modelů
     PlayerStoryProgress = apps.get_model('gameplay', 'PlayerStoryProgress')
-
-    # Delete all unlocked memories and progress for the current player
-    PlayerStoryProgress.objects.filter(player=request.user).delete()
-
-    # Fetch the player's score object
     PlayerScore = apps.get_model('score', 'PlayerScore')
 
-    # Reset all progress and stats related to the player’s score
-    player_score = PlayerScore.objects.get(user=request.user)
+    # Smazání progressu
+    PlayerStoryProgress.objects.filter(player=request.user).delete()
+
+    # Bezpečné získání nebo vytvoření PlayerScore
+    player_score, _ = PlayerScore.objects.get_or_create(user=request.user)
     player_score.unlocked_memories = 0
     player_score.completed_easy = 0
     player_score.completed_medium = 0
@@ -539,10 +533,8 @@ def reset_progress(request):
     player_score.best_time_medium = None
     player_score.best_time_hard = None
     player_score.total_completed_games = 0
-    # Save the reset player score to the database
     player_score.save()
 
-    # Redirect the player to the game selection screen after resetting progress
     return redirect("game_selection")
 
 @login_required
