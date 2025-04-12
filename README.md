@@ -36,17 +36,19 @@ pip install -r requirements.txt
 
 ```bash
 python manage.py migrate
-python manage.py runserver
 ```
 
 Then, load the fixture data manually:
 
 ```bash
+python manage.py import_story
 python manage.py loaddata gameplay/fixtures/items.json
-python manage.py loaddata gameplay/fixtures/story.json
 python manage.py loaddata gameplay/fixtures/sequence_frames.json
 ```
-
+Finally run the server:
+```bash
+python manage.py runserver
+```
 The app will be available at `http://127.0.0.1:8000/`
 
 ### Key URLs
