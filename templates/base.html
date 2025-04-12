@@ -1,0 +1,103 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <meta charset="UTF-8">
+    <title>{% block title %}MystDoku{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+
+<header class="topbar">
+    <a href="/" class="logo">MystDoku</a>
+    <ul>
+    {% if user.is_authenticated and in_game %}
+        {% for room in room_links %}
+            <li>
+                <a href="#"
+                   onclick="event.preventDefault(); transitionTo('{% url 'game_block' game.id room.index %}')"
+                   data-block="{{ room.index }}"
+                   onmouseover="highlightRoom({{ room.index }})"
+                   onmouseout="unhighlightRoom({{ room.index }})">
+                    {{ room.name }}
+                </a>
+            </li>
+        {% endfor %}
+        <li class="divider">|</li>
+    {% endif %}
+
+    <li><a href="/">Domů</a></li>
+
+    {% if user.is_authenticated %}
+        {% if existing_game and not in_game %}
+            <li><a href="{% url 'game_view' game_id=existing_game.id %}">Pokračovat v hře</a></li>
+        {% endif %}
+        <li><a href="{% url 'game_selection' %}">Herní výběr</a></li>
+
+        <li><a href="{% url 'story_so_far' %}">Story</a></li>
+        {% endif %}
+        {% if "/gameplay/" in request.path and "/story" not in request.path and "/manual" not in request.path %}
+    <li><a href="{% url 'manual' %}">Jak hrát</a></li>
+{% endif %}
+        <li><a href="{% url 'scoreboard' %}">Score</a></li>
+{% if request.path == '/score/' %}
+    <li><a href="{% url 'api_docs' %}" class="text-xs text-gray-400 hover:text-white">API Docs</a></li>
+{% endif %}
+    {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="background:none;border:none;color:inherit;cursor:pointer;padding:0;">
+                    Odhlásit
+                </button>
+            </form>
+        </li>
+        <li class="user">👤 {{ user.username }}</li>
+    {% else %}
+        <li><a href="{% url 'login' %}">Přihlášení</a></li>
+    {% endif %}
+    </ul>
+</header>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+<div id="transition-overlay" class="transition-overlay"></div>
+
+<script>
+function transitionTo(url) {
+    sessionStorage.setItem('useFade', 'true');  // zapamatujeme, že se má použít fade
+    const overlay = document.getElementById('transition-overlay');
+    overlay.classList.remove('hidden', 'fade-out');
+    overlay.classList.add('fade-in');
+
+    setTimeout(() => {
+        window.location.href = url;
+    }, 1000); // délka animace
+}
+
+window.addEventListener('load', () => {
+    const overlay = document.getElementById('transition-overlay');
+    const shouldFade = sessionStorage.getItem('useFade');
+
+    if (shouldFade === 'true') {
+        sessionStorage.removeItem('useFade');  // použijeme jen jednou
+        overlay.classList.remove('hidden', 'fade-in');
+        overlay.classList.add('fade-out');
+    } else {
+        overlay.classList.add('hidden');  // při normálním načtení zůstane skrytý
+    }
+});
+function showCreditsModal() {
+    document.getElementById("credits-modal").classList.remove("hidden");
+}
+
+function hideCreditsModal() {
+    document.getElementById("credits-modal").classList.add("hidden");
+}
+</script>
+</body>
+</html>

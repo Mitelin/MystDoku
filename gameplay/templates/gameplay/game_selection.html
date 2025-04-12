@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}MystDoku – Výběr hry{% endblock %}
+
+{% block content %}
+<div class="game-selection">
+    <h1>Vítej v MystDoku!</h1>
+
+    {% if existing_game %}
+        <!-- If the player has an active game, show the "Continue Game" button -->
+        <p>🎮 Máš rozehranou hru:</p>
+        <a href="{% url 'game_view' game_id=existing_game.id %}" class="play-button">Pokračovat v hře</a>
+    {% else %}
+        <!-- If the player has no active game, inform them -->
+        <p>Nemáš žádnou rozehranou hru.</p>
+    {% endif %}
+
+    <hr style="margin: 2em 0; width: 60%; border-color: #666;">
+
+    <p>Začni novou hru:</p>
+    <div class="difficulty-buttons">
+        <!-- Link to start a new easy game -->
+        <a href="{% url 'start_new_game' %}?difficulty=easy" class="play-button">Easy</a>
+        <!-- Show Medium option only if the player has unlocked 20 easy memories -->
+        {% if unlocked_easy|length == 20 %}
+            <a href="{% url 'start_new_game' %}?difficulty=medium" class="play-button">Medium</a>
+        {% endif %}
+         <!-- Show Hard option only if the player has unlocked 20 easy and 20 medium memories -->
+        {% if unlocked_easy|length == 20 and unlocked_medium|length == 20 %}
+            <a href="{% url 'start_new_game' %}?difficulty=hard" class="play-button">Hard</a>
+        {% endif %}
+    </div>
+
+<div style="margin-top: 3em;">
+    <a href="{% url 'reset_progress' %}" class="play-button"
+       onclick="return confirm('Opravdu chceš resetovat veškerý příběhový postup? Tato akce je nevratná.')">
+        🔁 Resetovat příběhový postup
+    </a>
+</div>
+</div>
+
+{% include "partials/sequence.html" %}
+{% if play_intro %}
+  <script>
+    // Trigger the intro sequence when the page loads if the player has no game or memories unlocked
+    window.onload = function() {
+      playSequence("intro");
+    };
+  </script>
+{% endif %}
+{% endblock %}

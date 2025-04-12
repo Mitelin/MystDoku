@@ -1,0 +1,1438 @@
+/* Base layout for the body – resets margin, sets font, background and colors */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: url('../images/dark_house.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #e0e0e0;
+    min-height: 100vh; /* Ensures body always fills at least the viewport height */
+    overflow-y: hidden; /* Hides vertical scrollbar */
+}
+
+/* Top navigation bar container */
+.topbar {
+    background-color: #111;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo element inside the topbar */
+.topbar .logo {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+/* Navigation menu list (right side of topbar) */
+.topbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Individual links inside topbar */
+.topbar a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Hover effect for links */
+.topbar a:hover {
+    text-decoration: underline;
+}
+
+/* Main content area of the page */
+main {
+    padding: 30px;
+}
+
+/* === Intro screen & game mode selection === */
+
+.home-landing,
+.game-selection {
+    /* Container for homepage and game mode selection screen */
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    max-width: 800px;
+    margin: auto;
+    padding: 60px;
+    border-radius: 12px;
+}
+
+.home-landing h1,
+.game-selection h1 {
+    /* Main heading on homepage and selection screen */
+    font-size: 3em;
+    margin-bottom: 0.4em;
+}
+
+.home-landing p,
+.game-selection p {
+    /* Subheading/paragraphs for description text */
+    font-size: 1.2em;
+    margin-bottom: 2em;
+}
+
+.play-button,
+.game-selection a.play-button {
+    /* Main play button styling */
+    display: inline-block;
+    background-color: #9e0000;
+    color: white;
+    font-size: 1.5em;
+    padding: 15px 40px;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.play-button:hover,
+.game-selection a.play-button:hover {
+    /* Hover effect for the play button */
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+/* === Sudoku grid layout === */
+.sudoku-grid {
+    /* 9x9 grid for reference (right-side mini version) */
+    display: grid;
+    grid-template-columns: repeat(9, 20px);
+    grid-template-rows: repeat(9, 20px);
+    gap: 0;
+    border: 3px solid black;
+    box-sizing: border-box;
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    transform: scale(0.9);
+}
+
+.cell {
+    /* Single cell in the sudoku grid */
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+
+.correct-number {
+    /* Text style for correct answers */
+    color: green;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.incorrect-number {
+    /* Text style for incorrect answers */
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.neutral-number {
+    /* Style for user guesses without correctness info */
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.sudoku-block {
+    /* 3x3 main game grid block */
+    display: grid;
+    grid-template-columns: repeat(3, 80px); /* 3 columns of 80px each */
+    grid-template-rows: repeat(3, 80px);    /* 3 rows of 80px each */
+    gap: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    width: auto;
+    height: auto;
+    margin: 0 auto; /* Center block on screen */
+    position: relative;
+}
+
+/* Single cell inside the main 3x3 sudoku block */
+.block-cell {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: var(--container-fill-text-size, max(15px, var(--size-step-10)));
+    border: 1px solid black;
+}
+
+/* Highlight for selected/filled image cells */
+.filled img {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #56ccf2)
+        drop-shadow(-1.5px 1.5px 0 #56ccf2)
+        drop-shadow(1.5px -1.5px 0 #56ccf2)
+        drop-shadow(-1.5px -1.5px 0 #56ccf2);
+}
+
+/* Locked cells (pre-filled) – not clickable */
+.locked {
+    font-weight: bold;
+    cursor: not-allowed;
+}
+
+
+/* === Item text inside cells === */
+
+/* Default text color */
+.block-cell .item-text {
+    color: white;
+}
+
+/* Text color for validated results */
+.block-cell.correct .item-text,
+.block-cell.incorrect .item-text {
+    color: black;
+}
+
+
+/* === Quote overlay (full-screen quote effect) === */
+
+#quote-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    pointer-events: none;
+}
+
+#quote-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.quote-text {
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    max-width: 80%;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+
+/* === Fullscreen transition effect overlay === */
+
+.transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 1;
+    z-index: 9999;
+    transition: opacity 1s ease;
+    pointer-events: all;
+}
+
+.transition-overlay.hidden {
+    display: none;
+}
+
+.transition-overlay.fade-in {
+    display: block;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+.transition-overlay.fade-out {
+    animation: fadeOut 2s forwards;
+    pointer-events: none;
+}
+
+/* Animation: Fade in */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Animation: Fade out */
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+
+/* === Authentication form === */
+
+.auth-form-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 5rem;
+    background-color: #1e1e1e;
+    border-radius: 1rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+.auth-form-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 3rem;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 0.9rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #444;
+    border-radius: 0.5rem;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.auth-form button {
+    width: 100%;
+    padding: 1rem;
+    background-color: #4444aa;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-form button:hover {
+    background-color: #333399;
+}
+
+.auth-form p {
+    text-align: left;
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.auth-form a {
+    color: #4dc3ff;
+    text-decoration: none;
+}
+
+.auth-form a:hover {
+    text-decoration: underline;
+}
+
+.auth-form-container a,
+
+.auth-form-container a:visited,
+
+.auth-form-container a:active,
+
+.auth-form-container a:focus {
+  color: #ffcc00 !important;
+  text-decoration: none;
+}
+
+/* === Room navigation arrows (D-pad layout) === */
+
+.room-navigation {
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left . right"
+        ". down .";
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.room-navigation a {
+    /* Style for directional buttons (up/down/left/right) */
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    transition: background 0.3s ease;
+    border: 1px solid #777;
+    display: inline-block;
+    text-align: center;
+}
+
+.room-navigation a:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Grid placement for each navigation direction */
+.room-navigation a:nth-child(1) { grid-area: up; }
+.room-navigation a:nth-child(2) { grid-area: down; }
+.room-navigation a:nth-child(3) { grid-area: left; }
+.room-navigation a:nth-child(4) { grid-area: right; }
+
+
+/* === Item button hover/selection effects === */
+
+.item-btn:hover img {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #56ccf2)
+        drop-shadow(-1.5px 1.5px 0 #56ccf2)
+        drop-shadow(1.5px -1.5px 0 #56ccf2)
+        drop-shadow(-1.5px -1.5px 0 #56ccf2);
+}
+
+.item-btn.selected img {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #56ccf2)
+        drop-shadow(-1.5px 1.5px 0 #56ccf2)
+        drop-shadow(1.5px -1.5px 0 #56ccf2)
+        drop-shadow(-1.5px -1.5px 0 #56ccf2);
+    font-size: 1.1em;
+}
+
+
+/* === Wrapper for the sudoku block and doors === */
+
+.block-with-doors {
+    position: relative;
+    width: fit-content;
+    margin: 40px auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.block-with-doors .sudoku-block {
+    position: relative;
+}
+
+
+/* === Shared door style === */
+
+.block-with-doors .door a {
+    color: white;
+    font-size: 16px;
+    padding: 6px 10px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    text-align: center;
+}
+
+
+/* === Right door === */
+
+.block-with-doors .door.right {
+    justify-content: flex-start;
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    transform: translate(100%, -50%);
+}
+
+.block-with-doors .door.right a {
+    display: flex;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-align: left;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.block-with-doors .door.right a:hover {
+    transform: scale(1.05);
+}
+
+
+/* === Left door === */
+
+.block-with-doors .door.left {
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    transform: translate(-100%, -50%);
+}
+
+.block-with-doors .door.left a {
+    display: flex;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-align: right;
+}
+
+.block-with-doors .door.left a:hover {
+    transform: scale(1.05);
+}
+
+
+/* === Top door === */
+
+.block-with-doors .door.up {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translate(-50%, -100%);
+}
+
+.block-with-doors .door.up a {
+    display: inline-block;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 6px 10px;
+    text-align: center;
+}
+
+.block-with-doors .door.up a:hover {
+    transform: scale(1.05);
+}
+
+
+/* === Bottom door === */
+
+.block-with-doors .door.down {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translate(-50%, 100%);
+}
+
+.block-with-doors .door.down a {
+    display: inline-block;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+    padding: 6px 10px;
+    text-align: center;
+}
+
+.block-with-doors .door.down a:hover {
+    transform: scale(1.05);
+}
+/* === Topbar links & divider === */
+
+.topbar li a {
+    /* Limit topbar link width and apply ellipsis for overflow */
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.topbar .divider {
+    /* Visual divider between topbar items */
+    color: #888;
+    margin: 0 10px;
+    user-select: none;
+}
+
+.divider {
+    display: inline-block;
+    margin: 0 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
+/* === Grid for minimap and sudoku display === */
+
+.grid-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+    position: absolute;
+    top: 80px;
+    right: 20px;
+}
+
+
+/* === Mini sudoku room grid === */
+
+.minimap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.minimap-row {
+    display: flex;
+    gap: 4px;
+}
+
+.miniroom {
+    width: 28px;
+    height: 28px;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid #555;
+    box-sizing: border-box;
+}
+
+.miniroom.active {
+    background-color: #fff;
+}
+
+.miniroom.highlighted {
+    background-color: red;
+    box-shadow: 0 0 10px red;
+}
+
+.room-minimap {
+    display: grid;
+    grid-template-columns: repeat(3, 28px);
+    grid-template-rows: repeat(3, 28px);
+    gap: 0;
+    justify-content: center;
+}
+
+.room-minimap-wrapper {
+    position: absolute;
+    top: 55%;
+    left: 95%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* === Optional sudoku container limit === */
+
+.sudoku-container {
+    width: 75%;
+}
+
+
+/* === Main layout wrapper === */
+
+.game-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    padding: 20px;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+
+/* === Inventory wrapper === */
+
+.inventory-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+
+/* === Inventory item grid === */
+
+.inventory {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    padding: 10px;
+}
+
+
+/* === Inventory item slot === */
+
+.inventory-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+
+/* === Inventory button === */
+
+.item-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Item button responsive font size */
+:root {
+    --container-fill-text-size: 14px;
+    --size-step-10: 10px;
+}
+
+.item-btn {
+    font-size: var(--container-fill-text-size, max(15px, var(--size-step-10)));
+    transition: font-size 0.15s ease;
+}
+
+
+/* === Sudoku block wrapper (centered) === */
+
+.block-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+/* === Sudoku block + doors container === */
+
+.block-with-doors-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.3);
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* === Room name header above block === */
+
+.room-name {
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+}
+
+
+/* === Inventory item image (in cell) === */
+
+.item-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+
+/* === Layout inside a sudoku cell (icon + label) === */
+
+.cell-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.7em;
+    text-align: center;
+}
+
+
+/* === Item name inside cell === */
+
+.item-name {
+    margin-top: 4px;
+    transition: all 0.2s ease;
+    font-size: 1em;
+    color: white;
+}
+
+
+/* === Green glow for correct answers === */
+
+.icon-correct {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #6fcf97)
+        drop-shadow(-1.5px 1.5px 0 #6fcf97)
+        drop-shadow(1.5px -1.5px 0 #6fcf97)
+        drop-shadow(-1.5px -1.5px 0 #6fcf97);
+}
+
+
+/* === Red glow for incorrect answers === */
+
+.icon-wrong {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #eb5757)
+        drop-shadow(-1.5px 1.5px 0 #eb5757)
+        drop-shadow(1.5px -1.5px 0 #eb5757)
+        drop-shadow(-1.5px -1.5px 0 #eb5757);
+}
+
+
+/* === Icon used for door navigation === */
+
+.door-icon {
+    width: 35px;
+    height: auto;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+
+/* Label below door icons (room names) */
+.room-label {
+    text-align: center;
+    font-size: 1em;
+    color: white;
+    margin-top: 4px;
+}
+
+/* Inventory background wrapper */
+.inventory-bg {
+    position: relative;
+}
+
+/* Faded background image inside inventory */
+.inventory-background-img {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 175%;  /* or fixed px value */
+    height: 150%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Item name gets larger and bolder on hover or selection */
+.item-btn:hover .item-name,
+.item-btn.selected .item-name {
+    font-size: 1.15em;
+    font-weight: bold;
+}
+
+/* Hover effect for unlocked cells – blue glow on image */
+.block-cell:not(.locked):hover img {
+    filter:
+        drop-shadow(1.5px 1.5px 0 #56ccf2)
+        drop-shadow(-1.5px 1.5px 0 #56ccf2)
+        drop-shadow(1.5px -1.5px 0 #56ccf2)
+        drop-shadow(-1.5px -1.5px 0 #56ccf2);
+    transition: filter 0.2s ease;
+}
+
+/* Hover effect on the whole cell (text color and underline) */
+.block-cell:not(.locked):hover {
+    color: #56ccf2;
+    text-decoration: underline;
+}
+
+
+/* Special position for center sudoku cell */
+.center-cell {
+    position: relative;
+}
+
+/* Background image inside sudoku center cell */
+.sudoku-background-img {
+    position: absolute;
+    top: 140%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Wrapper for center content block */
+.center-block {
+    position: relative;
+}
+
+/* Room background image (decorative layer) */
+.room-background {
+    position: absolute;
+    top: 23%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 260px;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Background image used behind full block */
+.room-room-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 260px;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Prevent horizontal scroll and enforce full-width viewport */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    height: 100%;
+}
+
+
+/* === Section block for homepage content === */
+.section-wrapper {
+    background-color: rgba(0, 0, 0, 0.7);
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    color: #e0e0e0;
+}
+
+.section-wrapper h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.section-wrapper p {
+    font-size: 1em;
+    line-height: 1.4em;
+    margin-bottom: 1em;
+}
+
+
+/* === Screenshot gallery === */
+.gallery img {
+    width: 200px;
+}
+
+.gallery img:hover {
+    transform: scale(1.25);
+}
+
+
+/* === Features list styling === */
+.features ul {
+    font-size: 1em;
+}
+
+.features li {
+    margin: 8px 0;
+}
+
+
+/* === Smaller version of home-landing block === */
+.home-landing {
+    padding: 40px;
+    max-width: 600px;
+}
+
+.home-landing h1 {
+    font-size: 2.2em;
+}
+
+.home-landing p {
+    font-size: 1.1em;
+}
+
+/* Tweaked play button size (used on smaller layouts) */
+.play-button {
+    font-size: 1.3em;
+    padding: 12px 30px;
+}
+
+
+/* === Lightbox for fullscreen image display === */
+#lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    cursor: pointer;
+}
+
+
+/* === Story sequence button row === */
+.sequence-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+/* === Sequence buttons (used after story events) === */
+.sequence-buttons button {
+    background-color: #2e2e2e;
+    color: #eee;
+    border: 2px solid #444;
+    padding: 0.8em 1.5em;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.25s ease-in-out;
+}
+
+.sequence-buttons button:hover {
+    background-color: #444;
+    color: #fff;
+    transform: scale(1.04);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.sequence-buttons button:active {
+    transform: scale(0.98);
+    box-shadow: none;
+}
+
+
+/* === Memory/story section (used on story page) === */
+.story-section {
+    margin-bottom: 2em;
+    padding: 1em 2em;
+    background: #111;
+    border-left: 5px solid #666;
+    border-radius: 8px;
+}
+
+.story-block {
+    margin-bottom: 1em;
+    line-height: 1.7;
+    color: #eee;
+    font-size: 1.1em;
+    font-style: italic;
+}
+
+.story-container {
+    max-width: 900px;
+    margin: 4em auto;
+    padding: 2em;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    color: #eee;
+}
+
+.story-title {
+    font-size: 2em;
+    margin-bottom: 0.2em;
+    color: #f3c1d1;
+    text-shadow: 0 0 4px #000;
+}
+
+.story-act {
+    font-size: 1.3em;
+    color: #65ff78;
+    margin-bottom: 1em;
+}
+
+.story-content p {
+    margin-bottom: 1.2em;
+    line-height: 1.7;
+    font-style: italic;
+    text-align: justify;
+}
+
+
+/* === Scoreboard table styling === */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    text-align: left;
+}
+
+th {
+    background-color: #2b2b2b;
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #444;
+}
+
+tbody tr {
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #444;
+}
+
+tbody tr:hover {
+    background-color: #333;
+}
+
+tbody tr:first-child {
+    background-color: #4b9e3f;
+    color: white;
+}
+
+td {
+    font-size: 14px;
+    color: #ccc;
+    padding: 12px 20px;
+}
+
+td:first-child {
+    font-weight: bold;
+    color: #fff;
+}
+
+td:nth-child(2),
+td:nth-child(3),
+td:nth-child(4),
+td:nth-child(5),
+td:nth-child(6),
+td:nth-child(7),
+td:nth-child(8),
+td:nth-child(9) {
+    text-align: center;
+}
+
+
+/* === Table header sorting (clickable columns) === */
+th {
+    cursor: pointer;
+}
+
+th:hover {
+    background-color: #444;
+}
+
+th a {
+    display: block;
+    padding: 12px 20px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+th a:hover {
+    background-color: #444;
+}
+
+th a.active {
+    background-color: #2b9d4e;
+    color: #fff;
+    transform: scale(0.98);
+}
+
+th a:focus {
+    outline: none;
+}
+
+
+/* === Scoreboard header === */
+.scoreboard-header {
+    text-align: center;
+    background-color: #333;
+    padding: 10px 0;
+    border-radius: 8px;
+}
+
+.scoreboard-header h2 {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+
+/* === Pagination navigation === */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination .step-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination .current {
+    font-weight: bold;
+    color: #fff;
+}
+
+.pagination a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.pagination a:hover {
+    color: #fff;
+    background-color: #4CAF50;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+
+/* === Podium row styles === */
+tr.rank-1 {
+    background-color: #bfa004;
+    color: white;
+}
+
+tr.rank-2 {
+    background-color: #888;
+    color: white;
+}
+
+tr.rank-3 {
+    background-color: #8b572a;
+    color: white;
+}
+
+
+/* === Form field error messages === */
+.form-error {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* === Help text under form inputs === */
+.form-help {
+    display: block;
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-top: 2px;
+}
+
+
+/* === Manual/tutorial page container === */
+.manual-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 30px 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+}
+
+
+.manual-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.manual-video {
+    margin: 0 auto 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.manual-description {
+    color: #ccc;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+/* === "Play Again" block after story completion === */
+.play-again-container {
+    background-color: #111;
+    padding: 30px;
+    margin: 40px auto;
+    border-radius: 10px;
+    width: fit-content;
+    text-align: center;
+}
+
+.play-again-container h3 {
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+/* Button to restart or continue the game */
+.play-again {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #a00;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.play-again:hover {
+    background-color: #c33;
+}
+
+
+/* === Credits box after full story unlock === */
+.credits-box {
+    background-color: #111;
+    border: 1px solid #444;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    color: #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.credits-box ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.credits-box li {
+    margin-bottom: 8px;
+}
+
+
+/* === Modal overlay for credits === */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
+/* === Box inside modal overlay === */
+.modal-box {
+    background-color: #222;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    color: #ddd;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.modal-box h3 {
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.modal-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+}
+
+.modal-box li {
+    margin-bottom: 8px;
+}
+
+
+/* === Close button inside modal === */
+.modal-close {
+    background-color: #a91c1c;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.modal-close:hover {
+    background-color: #d62828;
+}
+
+
+/* === Utility: Hide elements (used with JS logic) === */
+.hidden {
+    display: none;
+}
+/* Styling for gallery images */
+.gallery {
+    display: flex;
+    flex-wrap: wrap;  /* Ensures images are arranged into multiple rows */
+    justify-content: space-around;  /* Space between images */
+    gap: 10px;  /* Space between individual images */
+}
+
+.gallery img {
+    width: 200px;  /* Set uniform width for all images */
+    height: 200px;  /* Set uniform height for all images */
+    object-fit: cover;  /* Ensures the image fills the space without distortion */
+    border-radius: 8px;  /* Rounds the corners of the images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Adds shadow around the images */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;  /* Smooth transition effect when enlarging the image */
+    cursor: pointer;  /* Changes cursor to a hand when hovering over the image */
+}
+
+/* Hover effect for images */
+.gallery img:hover {
+    transform: scale(1.05);  /* Enlarges the image by 5% when hovered */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);  /* Highlights the shadow on hover */
+}

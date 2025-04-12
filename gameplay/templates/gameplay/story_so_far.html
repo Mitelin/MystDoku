@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Příběh zatím{% endblock %}
+
+{% block content %}
+<style>
+body {
+  overflow-y: auto;
+}
+</style>
+
+
+<!-- Main container for the story section -->
+<div class="section-wrapper" style="text-align: center;">
+<h1>Story So Far</h1>
+  <h2>Přehraj spomínky:</h2>
+  <!-- Buttons to play different sequences based on progress -->
+  <div class="sequence-buttons" style="justify-content: center;">
+    <button onclick="playSequence('intro')">🔁 Přehrát Intro</button>
+
+    {% if unlocked_easy|length == 20 and total_unlocked < 60 %}
+      <button onclick="playSequence('easy_end')">🔓 Konec Easy</button>
+    {% endif %}
+
+    {% if unlocked_easy|length == 20 and unlocked_medium|length == 20 and total_unlocked < 60 %}
+      <button onclick="playSequence('medium_end')">🔓 Konec Medium</button>
+    {% endif %}
+
+    {% if total_unlocked == 60 %}
+      <button onclick="playSequence('hard_end')">🏁 Konec Hard</button>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Display buttons for continuing the game or resetting progress -->
+{% if total_unlocked < 60 %}
+<div class="play-again-container">
+    <h3>Tajemství si ještě neodhalil</h3>
+    <a href="{% url 'game_selection' %}" class="play-again">Pokračuj</a>
+</div>
+{% else %}
+<!-- If all memories are unlocked, show credits -->
+<div class="play-again-container">
+    <h3>Hru vytvořil:</h3>
+    <button class="play-again" onclick="showCreditsModal()">Credits</button>
+</div>
+
+<!-- Modal for displaying credits -->
+<div id="credits-box" class="credits-box hidden">
+    <h4>🎬 Vývoj MystDoku</h4>
+    <ul>
+        <li><strong>Design & Kód:</strong> Mitelin</li>
+        <li><strong>Příběh:</strong> AI + Mitelin</li>
+        <li><strong>Hudba:</strong> Generated / CC0</li>
+        <li><strong>Styl & UX:</strong> Společný vývoj 🧠</li>
+        <li><strong>Speciální díky:</strong> Tobě, že hraješ ❤️</li>
+    </ul>
+</div>
+{% endif %}
+<!-- Container for displaying unlocked memories -->
+<div class="story-container">
+  <h2 class="story-title">🌸 Tvůj příběh</h2>
+  <!-- Display unlocked easy memories -->
+  {% if unlocked_easy %}
+    <h3 class="story-act">🟢 Expozice</h3>
+    <div class="story-content">
+      {% for mem in unlocked_easy %}
+        <p>{{ mem.text }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+<!-- Display unlocked medium memories -->
+  {% if unlocked_medium %}
+    <h3 class="story-act">🟠 Kolize</h3>
+    <div class="story-content">
+      {% for mem in unlocked_medium %}
+        <p>{{ mem.text }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <!-- Display unlocked hard memories -->
+  {% if unlocked_hard %}
+    <h3 class="story-act">🔴 Krize a rozuzlení</h3>
+    <div class="story-content">
+      {% for mem in unlocked_hard %}
+        <p>{{ mem.text }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+    <!-- !!!DEBUG SECTION!!! -->
+{% comment %}
+<!-- Debug buttons to trigger different story sequences -->
+<div class="sequence-buttons">
+  <button onclick="playSequence('intro')">Přehrát Intro</button>
+  <button onclick="playSequence('easy_end')">Přehrát Konec Easy</button>
+  <button onclick="playSequence('medium_end')">Přehrát Konec Medium</button>
+  <button onclick="playSequence('hard_end')">Přehrát Konec Hard</button>
+<!-- Debug section displaying the raw sequence data -->
+</div>
+<h3>Debug: Intro data</h3>
+<ul>
+  {% for line in sequences.intro %}
+    <li>{{ line }}</li>
+  {% empty %}
+    <li><strong>Žádná data v sequences["intro"]</strong></li>
+  {% endfor %}
+</ul>
+<ul>
+  {% for line in sequences.easy_end %}
+    <li>{{ line }}</li>
+  {% empty %}
+    <li><strong>Žádná data v sequences["easy_end"]</strong></li>
+  {% endfor %}
+</ul>
+<ul>
+  {% for line in sequences.medium_end %}
+    <li>{{ line }}</li>
+  {% empty %}
+    <li><strong>Žádná data v sequences["medium_end"]</strong></li>
+  {% endfor %}
+</ul>
+<ul>
+  {% for line in sequences.hard_end %}
+    <li>{{ line }}</li>
+  {% empty %}
+    <li><strong>Žádná data v sequences["hard_end"]</strong></li>
+  {% endfor %}
+</ul>
+
+<hr>
+<h3 style="color: crimson;">🛠 Debug: Memory výpis podle obtížnosti</h3>
+<!-- Debug: Displaying unlocked memories for each difficulty -->
+<h4>🟢 Easy ({{ unlocked_easy|length }}/20)</h4>
+<ul>
+  {% for mem in unlocked_easy %}
+    <li>#{{ mem.order }} – {{ mem.text|truncatechars:80 }}</li>
+  {% empty %}
+    <li><i>Žádné odemčené vzpomínky</i></li>
+  {% endfor %}
+</ul>
+
+<h4>🟠 Medium ({{ unlocked_medium|length }}/20)</h4>
+<ul>
+  {% for mem in unlocked_medium %}
+    <li>#{{ mem.order }} – {{ mem.text|truncatechars:80 }}</li>
+  {% empty %}
+    <li><i>Žádné odemčené vzpomínky</i></li>
+  {% endfor %}
+</ul>
+
+<h4>🔴 Hard ({{ unlocked_hard|length }}/20)</h4>
+<ul>
+  {% for mem in unlocked_hard %}
+    <li>#{{ mem.order }} – {{ mem.text|truncatechars:80 }}</li>
+  {% empty %}
+    <li><i>Žádné odemčené vzpomínky</i></li>
+  {% endfor %}
+</ul>
+<h3>🛠 Debug: Přidat vzpomínku</h3>
+<a href="{% url 'debug_add_memory' 'easy' %}" class="debug-button">➕ Easy Memory</a>
+<a href="{% url 'debug_add_memory' 'medium' %}" class="debug-button">➕ Medium Memory</a>
+<a href="{% url 'debug_add_memory' 'hard' %}" class="debug-button">➕ Hard Memory</a>
+<br>
+<a href="{% url 'reset_progress' %}" class="debug-button" style="background: darkred;">🔁 Resetuj všechny vzpomínky</a>
+    {% endcomment %}
+    <!-- !!! END OF DEBUG SECTION!!! -->
+    <!-- Modal for credits -->
+<div id="credits-modal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h3>🎬 Vývoj MystDoku</h3>
+    <ul>
+      <li><strong>Design & Kód:</strong> Michal Pešta</li>
+      <li><strong>Příběh:</strong> AI + Michal Pešta</li>
+      <li><strong>Hudba:</strong> Generated / CC0</li>
+      <li><strong>Styl & UX:</strong> AI + Michal Pešta</li>
+      <li><strong>Speciální díky:</strong> Tobě, že hraješ </li>
+    </ul>
+    <button onclick="hideCreditsModal()" class="modal-close">Zavřít</button>
+  </div>
+</div>
+{% include "partials/sequence.html" with name=sequence_name frames=sequence_frames images=sequence_images %}
+{% endblock %}

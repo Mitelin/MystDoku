@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <!-- Enable vertical scroll if form is tall -->
+    <style>
+body {
+  overflow-y: auto;
+}
+</style>
+        <!-- Registration form container -->
+<div class="auth-form-container">
+    <h2>Registrace</h2>
+        <!-- Registration form -->
+<form method="post" class="auth-form">
+    {% csrf_token %}
+
+    <div>
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {% if form.username.help_text %}
+            <small class="form-help">{{ form.username.help_text }}</small>
+        {% endif %}
+        {% for error in form.username.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+            <!-- Password 1 field -->
+    <div>
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {% if form.password1.help_text %}
+            <small class="form-help">{{ form.password1.help_text }}</small>
+        {% endif %}
+        {% for error in form.password1.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+            <!-- Password 2 field (confirmation) -->
+    <div>
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {% if form.password2.help_text %}
+            <small class="form-help">{{ form.password2.help_text }}</small>
+        {% endif %}
+        {% for error in form.password2.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+            <!-- Submit button -->
+    <button type="submit">Registrovat</button>
+</form>
+{% endblock %}
